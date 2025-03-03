@@ -1,16 +1,16 @@
 @import "../../../assets/styles/colors";
 
-.login-container {
+.register-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   background: linear-gradient(135deg, $primary-color, $accent-color);
 
-  .login-box {
+  .register-box {
     background: rgba(255, 255, 255, 0.15); // Fondo semitransparente
     backdrop-filter: blur(10px); // Efecto de desenfoque
-    -webkit-backdrop-filter: blur(10px); // Para compatibilidad en Safari
+    -webkit-backdrop-filter: blur(10px); // Compatibilidad con Safari
     border-radius: 12px;
     border: 1.5px solid rgba(255, 255, 255, 0.3); // Borde sutil
     padding: 2rem;
@@ -22,14 +22,14 @@
     width: 360px;
     animation: fadeIn 0.6s ease-in-out; 
 
-    .login-logo {
-        width: 200px; // Ajusta el tamaño según tu diseño
-        animation: fadeIn 1s ease-in-out;
-        margin: 20px;
+    .register-logo {
+      width: 200px; // Ajusta el tamaño según tu diseño
+      animation: fadeIn 1s ease-in-out;
+      margin: 20px;
     }
 
     h2 {
-      color: $accent-color; // 💜 Morado pastel desaturado
+      color: $accent-color; 
       font-weight: 600;
       margin-bottom: 0.5rem;
     }
@@ -51,12 +51,12 @@
         padding: 10px;
         margin-bottom: 12px;
         transition: all 0.3s ease-in-out;
-        border: 2px solid $accent-color; // 💜 Bordes en morado pastel
+        border: 2px solid $accent-color; 
         opacity: 0;
         animation: fadeInCascade 0.8s ease-in-out forwards;
 
         i {
-          color: $accent-color; // 💜 Íconos en morado pastel
+          color: $accent-color; 
           margin-right: 10px;
         }
 
@@ -81,13 +81,8 @@
 
       .input-group:nth-child(1) { animation-delay: 0.2s; }
       .input-group:nth-child(2) { animation-delay: 0.3s; }
-
-      .checkbox-label {
-        color: $text-color;
-        opacity: 0;
-        animation: fadeInCascade 0.8s ease-in-out forwards;
-        animation-delay: .5s;
-      }
+      .input-group:nth-child(3) { animation-delay: 0.4s; }
+      .input-group:nth-child(4) { animation-delay: 0.5s; }
 
       button {
         position: relative;
@@ -107,7 +102,7 @@
         align-items: center;
         opacity: 0;
         animation: fadeInCascade 0.8s ease-in-out forwards;
-        animation-delay: .4s;
+        animation-delay: .7s;
       
         &:hover {
           background-color: darken($accent-color, 5%);
@@ -128,6 +123,11 @@
           animation: spin 0.8s linear infinite;
         }
       }
+      .error {
+        color: $error-color;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
     }
 
     .toggle-password {
@@ -146,31 +146,35 @@
         box-shadow: none !important;
       }
     }
-    
 
-    .register-link {
+    .login-link {
       margin-top: 10px;
       color: white;
-      font-size: 0.9rem;
-      text-align: center;
       opacity: 0;
       animation: fadeInCascade 0.8s ease-in-out forwards;
-      animation-delay: .55s;
+      animation-delay: .8s;
       
       a {
         color: $accent-color;
         font-weight: bold;
         transition: color 0.3s ease-in-out;
-    
+
         &:hover {
           color: darken($accent-color, 10%);
           text-decoration: underline;
         }
       }
     }
-    
-    .error{
+
+    .error {
       color: $error-color;
+      margin: 0;
+      margin-bottom: 15px;
+      font-weight: bold;
+    }
+    
+    .success {
+      color: #4caf50; // Verde para éxito
       margin: 0;
       margin-bottom: 15px;
       font-weight: bold;
@@ -180,6 +184,17 @@
 
 // 🔹 Animaciones CSS
 @keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInCascade {
     from {
       opacity: 0;
       transform: translateY(-20px);
@@ -190,22 +205,11 @@
     }
   }
 
-  @keyframes fadeInCascade {
-    from {
-      opacity: 0;
-      transform: translateY(-20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
   }
-
-  @keyframes spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
+  to {
+    transform: rotate(360deg);
   }
+}

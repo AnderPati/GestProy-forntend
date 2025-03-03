@@ -1,1 +1,16 @@
-<p>dashboard works!</p>
+<div class="dashboard-container">
+    <aside class="sidebar">
+      <h2>Mi Panel</h2>
+      <ul>
+        <li><a routerLink="/projects"><i class="fas fa-folder"></i> Proyectos</a></li>
+        <li><a routerLink="/tasks"><i class="fas fa-list-check"></i> Tareas</a></li>
+        <li><a routerLink="/profile"><i class="fas fa-user"></i> Perfil</a></li>
+        <li (click)="logout()"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</li>
+      </ul>
+    </aside>
+  
+    <main class="main-content">
+      <router-outlet>Holi :D</router-outlet>
+    </main>
+  </div>
+  

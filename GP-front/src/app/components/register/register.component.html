@@ -1,0 +1,46 @@
+<div class="register-container">
+    <div class="register-box">
+        <img src="assets/img/gestproy_logo_bgless.png" alt="Project Logo" class="register-logo">
+      <h2>Create una Cuenta</h2>
+      <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+      <p *ngIf="successMessage" class="success">{{ successMessage }}</p>
+  
+      <form (ngSubmit)="onSubmit()">
+        <div class="input-group">
+          <i class="fas fa-user"></i>
+          <input type="text" [(ngModel)]="name" name="name" placeholder="Nombre Completo" required />
+        </div>
+        <p *ngIf="nameError" class="error">El nombre debe tener al menos 3 caracteres.</p>
+      
+        <div class="input-group">
+          <i class="fas fa-envelope"></i>
+          <input type="email" [(ngModel)]="email" name="email" placeholder="Correo Electrónico" required />
+        </div>
+        <p *ngIf="emailError" class="error">Ingresa un correo electrónico válido.</p>
+      
+        <div class="input-group">
+          <i class="fas fa-lock"></i>
+          <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password" placeholder="Contraseña" required />
+          <button type="button" class="toggle-password" (click)="togglePasswordVisibility()">
+            <i class="fas" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+          </button>
+        </div>
+        <p *ngIf="passwordError" class="error">La contraseña debe tener al menos 6 caracteres.</p>
+      
+        <div class="input-group">
+          <i class="fas fa-lock"></i>
+          <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="confirmPassword" name="confirmPassword" placeholder="Repetir Contraseña" required />
+        </div>
+        <p *ngIf="passwordMismatch" class="error">Las contraseñas no coinciden.</p>
+      
+        <button type="submit" [disabled]="isLoading">
+          <span *ngIf="!isLoading">Registrarse</span>
+          <span *ngIf="isLoading" class="loading-spinner"></span>
+        </button>
+      </form>
+      
+  
+      <p class="login-link">¿Ya tienes cuenta? <a routerLink="/login">Inicia sesión</a></p>
+    </div>
+  </div>
+  
