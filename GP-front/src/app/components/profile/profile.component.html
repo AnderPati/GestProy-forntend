@@ -1,0 +1,28 @@
+<div class="profile-container">
+    <h2>Mi Perfil</h2>
+    <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+    <p *ngIf="successMessage" class="success">{{ successMessage }}</p>
+  
+    <form (ngSubmit)="onSubmit()">
+      <div class="input-group">
+        <label>Nombre:</label>
+        <input type="text" [(ngModel)]="user.name" name="name" required />
+      </div>
+  
+      <div class="input-group">
+        <label>Email:</label>
+        <input type="email" [(ngModel)]="user.email" name="email" required />
+      </div>
+  
+      <div class="input-group">
+        <label>Nueva Contraseña:</label>
+        <input type="password" [(ngModel)]="user.password" name="password" placeholder="Opcional" />
+      </div>
+  
+      <button type="submit" [disabled]="isLoading">
+        <span *ngIf="!isLoading">Actualizar</span>
+        <span *ngIf="isLoading" class="loading-spinner"></span>
+      </button>
+    </form>
+  </div>
+  

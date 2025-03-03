@@ -1,16 +1,19 @@
 <div class="dashboard-container">
-    <aside class="sidebar">
-      <h2>Mi Panel</h2>
-      <ul>
-        <li><a routerLink="/projects"><i class="fas fa-folder"></i> Proyectos</a></li>
-        <li><a routerLink="/tasks"><i class="fas fa-list-check"></i> Tareas</a></li>
-        <li><a routerLink="/profile"><i class="fas fa-user"></i> Perfil</a></li>
-        <li (click)="logout()"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</li>
-      </ul>
-    </aside>
-  
-    <main class="main-content">
-      <router-outlet>Holi :D</router-outlet>
-    </main>
-  </div>
-  
+  <aside class="sidebar" [ngClass]="{ 'collapsed': isCollapsed }">
+    <button class="toggle-btn" (click)="toggleSidebar()">
+      <i class="fas" [ngClass]="isCollapsed ? 'fa-arrow-right' : 'fa-arrow-left'"></i>
+    </button>
+
+    <h2 *ngIf="!isCollapsed">Mi Panel</h2>
+    <ul>
+      <li data-tooltip="Proyectos" [ngClass]="{'active': activeRoute.includes('/dashboard/projects')}"><a routerLink="projects"><i class="fas fa-folder"></i> <span *ngIf="!isCollapsed">Proyectos</span></a></li>
+      <li data-tooltip="Tareas" [ngClass]="{'active': activeRoute.includes('/dashboard/tasks')}"><a routerLink="tasks"><i class="fas fa-list-check"></i> <span *ngIf="!isCollapsed">Tareas</span></a></li>
+      <li data-tooltip="Perfil" [ngClass]="{'active': activeRoute.includes('/dashboard/profile')}"><a routerLink="profile"><i class="fas fa-user"></i> <span *ngIf="!isCollapsed">Perfil</span></a></li>
+      <li data-tooltip="Cerrar Sesión" (click)="logout()"><i class="fas fa-sign-out-alt"></i> <span *ngIf="!isCollapsed">Cerrar Sesión</span></li>
+    </ul>
+  </aside>
+
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

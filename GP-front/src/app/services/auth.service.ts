@@ -34,11 +34,12 @@ export class AuthService {
   }
 
   getToken(): string | null {
-    return sessionStorage.getItem('auth_token') || localStorage.getItem('auth_token');
+    return localStorage.getItem('auth_token') || sessionStorage.getItem('auth_token');
   }
-
+  
   removeToken() {
-    sessionStorage.removeItem('auth_token');
     localStorage.removeItem('auth_token');
+    sessionStorage.removeItem('auth_token');
   }
+  
 }

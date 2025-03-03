@@ -1,13 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   email: string = '';
   password: string = '';
   rememberMe: boolean = false;
@@ -15,7 +16,24 @@ export class LoginComponent {
   showPassword: boolean = false;
   isLoading: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private http: HttpClient) {}
+
+  ngOnInit() {
+    const token = this.authService.getToken();
+    if (token) {
+      // Verificar si el token es válido con el backend
+      this.http.get('http://127.0.0.1:8000/api/user', {
+        headers: { Authorization: `Bearer ${token}` }
+      }).subscribe(
+        () => {
+          this.router.navigate(['/dashboard']); // Token válido, redirigir al dashboard
+        },
+        () => {
+          this.authService.removeToken(); // Token inválido, eliminarlo
+        }
+      );
+    }
+  }
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
@@ -44,5 +62,4 @@ export class LoginComponent {
       this.isLoading = false; // Desactivar animación de carga después de recibir respuesta
     });
   }
-  
 }
