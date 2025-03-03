@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -17,9 +17,9 @@ export class ProfileService {
     });
   }
 
-  updateProfile(data: any): Observable<any> {
+  updateProfile(data: FormData): Observable<any> {
     const token = localStorage.getItem('auth_token') || sessionStorage.getItem('auth_token');
-    return this.http.put(`${this.apiUrl}/update`, data, {
+    return this.http.post(`${this.apiUrl}/update`, data, {
       headers: { Authorization: `Bearer ${token}` }
     });
   }

@@ -3,7 +3,12 @@
     <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
     <p *ngIf="successMessage" class="success">{{ successMessage }}</p>
   
-    <form (ngSubmit)="onSubmit()">
+    <form (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+      <div class="profile-image">
+        <img *ngIf="user.profile_image" [src]="'http://127.0.0.1:8000/storage/profiles/' + user.profile_image" alt="Imagen de perfil">
+        <input type="file" (change)="onFileSelected($event)" accept="image/*">
+      </div>
+  
       <div class="input-group">
         <label>Nombre:</label>
         <input type="text" [(ngModel)]="user.name" name="name" required />
