@@ -23,4 +23,12 @@ export class ProfileService {
       headers: { Authorization: `Bearer ${token}` }
     });
   }
+
+  deleteProfileImage(): Observable<any> {
+    const token = localStorage.getItem('auth_token') || sessionStorage.getItem('auth_token');
+    return this.http.delete(`${this.apiUrl}/delete-image`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+  }
+  
 }

@@ -1,33 +1,53 @@
 <div class="profile-container">
-    <h2>Mi Perfil</h2>
-    <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
-    <p *ngIf="successMessage" class="success">{{ successMessage }}</p>
-  
-    <form (ngSubmit)="onSubmit()" enctype="multipart/form-data">
-      <div class="profile-image">
-        <img *ngIf="user.profile_image" [src]="'http://127.0.0.1:8000/storage/profiles/' + user.profile_image" alt="Imagen de perfil">
-        <input type="file" (change)="onFileSelected($event)" accept="image/*">
+  <h2>Mi Perfil</h2>
+  <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+  <p *ngIf="successMessage" class="success">{{ successMessage }}</p>
+
+  <form (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+    <div class="profile-image" (click)="triggerFileInput()" (mouseenter)="hovering = true" (mouseleave)="hovering = false">
+      <!-- Imagen de perfil o avatar por defecto -->
+      <img *ngIf="imagePreview; else currentImage" [src]="imagePreview" alt="Vista previa de imagen">
+      <ng-template #currentImage>
+        <img *ngIf="user.profile_image; else defaultAvatar" [src]="'http://127.0.0.1:8000/storage/profiles/' + user.profile_image" alt="Imagen de perfil">
+        <ng-template #defaultAvatar>
+          <img src="assets/img/default-avatar.png" alt="Avatar predeterminado">
+        </ng-template>
+      </ng-template>
+    
+      <!-- Texto "Cambiar imagen" cuando se pasa el mouse -->
+      <div class="overlay" *ngIf="hovering">
+        <p><i class="fa-solid fa-pen"></i></p>
       </div>
-  
-      <div class="input-group">
-        <label>Nombre:</label>
-        <input type="text" [(ngModel)]="user.name" name="name" required />
-      </div>
-  
-      <div class="input-group">
-        <label>Email:</label>
-        <input type="email" [(ngModel)]="user.email" name="email" required />
-      </div>
-  
-      <div class="input-group">
-        <label>Nueva Contraseña:</label>
-        <input type="password" [(ngModel)]="user.password" name="password" placeholder="Opcional" />
-      </div>
-  
-      <button type="submit" [disabled]="isLoading">
-        <span *ngIf="!isLoading">Actualizar</span>
-        <span *ngIf="isLoading" class="loading-spinner"></span>
-      </button>
-    </form>
-  </div>
+    
+      <!-- Input oculto para seleccionar una imagen -->
+      <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" hidden>
+    </div>
+
+    <button type="button" class="delete-img-btn" (click)="removeProfileImage()" *ngIf="user.profile_image">Eliminar Imagen</button>
+
+    <div class="input-group">
+      <label>Nombre:</label>
+      <input type="text" [(ngModel)]="user.name" name="name" [ngClass]="{'edited': isFieldEdited('name')}" required />
+      <span class="error-text" *ngIf="validateField('name')">{{ validateField('name') }}</span>
+    </div>
+
+    <div class="input-group">
+      <label>Email:</label>
+      <input type="email" [(ngModel)]="user.email" name="email" [ngClass]="{'edited': isFieldEdited('email')}" required />
+      <span class="error-text" *ngIf="validateField('email')">{{ validateField('email') }}</span>
+    </div>
+
+    <div class="input-group">
+      <label>Nueva Contraseña:</label>
+      <input type="password" [(ngModel)]="user.password" name="password" placeholder="Opcional" [ngClass]="{'edited': user.password !== ''}" />
+      <span class="error-text" *ngIf="validateField('password')">{{ validateField('password') }}</span>
+    </div>
+
+    <button type="submit" [disabled]="isLoading">
+      <span *ngIf="!isLoading">Actualizar</span>
+      <span *ngIf="isLoading" class="loading-spinner"></span>
+    </button>
+  </form>
+</div>
+
   

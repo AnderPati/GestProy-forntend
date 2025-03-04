@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ApiService {
   private apiUrl = 'http://127.0.0.1:8000/api/test'; // Ruta del backend
-
+  
   constructor(private http: HttpClient) {}
 
   getTestData(): Observable<any> {

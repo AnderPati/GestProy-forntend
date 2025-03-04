@@ -3,17 +3,15 @@
 .profile-container {
   max-width: 400px;
   margin: 50px auto;
-  padding: 20px;
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: 12px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-  text-align: center;
+  text-align: right;
 }
 
 h2 {
   color: $accent-color;
+  text-align: center;
+  font-size: 2rem;
 }
 
 .input-group {
@@ -25,13 +23,21 @@ h2 {
 label {
   font-weight: bold;
   margin-bottom: 5px;
-  color: white;
+  margin-top: 15px;
+  color: $accent-color;
+  text-align: left;
 }
 
 input {
   padding: 8px;
   border: 2px solid $accent-color;
   border-radius: 5px;
+  transition: border-color 0.3s, background 0.3s;
+}
+
+input.edited {
+  border-color: #ffcc00;
+  background: rgba(255, 204, 0, 0.2);
 }
 
 button {
@@ -44,12 +50,91 @@ button {
   font-weight: bold;
 }
 
-.error {
-  color: $error-color;
-  font-weight: bold;
+.profile-image {
+  position: relative;
+  display: flex;
+  width: 150px;
+  border-radius: 50%;
+  margin: auto;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer; // 🔥 Hace que parezca un botón
+  transition: transform 0.2s ease-in-out;
+
+  img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid $accent-color;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  &:hover {
+    transform: scale(1.05);
+  }
 }
 
-.success {
-  color: #4caf50;
-  font-weight: bold;
+.overlay {
+  position: absolute;
+  width: 150px;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  p {
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+  }
+}
+
+.profile-image:hover .overlay {
+  opacity: 1;
+}
+
+
+
+input[type="file"] {
+  margin-top: 10px;
+  padding: 8px;
+  background: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+input[type="file"].edited {
+  border: 2px solid #ffcc00;
+  background: rgba(255, 204, 0, 0.2);
+  transition: border-color 0.3s, background 0.3s;
+}
+
+.delete-img-btn {
+  margin-top: 10px;
+  padding: 8px;
+  background: $accent-color;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+  
+  &:hover {
+    background: #cc0000;
+  }
+}
+
+error-border {
+  border-color: red !important;
+}
+
+.error-text {
+  color: red;
+  font-size: 0.9rem;
+  text-align: left;
 }
