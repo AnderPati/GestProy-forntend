@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,10 +12,18 @@ import { HttpClient } from '@angular/common/http';
 export class DashboardComponent implements OnInit {
   isCollapsed: boolean = false;
   activeRoute: string = '';
+  isDarkMode: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router, private http: HttpClient) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private http: HttpClient,
+    private themeService: ThemeService
+  ) {}
 
   ngOnInit() {
+    this.isDarkMode = this.themeService.getDarkModeStatus();
+    
     // Obtener la ruta actual al iniciar la página
     this.activeRoute = this.router.url;
 
@@ -37,6 +46,7 @@ export class DashboardComponent implements OnInit {
       this.router.navigate(['/login']); // No hay token, redirigir al login
       return;
     }
+
 
     // Hacer una solicitud al backend para validar el token
     this.http.get('http://127.0.0.1:8000/api/user', {
@@ -63,5 +73,10 @@ export class DashboardComponent implements OnInit {
       this.authService.removeToken();
       this.router.navigate(['/login']);
     });
+  }
+
+  toggleDarkMode() {
+    this.themeService.toggleDarkMode();
+    this.isDarkMode = this.themeService.getDarkModeStatus();
   }
 }

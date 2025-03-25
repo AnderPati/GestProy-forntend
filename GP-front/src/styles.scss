@@ -1,7 +1,91 @@
+@import "assets/styles/colors";
 /* You can add global styles to this file, and also import other style files */
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: #fff8e1; // Fondo claro para coherencia
+    background-color: var(--background-color); // Fondo claro para coherencia
     margin: 0;
     padding: 0;
   }
+
+  //COLORES
+  :root {
+    // Variables por defecto (modo claro)
+    --accent-color: #{$accent-color-light};
+    --primary-color: #{$primary-color-light};
+    --secondary-color: #{$secondary-color-light};
+    --background-color: #{$background-color-light};
+    --text-color: #{$text-color-light};
+    --error-color: #{$error-color-light};
+    --button-hover: #{$button-hover-light};
+  
+    // Lighten versions
+    --accent-color-light: #{lighten($accent-color-light, 13%)};
+    --primary-color-light: #{lighten($primary-color-light, 13%)};
+    --secondary-color-light: #{lighten($secondary-color-light, 13%)};
+    --background-color-light: #{lighten($background-color-light, 13%)};
+    --text-color-light: #{lighten($text-color-light, 13%)};
+    --error-color-light: #{lighten($error-color-light, 13%)};
+    --button-hover-light: #{lighten($button-hover-light, 13%)};
+  
+    // Darken versions
+    --accent-color-dark: #{darken($accent-color-light, 13%)};
+    --primary-color-dark: #{darken($primary-color-light, 13%)};
+    --secondary-color-dark: #{darken($secondary-color-light, 13%)};
+    --background-color-dark: #{darken($background-color-light, 13%)};
+    --text-color-dark: #{darken($text-color-light, 13%)};
+    --error-color-dark: #{darken($error-color-light, 13%)};
+    --button-hover-dark: #{darken($button-hover-light, 13%)};
+  }
+  .dark-mode {
+    // Sobreescribir con variables de modo oscuro
+    --accent-color: #{$accent-color-dark};
+    --primary-color: #{$primary-color-dark};
+    --secondary-color: #{$secondary-color-dark};
+    --background-color: #{$background-color-dark};
+    --text-color: #{$text-color-dark};
+    --error-color: #{$error-color-dark};
+    --button-hover: #{$button-hover-dark};
+  
+    // Lighten versions
+    --accent-color-light: #{lighten($accent-color-dark, 13%)};
+    --primary-color-light: #{lighten($primary-color-dark, 13%)};
+    --secondary-color-light: #{lighten($secondary-color-dark, 13%)};
+    --background-color-light: #{lighten($background-color-dark, 13%)};
+    --text-color-light: #{lighten($text-color-dark, 13%)};
+    --error-color-light: #{lighten($error-color-dark, 13%)};
+    --button-hover-light: #{lighten($button-hover-dark, 13%)};
+  
+    // Darken versions
+    --accent-color-dark: #{darken($accent-color-dark, 13%)};
+    --primary-color-dark: #{darken($primary-color-dark, 13%)};
+    --secondary-color-dark: #{darken($secondary-color-dark, 13%)};
+    --background-color-dark: #{darken($background-color-dark, 13%)};
+    --text-color-dark: #{darken($text-color-dark, 13%)};
+    --error-color-dark: #{darken($error-color-dark, 13%)};
+    --button-hover-dark: #{darken($button-hover-dark, 13%)};
+  }
+  
+
+//   /* 🌙 Modo Oscuro */
+// .dark-mode {
+//   background: #121212;
+//   color: white;
+//   /* 🌙 Navbar en Modo Oscuro */
+//   &.dark-mode .sidebar {
+//     background: #1e1e1e !important;
+//     color: white;
+//   }
+// }
+
+
+// /* 🌙 Estilos de los proyectos en modo oscuro */
+// .dark-mode .project-item {
+//   background: rgba(255, 255, 255, 0.1);
+//   border-color: #444;
+// }
+
+// /* 🌙 Menús desplegables en Modo Oscuro */
+// .dark-mode .dropdown-menu {
+//   background: #222;
+//   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+// }

@@ -1,0 +1,50 @@
+<div class="projects-container">
+  <div class="projetcs-header" *ngIf="projects.length >= 1">
+    <div class="flex-header">
+      <h2>Mis Proyectos</h2>
+      <button class="new-project-btn" (click)="createProject()"><i class="fa-solid fa-folder-plus"></i></button>
+    </div>
+
+    <!-- Botón para cambiar vista -->
+    
+    <!-- Filtros -->
+    <div class="filters">
+      <div>
+        <input type="text" [(ngModel)]="filterName" placeholder="Filtrar por nombre..." />
+        <select [(ngModel)]="filterStatus">
+          <option value="">Todos</option>
+          <option *ngFor="let status of projectStatuses" [value]="status">{{ status }}</option>
+        </select>
+      </div>
+      <button class="toggle-view-btn" (click)="toggleView()">
+        <i class="fa-solid" [ngClass]="isGridView ? 'fa-list' : 'fa-th'"></i>
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="projects.length === 0" class="no-projects">
+    <h3>¡Vaya! Parece que no tienes proyectos aún.</h3>
+    <p>Es hora de empezar algo nuevo. Haz clic en el botón de abajo y crea tu primer proyecto.</p>
+    <button (click)="createProject()">Empezar Nuevo Proyecto</button>
+  </div>
+
+  <!-- Contenedor de proyectos con clases dinámicas -->
+  <div *ngIf="projects.length > 0" class="project-list" [ngClass]="{'grid-view': isGridView}">
+    <div *ngFor="let project of filteredProjects()" class="project-item" 
+         (click)="goToProject(project.id)" [ngClass]="getStatusClass(project.status)">
+      <div class="project-info">
+        <div class="project-title">
+          <h3>{{ project.name }}</h3>
+        </div>
+        <p *ngIf="project.description" class="project-description">{{ project.description }}</p>
+      </div>
+      <div class="project-actions">
+        <button class="options-btn" (click)="toggleMenu($event, project.id)">⋮</button>
+        <div class="dropdown-menu" *ngIf="openMenu === project.id" (click)="$event.stopPropagation()">
+          <button (click)="editProject(project); $event.stopPropagation()">✏️ Editar</button>
+          <button (click)="deleteProject(project.id); $event.stopPropagation()">🗑️ Eliminar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

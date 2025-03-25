@@ -1,6 +1,6 @@
 <div class="login-container">
     <div class="login-box">
-        <img src="assets/img/gestproy_logo_bgless.png" alt="Project Logo" class="login-logo">
+        <img src="assets/img/gestproy_logo_bgless.webp" alt="Project Logo" class="login-logo">
         
         <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
         <form (ngSubmit)="onSubmit()">
@@ -12,7 +12,7 @@
         <div class="input-group">
           <i class="fas fa-lock"></i>
           <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password" placeholder="Contraseña" required />
-          <button type="button" class="toggle-password" (click)="togglePasswordVisibility()">
+          <button type="button" class="toggle-password" aria-label="Toggle password button" (click)="togglePasswordVisibility()">
             <i class="fas" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
           </button>
         </div>

@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
 })
 export class ProfileComponent implements OnInit {
   user: any = { name: '', email: '', password: '', profile_image: '' };
+  currentPassword: string = '';
   originalUser: any = {};
   errorMessage: string = '';
   successMessage: string = '';
@@ -55,13 +56,34 @@ export class ProfileComponent implements OnInit {
     if (file) {
       // Validar que sea una imagen
       if (!file.type.startsWith('image/')) {
-        this.errorMessage = 'Por favor, selecciona un archivo de imagen válido.';
+        Swal.fire({
+          title: 'Por favor, selecciona un archivo de imagen válido.',
+          color: '#5e4b56',
+          icon: 'error',
+          iconColor: '#5e4b56',
+          toast: true,
+          position: 'top',
+          background: 'linear-gradient(135deg, #e63946, #9c89b8)',
+          showConfirmButton: false,
+          timer: 6000
+        });
+        
         return;
       }
   
       // Validar el tamaño de la imagen (máximo 2MB)
       if (file.size > 2 * 1024 * 1024) {
-        this.errorMessage = 'El tamaño de la imagen debe ser menor a 2MB.';
+        Swal.fire({
+          title: 'El tamaño de la imagen debe ser menor a 2MB.',
+          color: '#5e4b56',
+          icon: 'error',
+          iconColor: '#5e4b56',
+          toast: true,
+          position: 'top',
+          background: 'linear-gradient(135deg, #e63946, #9c89b8)',
+          showConfirmButton: false,
+          timer: 6000
+        });
         return;
       }
   
@@ -83,6 +105,9 @@ export class ProfileComponent implements OnInit {
     formData.append('name', this.user.name);
     formData.append('email', this.user.email);
     
+    if (this.currentPassword) {
+      formData.append('current_password', this.currentPassword);
+    }
     if (this.user.password) {
       formData.append('password', this.user.password);
     }
@@ -93,6 +118,7 @@ export class ProfileComponent implements OnInit {
   
     this.profileService.updateProfile(formData).subscribe(
       response => {
+        
         Swal.fire({
           title: 'Perfil actualizado',
           color: '#5e4b56',
@@ -102,30 +128,17 @@ export class ProfileComponent implements OnInit {
           toast: true,
           position: 'top-end',
           showConfirmButton: false,
-          timer: 3000
+          timer: 6000
         });
   
         this.user = { ...response.user, password: '' }; // Actualizar la vista con los nuevos datos
         this.originalUser = { ...this.user, password: '' }
+        this.currentPassword = "";
       },
-      () => {
+      error => {
         Swal.fire({
-          title: "No se pudo actualizar el perfil",
-          icon: 'error',
-          showClass: {
-            popup: `
-              animate__animated
-              animate__fadeInUp
-              animate__faster
-            `
-          },
-          hideClass: {
-            popup: `
-              animate__animated
-              animate__fadeOutDown
-              animate__faster
-            `
-          }
+          title: error.error.message,
+          icon: 'error'
         });
       }
     ).add(() => {
@@ -142,6 +155,7 @@ export class ProfileComponent implements OnInit {
       cancelButtonColor: '#5e4b56',
       confirmButtonText: 'Sí, eliminar',
       cancelButtonText: 'Cancelar',
+      background: '#faf3dd',
       position: 'top',
     }).then((result) => {
       if (result.isConfirmed) {
@@ -149,11 +163,14 @@ export class ProfileComponent implements OnInit {
           response => {
             Swal.fire({
               title: 'Perfil actualizado',
+              color: '#5e4b56',
               icon: 'success',
+              iconColor: '#5e4b56',
+              background: 'linear-gradient(135deg, #f4a261, #9c89b8)',
               toast: true,
               position: 'top-end',
               showConfirmButton: false,
-              timer: 1500
+              timer: 3000
             });
             this.user.profile_image = null;
             this.imagePreview = null;

@@ -37,15 +37,32 @@
       <span class="error-text" *ngIf="validateField('email')">{{ validateField('email') }}</span>
     </div>
 
-    <div class="input-group">
+    <!-- <div class="input-group">
       <label>Nueva Contraseña:</label>
       <input type="password" [(ngModel)]="user.password" name="password" placeholder="Opcional" [ngClass]="{'edited': user.password !== ''}" />
       <span class="error-text" *ngIf="validateField('password')">{{ validateField('password') }}</span>
+    </div> -->
+
+    <div class="password-container">
+      <h3>Opcional</h3>
+      
+      <div class="input-group">
+        <label>Contraseña actual:</label>
+        <input type="password" [(ngModel)]="currentPassword" name="currentPassword" placeholder="Ingresa tu contraseña actual">
+      </div>
+      
+      <div class="input-group">
+        <label>Nueva Contraseña:</label>
+        <input type="password" [(ngModel)]="user.password" name="password" placeholder="Nueva contraseña" [ngClass]="{'edited': user.password !== ''}">
+        <span class="error-text" *ngIf="validateField('password')">{{ validateField('password') }}</span>
+      </div>
     </div>
+    
+    
 
     <button type="submit" [disabled]="isLoading">
       <span *ngIf="!isLoading">Actualizar</span>
-      <span *ngIf="isLoading" class="loading-spinner"></span>
+      <span *ngIf="isLoading" class="loading-spinner">...</span>
     </button>
   </form>
 </div>
