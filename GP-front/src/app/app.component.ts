@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { ApiService } from './services/api.service';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -9,13 +8,6 @@ import { ApiService } from './services/api.service';
 export class AppComponent {
   title = 'GP-front';
 
-  constructor(private apiService: ApiService) {}
+  constructor() {}
 
-  ngOnInit() {
-    this.apiService.getTestData().subscribe(response => {
-      console.log('Respuesta del backend:', response);
-    }, error => {
-      console.error('Error en la conexión:', error);
-    });
-  }
 }

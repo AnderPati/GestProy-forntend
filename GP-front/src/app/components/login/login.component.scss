@@ -1,5 +1,8 @@
 @import "../../../assets/styles/colors";
 
+// Login form container with center alignment and a gradient background.
+//----
+// Contenedor del login centrado con fondo en gradiente.
 .login-container {
   display: flex;
   justify-content: center;
@@ -8,11 +11,11 @@
   background: linear-gradient(135deg, $primary-color-light, $accent-color-light);
 
   .login-box {
-    background: rgba(255, 255, 255, 0.15); // Fondo semitransparente
-    backdrop-filter: blur(10px); // Efecto de desenfoque
-    -webkit-backdrop-filter: blur(10px); // Para compatibilidad en Safari
+    background: rgba(255, 255, 255, 0.15); // Semi-transparent background | Fondo semitransparente
+    backdrop-filter: blur(10px); // Blur effect for frosted-glass style | Efecto desenfoque tipo glassmorphism
+    -webkit-backdrop-filter: blur(10px); // Safari compatibility | Compatibilidad con Safari
     border-radius: 12px;
-    border: 1.5px solid rgba(255, 255, 255, 0.3); // Borde sutil
+    border: 1.5px solid rgba(255, 255, 255, 0.3);
     padding: 2rem;
     padding-top: 0;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
@@ -20,16 +23,16 @@
     flex-direction: column;
     align-items: center;
     width: 360px;
-    animation: fadeIn 0.6s ease-in-out; 
+    animation: fadeIn 0.6s ease-in-out;
 
     .login-logo {
-        width: 200px; // Ajusta el tamaño según tu diseño
+        width: 200px; // Set logo size | Tamaño del logo
         animation: fadeIn 1s ease-in-out;
         margin: 20px;
     }
 
     h2 {
-      color: $accent-color-light; // 💜 Morado pastel desaturado
+      color: $accent-color-light;
       font-weight: 600;
       margin-bottom: 0.5rem;
     }
@@ -51,12 +54,12 @@
         padding: 10px;
         margin-bottom: 12px;
         transition: all 0.3s ease-in-out;
-        border: 2px solid $accent-color-light; // 💜 Bordes en morado pastel
+        border: 2px solid $accent-color-light;
         opacity: 0;
         animation: fadeInCascade 0.8s ease-in-out forwards;
 
         i {
-          color: $accent-color-light; // 💜 Íconos en morado pastel
+          color: $accent-color-light;
           margin-right: 10px;
         }
 
@@ -79,6 +82,9 @@
         }
       }
 
+      // Cascade animations for input groups
+      //----
+      // Retrasos para animaciones en cascada de inputs
       .input-group:nth-child(1) { animation-delay: 0.2s; }
       .input-group:nth-child(2) { animation-delay: 0.3s; }
 
@@ -104,7 +110,7 @@
 
           &:checked {
             background-color: $accent-color-light;
-            
+
             &::after {
               content: '✓';
               line-height: 14px;
@@ -139,12 +145,12 @@
         opacity: 0;
         animation: fadeInCascade 0.8s ease-in-out forwards;
         animation-delay: .4s;
-      
+
         &:hover {
           background-color: darken($accent-color-light, 5%);
           box-shadow: 0 0 10px rgba($accent-color-light, 0.5);
         }
-      
+
         &:disabled {
           background-color: lighten($accent-color-light, 15%);
           cursor: not-allowed;
@@ -171,13 +177,12 @@
       font-size: 1rem;
       color: white !important;
       transition: color 0.3s ease-in-out;
-    
+
       &:hover {
         color: darken($accent-color-light, 10%);
         box-shadow: none !important;
       }
     }
-    
 
     .register-link {
       margin-top: 10px;
@@ -187,20 +192,20 @@
       opacity: 0;
       animation: fadeInCascade 0.8s ease-in-out forwards;
       animation-delay: .55s;
-      
+
       a {
         color: $accent-color-light;
         font-weight: bold;
         transition: color 0.3s ease-in-out;
-    
+
         &:hover {
           color: darken($accent-color-light, 10%);
           text-decoration: underline;
         }
       }
     }
-    
-    .error{
+
+    .error {
       color: $error-color-light;
       margin: 0;
       margin-bottom: 15px;
@@ -209,34 +214,36 @@
   }
 }
 
-// 🔹 Animaciones CSS
+// Basic fade and spin animations for smoother UX
+//----
+// Animaciones básicas para mejorar la experiencia visual
 @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-  @keyframes fadeInCascade {
-    from {
-      opacity: 0;
-      transform: translateY(-20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+@keyframes fadeInCascade {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-  @keyframes spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
   }
+  to {
+    transform: rotate(360deg);
+  }
+}

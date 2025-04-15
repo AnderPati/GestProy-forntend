@@ -63,7 +63,7 @@ export class ProjectsComponent implements OnInit {
   }
 
   goToProject(id: number) {
-    this.router.navigate([`/projects/${id}`]); // Navega al proyecto correspondiente
+    this.router.navigate([`/dashboard/projects/${id}`]); // Navega al proyecto correspondiente
   }
 
   toggleMenu(event: Event, id: number) {
@@ -142,17 +142,24 @@ export class ProjectsComponent implements OnInit {
       preConfirm: () => {
         const startDate = (document.getElementById('start_date') as HTMLInputElement).value;
         const endDate = (document.getElementById('end_date') as HTMLInputElement).value;
-  
+        const description = (document.getElementById('description') as HTMLInputElement).value;
+        const status = (document.getElementById('status') as HTMLSelectElement).value;
+
         if (!startDate) {
           Swal.showValidationMessage('La fecha de inicio es obligatoria');
           return false;
         }
-  
+
+        if (endDate && new Date(endDate) < new Date(startDate)) {
+          Swal.showValidationMessage('La fecha de fin no puede ser anterior a la fecha de inicio');
+          return false;
+        }
+
         return {
-          description: (document.getElementById('description') as HTMLInputElement).value,
+          description,
           start_date: startDate,
           end_date: endDate || null,
-          status: (document.getElementById('status') as HTMLSelectElement).value
+          status
         };
       }
     });

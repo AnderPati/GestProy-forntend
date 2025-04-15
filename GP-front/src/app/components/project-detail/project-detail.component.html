@@ -1,0 +1,69 @@
+<div class="project-detail-container" *ngIf="project">
+    <button class="toggle-header-btn" (click)="toggleHeader()">
+      {{ project.name }}
+      <i class="fa" [ngClass]="showHeader ? 'fa-solid fa-angle-up' : 'fa-solid fa-angle-down'"></i>
+    </button>
+    <div class="header-info" *ngIf="showHeader">
+      <p *ngIf="project.description">{{ project.description }}</p>
+      <p><strong>Estado:</strong> {{ project.status }}</p>
+      <p><strong>Inicio:</strong> {{ project.start_date }}</p>
+      <p *ngIf="project.end_date"><strong>Fin:</strong> {{ project.end_date }}</p>
+      <div *ngIf="tasks.length !== 0">
+        <small class="progress-label">{{ progressPercentage }}% completado</small>
+        <div class="progress-container">
+          <div class="progress-bar" [style.width.%]="progressPercentage"></div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="task-section">
+      <div class="task-header">
+        <h3>Tareas</h3>
+        <button (click)="createTask()"><i class="fa-solid fa-plus"></i> Nueva Tarea</button>
+      </div>
+  
+      <div *ngIf="tasks.length === 0">
+        <p>No hay tareas aún. ¡Agrega la primera! 📝</p>
+      </div>
+
+      <div *ngIf="tasks.length !== 0" class="kanban-board">
+      
+        <div
+          class="kanban-column"
+          *ngFor="let status of ['pendiente', 'en progreso', 'completado']"
+        >
+          <h3>
+            <span class="status-dot" [ngStyle]="{
+              'background-color': status === 'pendiente' ? '#ec407a' : status === 'en progreso' ? '#ffb300' : '#66bb6a'
+            }"></span>
+          {{ status | titlecase }}</h3>
+      
+          <div
+            cdkDropList
+            [id]="status"
+            [cdkDropListData]="tasksByStatus[status]"
+            [cdkDropListConnectedTo]="dropListIds"
+            class="task-list"
+            (cdkDropListDropped)="onDrop($event, asTaskStatus(status))"
+          >
+            <div
+              *ngFor="let task of tasksByStatus[status]"
+              cdkDrag
+              class="task-card"
+              (click)="editTask(task)"
+            >
+              <strong>{{ task.title }}</strong>
+              <div class="tag-list" *ngIf="task.tags">
+                <span *ngFor="let tag of task.tags.split(',')" class="task-tag">
+                  {{ tag.trim() }}
+                </span>
+              </div>
+              <span *ngIf="task.description"><hr>{{ task.description }}</span>
+              <small *ngIf="task.due_date"><hr>📅 {{ task.due_date }}</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

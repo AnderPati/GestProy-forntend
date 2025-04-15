@@ -25,9 +25,9 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     this.profileService.getProfile().subscribe(
-      data => {
-        this.user = { ...data, password: '' }; // Copiamos los datos en `user`
-        this.originalUser = { ...data, password: '' }; // Guardamos los valores originales
+      response => {
+        this.user = { ...response.data, password: '' }; // Copiamos los datos en `user`
+        this.originalUser = { ...response.data, password: '' }; // Guardamos los valores originales
       },
       () => {
         this.errorMessage = 'Error al cargar el perfil.';

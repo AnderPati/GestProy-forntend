@@ -1,38 +1,61 @@
 <div class="login-container">
-    <div class="login-box">
-        <img src="assets/img/gestproy_logo_bgless.webp" alt="Project Logo" class="login-logo">
-        
-        <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
-        <form (ngSubmit)="onSubmit()">
-        <div class="input-group">
-          <i class="fas fa-envelope"></i>
-          <input type="email" [(ngModel)]="email" name="email" placeholder="Correo Electrónico" required />
-        </div>
-  
-        <div class="input-group">
-          <i class="fas fa-lock"></i>
-          <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password" placeholder="Contraseña" required />
-          <button type="button" class="toggle-password" aria-label="Toggle password button" (click)="togglePasswordVisibility()">
-            <i class="fas" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
-          </button>
-        </div>
-        
-  
-        <label class="checkbox-label">
-          <input type="checkbox" [(ngModel)]="rememberMe" name="rememberMe" class="checkbox"/>
-          Mantener sesión iniciada
-        </label>
-  
-        <button type="submit" [disabled]="isLoading">
-          <span *ngIf="!isLoading">Iniciar Sesión</span>
-          <span *ngIf="isLoading" class="loading-spinner"></span>
-        </button>
-        
-        <p class="register-link">¿No tienes cuenta? 
-          <a routerLink="/register">Regístrate aquí</a>
-        </p>
+  <div class="login-box">
+    <img src="assets/img/gestproy_logo_bgless.webp" alt="Project Logo" class="login-logo" />
 
-      </form>
-    </div>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" autocomplete="off">
+      <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+
+      <!-- Email -->
+      <div class="input-group">
+        <i class="fas fa-envelope"></i>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          placeholder="Correo Electrónico"
+          [class.invalid]="email?.invalid && email?.touched"
+        />
+      </div>
+      <!-- <div class="field-error" *ngIf="email?.invalid && email?.touched">
+        <small *ngIf="email?.errors?.['required']">El correo es obligatorio</small>
+        <small *ngIf="email?.errors?.['email']">Formato de correo no válido</small>
+      </div> -->
+
+      <!-- Password -->
+      <div class="input-group password-group">
+        <i class="fas fa-lock"></i>
+        <input
+          [type]="showPassword ? 'text' : 'password'"
+          id="password"
+          formControlName="password"
+          placeholder="Contraseña"
+          [class.invalid]="password?.invalid && password?.touched"
+        />
+        <button type="button" class="toggle-password" (click)="togglePasswordVisibility()" aria-label="Mostrar/Ocultar contraseña">
+          <i class="fas" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+        </button>
+      </div>
+      <!-- <div class="field-error" *ngIf="password?.invalid && password?.touched">
+        <small>La contraseña es obligatoria</small>
+      </div> -->
+
+      <!-- Remember me -->
+      <label class="checkbox-label">
+        <input type="checkbox" formControlName="rememberMe" class="checkbox" />
+        Mantener sesión iniciada
+      </label>
+
+      <!-- Submit -->
+      <button type="submit" [disabled]="loginForm.invalid || isLoading">
+        <span *ngIf="!isLoading">Iniciar Sesión</span>
+        <span *ngIf="isLoading" class="loading-spinner"></span>
+      </button>
+
+      <!-- Register link -->
+      <p class="register-link">
+        ¿No tienes cuenta?
+        <a routerLink="/register">Regístrate aquí</a>
+      </p>
+    </form>
   </div>
-  
+</div>

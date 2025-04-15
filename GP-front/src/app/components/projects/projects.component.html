@@ -12,7 +12,7 @@
       <div>
         <input type="text" [(ngModel)]="filterName" placeholder="Filtrar por nombre..." />
         <select [(ngModel)]="filterStatus">
-          <option value="">Todos</option>
+          <option value="">Todos y cada uno de ellos</option>
           <option *ngFor="let status of projectStatuses" [value]="status">{{ status }}</option>
         </select>
       </div>

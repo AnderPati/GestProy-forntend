@@ -1,14 +1,21 @@
 @import "assets/styles/colors";
-/* You can add global styles to this file, and also import other style files */
+
+// Global styles setup and theme variable definitions
+//----
+// Estilos globales y definición de variables de tema
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: var(--background-color); // Fondo claro para coherencia
+    background-color: var(--background-color);
     margin: 0;
     padding: 0;
   }
 
-  //COLORES
+// Color variables for light mode using CSS custom properties
+//----
+// Variables de color para modo claro usando custom properties
   :root {
+    // Default variables (light mode)
+    //----
     // Variables por defecto (modo claro)
     --accent-color: #{$accent-color-light};
     --primary-color: #{$primary-color-light};
@@ -19,6 +26,8 @@ body {
     --button-hover: #{$button-hover-light};
   
     // Lighten versions
+    //----
+    // Versiones aclaradas
     --accent-color-light: #{lighten($accent-color-light, 13%)};
     --primary-color-light: #{lighten($primary-color-light, 13%)};
     --secondary-color-light: #{lighten($secondary-color-light, 13%)};
@@ -28,6 +37,8 @@ body {
     --button-hover-light: #{lighten($button-hover-light, 13%)};
   
     // Darken versions
+    //----
+    // Versiones oscurecidas
     --accent-color-dark: #{darken($accent-color-light, 13%)};
     --primary-color-dark: #{darken($primary-color-light, 13%)};
     --secondary-color-dark: #{darken($secondary-color-light, 13%)};
@@ -36,8 +47,14 @@ body {
     --error-color-dark: #{darken($error-color-light, 13%)};
     --button-hover-dark: #{darken($button-hover-light, 13%)};
   }
+
+// Dark mode overrides using the .dark-mode class
+//----
+// Sobreescritura de variables para modo oscuro con la clase .dark-mode
   .dark-mode {
-    // Sobreescribir con variables de modo oscuro
+    // Default variables (dark mode)
+    //----
+    // Variables por defecto (modo oscuro)
     --accent-color: #{$accent-color-dark};
     --primary-color: #{$primary-color-dark};
     --secondary-color: #{$secondary-color-dark};
@@ -47,6 +64,8 @@ body {
     --button-hover: #{$button-hover-dark};
   
     // Lighten versions
+    //----
+    // Versiones aclaradas
     --accent-color-light: #{lighten($accent-color-dark, 13%)};
     --primary-color-light: #{lighten($primary-color-dark, 13%)};
     --secondary-color-light: #{lighten($secondary-color-dark, 13%)};
@@ -56,6 +75,8 @@ body {
     --button-hover-light: #{lighten($button-hover-dark, 13%)};
   
     // Darken versions
+    //----
+    // Versiones oscurecidas
     --accent-color-dark: #{darken($accent-color-dark, 13%)};
     --primary-color-dark: #{darken($primary-color-dark, 13%)};
     --secondary-color-dark: #{darken($secondary-color-dark, 13%)};
@@ -64,28 +85,3 @@ body {
     --error-color-dark: #{darken($error-color-dark, 13%)};
     --button-hover-dark: #{darken($button-hover-dark, 13%)};
   }
-  
-
-//   /* 🌙 Modo Oscuro */
-// .dark-mode {
-//   background: #121212;
-//   color: white;
-//   /* 🌙 Navbar en Modo Oscuro */
-//   &.dark-mode .sidebar {
-//     background: #1e1e1e !important;
-//     color: white;
-//   }
-// }
-
-
-// /* 🌙 Estilos de los proyectos en modo oscuro */
-// .dark-mode .project-item {
-//   background: rgba(255, 255, 255, 0.1);
-//   border-color: #444;
-// }
-
-// /* 🌙 Menús desplegables en Modo Oscuro */
-// .dark-mode .dropdown-menu {
-//   background: #222;
-//   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
-// }
