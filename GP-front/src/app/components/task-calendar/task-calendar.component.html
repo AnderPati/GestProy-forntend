@@ -1,0 +1,33 @@
+<div class="container">
+    <div class="leyenda-container">
+        <div class="volver-atras">
+            <a [routerLink]="['/dashboard/projects', projectId]" class="btn-volver">
+              <i class="fa-solid fa-arrow-left"></i> Volver al proyecto
+            </a>
+        </div>
+        <div class="leyenda">
+            <div class="leyenda-item">
+            <div class="color-box completado"></div>
+            <span>Completado</span>
+          </div>
+          <div class="leyenda-item">
+            <div class="color-box en-progreso"></div>
+            <span>En progreso</span>
+          </div>
+          <div class="leyenda-item">
+            <div class="color-box pendiente"></div>
+            <span>Pendiente</span>
+          </div>
+          <div class="leyenda-item">
+            <div class="color-box fuera-de-tiempo"></div>
+            <span>Fuera de tiempo</span>
+          </div>
+        </div>
+    </div>
+      
+      
+    <div class="calendar-container" *ngIf="calendarOptions">
+        <full-calendar [options]="calendarOptions"></full-calendar>
+    </div>
+</div>
+  

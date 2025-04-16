@@ -35,12 +35,22 @@
   }
   
   .task-header button {
-    background-color: var(--accent-color);
-    border: none;
-    padding: 10px;
-    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--accent-color);
     color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: background 0.3s;
     cursor: pointer;
+    font-size: 1.1rem;
+  
+    &:hover {
+      background: darken(#9c89b8, 10%);
+    }
   }
   
 //   .task-list {
@@ -117,7 +127,7 @@
   }
   
   .task-tag {
-    background: #9c89b8;
+    background: var(--accent-color);
     color: white;
     padding: 2px 8px;
     font-size: 0.75rem;
@@ -146,6 +156,76 @@
     color: var(--text-color);
     margin-bottom: 10px;
   }
+
+  .task-priority {
+    font-size: 0.75rem;
+    margin-left: 5px;
+    padding: 2px 4px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: black;
+  
+    &.alta {
+      background-color: #ff615f;
+    }
+  
+    &.media {
+      background-color: #fbc02d;
+    }
+  
+    &.baja {
+      background-color: #43a047;
+    }
+  }
+
+  .task-card.archived {
+    background: rgba(0, 0, 0, 0.1);
+    color: var(--text-color-dark);
+    font-size: 0.8rem;
+    padding: 6px 10px;
+    border: 1px dashed var(--text-color-dark);
+    height: auto;
+    overflow: hidden;
+  }  
+
+  .calendar-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--accent-color);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: background 0.3s;
+    margin-right: 10px;
+    font-size: 1.1rem;
+  
+    &:hover {
+      background: darken(#9c89b8, 10%);
+    }
+  }
+
+  .summary-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--accent-color);
+    color: white;
+    padding: 6px 14px;
+    border-radius: 50px;
+    border: none;
+    text-decoration: none;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+  
+    &:hover {
+      background: darken(#9c89b8, 10%);
+    }
+  }
+  
   
   @keyframes fadeInDown {
     from {

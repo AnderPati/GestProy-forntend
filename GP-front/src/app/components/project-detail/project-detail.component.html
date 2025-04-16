@@ -13,14 +13,23 @@
         <div class="progress-container">
           <div class="progress-bar" [style.width.%]="progressPercentage"></div>
         </div>
+        <button [routerLink]="['/dashboard/projects', projectId, 'summary']" class="summary-link">
+          <i class="fa-solid fa-chart-line"></i> Resumen
+        </button>      
       </div>
     </div>
-  
+    
     <div class="task-section">
       <div class="task-header">
         <h3>Tareas</h3>
-        <button (click)="createTask()"><i class="fa-solid fa-plus"></i> Nueva Tarea</button>
+        <div>
+          <button *ngIf="tasks.length !== 0" [routerLink]="['/dashboard/projects', projectId, 'calendar']" class="calendar-link">
+            <i class="fa-solid fa-calendar-days"></i> Calendario
+          </button>      
+          <button (click)="createTask()"><i class="fa-solid fa-plus"></i> Nueva Tarea</button>
+        </div>
       </div>
+
   
       <div *ngIf="tasks.length === 0">
         <p>No hay tareas aún. ¡Agrega la primera! 📝</p>
@@ -51,15 +60,24 @@
               cdkDrag
               class="task-card"
               (click)="editTask(task)"
+              [ngClass]="{ 'archived': task.archived }"
             >
+            <ng-container *ngIf="!task.archived; else archivedTask">
               <strong>{{ task.title }}</strong>
-              <div class="tag-list" *ngIf="task.tags">
-                <span *ngFor="let tag of task.tags.split(',')" class="task-tag">
-                  {{ tag.trim() }}
-                </span>
-              </div>
-              <span *ngIf="task.description"><hr>{{ task.description }}</span>
-              <small *ngIf="task.due_date"><hr>📅 {{ task.due_date }}</small>
+              <div class="task-priority" [ngClass]="task.priority">
+                {{ task.priority }}
+              </div>              
+                <div class="tag-list" *ngIf="task.tags">
+                  <span *ngFor="let tag of task.tags.split(',')" class="task-tag">
+                    {{ tag.trim() }}
+                  </span>
+                </div>
+                <span *ngIf="task.description"><hr>{{ task.description }}</span>
+                <small *ngIf="task.due_date"><hr>📅 {{ task.due_date }}</small>
+            </ng-container>
+            <ng-template #archivedTask>
+              <strong>{{ task.title }}</strong>
+            </ng-template>
             </div>
           </div>
         </div>

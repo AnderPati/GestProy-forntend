@@ -13,7 +13,7 @@ import { moveItemInArray } from '@angular/cdk/drag-drop';
   styleUrls: ['./project-detail.component.scss']
 })
 export class ProjectDetailComponent implements OnInit {
-  projectId!: number;
+  public projectId!: number;
   project: any;
   tasks: Task[] = [];
   tasksByStatus: { [key: string]: Task[] } = {
@@ -108,20 +108,26 @@ export class ProjectDetailComponent implements OnInit {
           <label for="title" style="font-weight: bold; color: #5e4b56;">Título:  <span style="color: #f4a261;">*</span></label>
           <input id="title" type="text" class="swal2-input" required style="width: 100%; margin: 0; color: #5e4b56; border: 1.5px solid #5e4b56; border-radius: 8px;">
   
-          <label for="description" style="font-weight: bold; color: #5e4b56; margin-top: 10px;">Descripción (opcional):</label>
+          <label for="description" style="font-weight: bold; color: #5e4b56; margin-top: 10px;">Descripción:</label>
           <textarea id="description" class="swal2-input"
             style="height: 80px; border-radius: 8px; padding: 10px; font-size: 1rem; border: 1.5px solid #5e4b56; background: rgba(255, 255, 255, 0.2); color: #333;"></textarea>
   
             
-            <label for="due_date" style="font-weight: bold; color: #5e4b56; margin-top: 10px;">Fecha de vencimiento (opcional):</label>
+            <label for="due_date" style="font-weight: bold; color: #5e4b56; margin-top: 10px;">Fecha de vencimiento:</label>
             <input id="due_date" type="date" class="swal2-input"
             style="margin: 0; padding: 10px; font-size: 1rem; border: 1.5px solid #5e4b56; border-radius: 8px;" />
 
             <label for="tags" style="font-weight: bold; color: #5e4b56; margin-top: 10px;">Etiquetas (separadas por comas):</label>
             <input id="tags" type="text" class="swal2-input" placeholder="Ej: frontend, urgente, bug" style="width: 100%; margin: 0; color: #5e4b56; border: 1.5px solid #5e4b56; border-radius: 8px;">
 
+            <label for="priority" style="font-weight: bold; color: #5e4b56; margin-top: 10px;">Prioridad: <span style="color: #f4a261;">*</span></label>
+            <select id="priority" class="swal2-select" style="border-radius: 8px; padding: 10px; width: 100%; margin: 0; font-size: 1rem; border: 1.5px solid #5e4b56;">
+              <option value="baja">Baja</option>
+              <option value="media" selected>Media</option>
+              <option value="alta">Alta</option>
+            </select>
 
-            <label for="status" style="font-weight: bold; color: #5e4b56; margin-top: 10px;">Estado:</label>
+            <label for="status" style="font-weight: bold; color: #5e4b56; margin-top: 10px;">Estado: <span style="color: #f4a261;">*</span></label>
             <select id="status" class="swal2-select"
               style="border-radius: 8px; padding: 10px; width: 100%; margin: 0; font-size: 1rem; border: 1.5px solid #5e4b56;">
               <option value="pendiente">Pendiente</option>
@@ -149,7 +155,8 @@ export class ProjectDetailComponent implements OnInit {
           description: (document.getElementById('description') as HTMLInputElement).value,
           status: (document.getElementById('status') as HTMLSelectElement).value,
           due_date: (document.getElementById('due_date') as HTMLInputElement).value || null,
-          tags: (document.getElementById('tags') as HTMLInputElement).value.trim() || null
+          tags: (document.getElementById('tags') as HTMLInputElement).value.trim() || null,
+          priority: (document.getElementById('priority') as HTMLSelectElement).value
         };
       }
     });
@@ -163,7 +170,9 @@ export class ProjectDetailComponent implements OnInit {
       description: formValues.description,
       status: formValues.status,
       due_date: formValues.due_date,
-      tags: formValues.tags
+      tags: formValues.tags,
+      priority: formValues.priority,
+      archived: false
     };
   
     this.taskService.createTask(this.projectId, newTask).subscribe(
@@ -186,26 +195,62 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   editTask(task: Task) {
+    if (task.archived) {
+      // Si está archivada, ofrecer desarchivar
+      Swal.fire({
+        title: '¿Quieres desarchivar esta tarea?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Desarchivar',
+        cancelButtonText: 'Cancelar',
+        background: 'linear-gradient(135deg, #faf3dd, #fcd5ce)',
+        color: '#5e4b56'
+      }).then(result => {
+        if (result.isConfirmed) {
+          const unarchivedTask = { ...task, archived: false };
+          this.taskService.updateTask(task.id, unarchivedTask).subscribe(() => {
+            this.loadTasks();
+            Swal.fire({
+              icon: 'info',
+              title: 'Tarea desarchivada',
+              toast: true,
+              position: 'top-end',
+              background: 'linear-gradient(135deg, #5e4b56, #bfa2db)',
+              color: '#fff',
+              showConfirmButton: false,
+              timer: 2000
+            });
+          });
+        }
+      });
+    }else{
+      // Si no está archivada, proceder a editar
     Swal.fire({
       title: 'Editar Tarea',
-      allowOutsideClick: false,
       position: 'top',
       html: `
         <div style="display: flex; flex-direction: column; text-align: left; padding: 10px;">
-          <label for="title" style="font-weight: bold; color: #5e4b56;">Título:</label>
+          <label for="title" style="font-weight: bold; color: #5e4b56;">Título: <span style="color: #f4a261;">*</span></label>
           <input id="title" type="text" class="swal2-input" value="${task.title}" required style="width: 100%; margin: 0; color: #5e4b56; border: 1.5px solid #5e4b56; border-radius: 8px;">
   
-          <label for="description" style="font-weight: bold; color: #5e4b56;">Descripción:</label>
+          <label for="description" style="font-weight: bold; color: #5e4b56; margin-top: 10px;">Descripción:</label>
           <textarea id="description" class="swal2-input"
             style="height: 80px; border-radius: 8px; padding: 10px; font-size: 1rem; border: 1.5px solid #5e4b56; background: rgba(255, 255, 255, 0.2); color: #333;">${task.description || ''}</textarea>
   
-          <label for="due_date" style="font-weight: bold; color: #5e4b56;">Fecha límite:</label>
+          <label for="due_date" style="font-weight: bold; color: #5e4b56; margin-top: 10px;">Fecha límite:</label>
           <input id="due_date" type="date" class="swal2-input" value="${task.due_date || ''}" style="margin: 0; padding: 10px; font-size: 1rem; border: 1.5px solid #5e4b56; border-radius: 8px;"/>
 
           <label for="tags" style="font-weight: bold; color: #5e4b56; margin-top: 10px;">Etiquetas (separadas por comas):</label>
           <input id="tags" type="text" class="swal2-input" placeholder="Ej: frontend, urgente, bug" style="width: 100%; margin: 0; color: #5e4b56; border: 1.5px solid #5e4b56; border-radius: 8px;" value="${task.tags || ''}">
+
+          <label for="priority" style="font-weight: bold; color: #5e4b56; margin-top: 10px;">Prioridad: <span style="color: #f4a261;">*</span></label>
+          <select id="priority" class="swal2-select" style="border-radius: 8px; padding: 10px; width: 100%; margin: 0; font-size: 1rem; border: 1.5px solid #5e4b56;">
+            <option value="baja" ${task.priority === 'baja' ? 'selected' : ''}>Baja</option>
+            <option value="media" ${task.priority === 'media' ? 'selected' : ''}>Media</option>
+            <option value="alta" ${task.priority === 'alta' ? 'selected' : ''}>Alta</option>
+          </select>
   
-          <label for="status" style="font-weight: bold; color: #5e4b56;">Estado:</label>
+          <label for="status" style="font-weight: bold; color: #5e4b56; margin-top: 10px;">Estado: <span style="color: #f4a261;">*</span></label>
           <select id="status" class="swal2-select"
             style="border-radius: 8px; padding: 10px; width: 100%; margin: 0; font-size: 1rem; border: 1.5px solid #5e4b56;">
             <option value="pendiente" ${task.status === 'pendiente' ? 'selected' : ''}>Pendiente</option>
@@ -216,9 +261,10 @@ export class ProjectDetailComponent implements OnInit {
       `,
       showCancelButton: true,
       showDenyButton: true,
+      showCloseButton: true,
       confirmButtonText: 'Guardar Cambios',
       denyButtonText: 'Eliminar',
-      cancelButtonText: 'Cancelar',
+      cancelButtonText: 'Archivar',
       confirmButtonColor: '#9c89b8',
       denyButtonColor: '#e63946',
       cancelButtonColor: '#5e4b56',
@@ -236,7 +282,8 @@ export class ProjectDetailComponent implements OnInit {
           description: (document.getElementById('description') as HTMLInputElement).value,
           status: (document.getElementById('status') as HTMLSelectElement).value,
           due_date: (document.getElementById('due_date') as HTMLInputElement).value || null,
-          tags: (document.getElementById('tags') as HTMLInputElement).value.trim() || null
+          tags: (document.getElementById('tags') as HTMLInputElement).value.trim() || null,
+          priority: (document.getElementById('priority') as HTMLSelectElement).value
         };
       }
     }).then(result => {
@@ -247,7 +294,7 @@ export class ProjectDetailComponent implements OnInit {
           this.loadTasks();
           Swal.fire({
             icon: 'success',
-            title: 'Tarea actualizada ✅',
+            title: 'Tarea actualizada',
             toast: true,
             position: 'top-end',
             background: 'linear-gradient(135deg, #f4a261, #9c89b8)',
@@ -283,8 +330,28 @@ export class ProjectDetailComponent implements OnInit {
             });
           }
         });
-      }
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        const archivedTask = {
+          ...task, // datos actuales de la tarea
+          archived: true // solo cambia esto
+        };
+      
+        this.taskService.updateTask(task.id, archivedTask).subscribe(() => {
+          this.loadTasks();
+          Swal.fire({
+            icon: 'info',
+            title: 'Tarea archivada',
+            toast: true,
+            position: 'top-end',
+            background: 'linear-gradient(135deg, #5e4b56, #bfa2db)',
+            color: '#fff',
+            showConfirmButton: false,
+            timer: 2000
+          });
+        });
+      } 
     });
+    }
   }
   
 

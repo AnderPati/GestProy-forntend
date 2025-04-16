@@ -6,6 +6,8 @@ import { RegisterComponent } from './components/register/register.component';
 import { ProjectsComponent } from './components/projects/projects.component';
 import { ProjectDetailComponent } from './components/project-detail/project-detail.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { TaskCalendarComponent } from './components/task-calendar/task-calendar.component';
+import { ProjectSummaryComponent } from './components/project-summary/project-summary.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -15,6 +17,8 @@ const routes: Routes = [
     children: [
       { path: 'projects', component: ProjectsComponent },
       { path: 'projects/:id', component: ProjectDetailComponent },
+      { path: 'projects/:id/calendar', component: TaskCalendarComponent },
+      { path: 'projects/:id/summary', component: ProjectSummaryComponent },
       { path: 'profile', component: ProfileComponent },
       { path: '', redirectTo: 'projects', pathMatch: 'full' } // Default redirect inside dashboard | Redirige a projects por defecto dentro de dashboard
     ]},

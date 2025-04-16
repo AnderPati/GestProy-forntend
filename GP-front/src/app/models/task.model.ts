@@ -7,5 +7,7 @@ export interface Task {
     status: 'pendiente' | 'en progreso' | 'completado';
     due_date?: string;
     tags?: string;
+    priority: 'baja' | 'media' | 'alta';
+    archived: boolean;
     project_id: number;
 }

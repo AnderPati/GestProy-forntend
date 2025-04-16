@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
@@ -16,6 +17,8 @@ import { ProjectsComponent } from './components/projects/projects.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthTokenInterceptor } from './interceptors/auth-token.interceptor';
 import { ProjectDetailComponent } from './components/project-detail/project-detail.component';
+import { TaskCalendarComponent } from './components/task-calendar/task-calendar.component';
+import { ProjectSummaryComponent } from './components/project-summary/project-summary.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +28,9 @@ import { ProjectDetailComponent } from './components/project-detail/project-deta
     RegisterComponent,
     ProfileComponent,
     ProjectsComponent,
-    ProjectDetailComponent
+    ProjectDetailComponent,
+    TaskCalendarComponent,
+    ProjectSummaryComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +38,8 @@ import { ProjectDetailComponent } from './components/project-detail/project-deta
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    DragDropModule
+    DragDropModule,
+    FullCalendarModule
   ],
   providers: [
     {
