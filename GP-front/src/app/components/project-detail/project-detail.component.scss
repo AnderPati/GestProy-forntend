@@ -80,6 +80,8 @@
     border-radius: 12px;
     & h3{
         color: var(--text-color) !important;
+        margin-top: 0;
+        color: #5e4b56;
     }
   }
 
@@ -89,11 +91,6 @@
     height: 12px;
     border-radius: 50%;
     margin-right: 8px;
-  }
-  
-  .kanban-column h3 {
-    margin-top: 0;
-    color: #5e4b56;
   }
   
   .task-list {
@@ -190,7 +187,8 @@
     overflow: hidden;
   }  
 
-  .calendar-link {
+  .calendar-link,
+  .files-link {
     display: inline-flex;
     align-items: center;
     gap: 5px;

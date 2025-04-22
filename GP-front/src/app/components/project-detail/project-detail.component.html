@@ -23,6 +23,9 @@
       <div class="task-header">
         <h3>Tareas</h3>
         <div>
+          <button [routerLink]="['/dashboard/projects', projectId, 'files']" class="files-link">
+            <i class="fa-solid fa-paperclip"></i> Archivos del proyecto
+          </button>
           <button *ngIf="tasks.length !== 0" [routerLink]="['/dashboard/projects', projectId, 'calendar']" class="calendar-link">
             <i class="fa-solid fa-calendar-days"></i> Calendario
           </button>      

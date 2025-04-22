@@ -27,10 +27,6 @@ export class ProjectsComponent implements OnInit {
     this.loadProjects();
   }
   filteredProjects(): any[] {
-    console.log(this.projects.filter(project => 
-      (this.filterName === '' || project.name.toLowerCase().includes(this.filterName.toLowerCase())) &&
-      (this.filterStatus === '' || project.status === this.filterStatus)
-    ));
     return this.projects.filter(project => 
       (this.filterName === '' || project.name.toLowerCase().includes(this.filterName.toLowerCase())) &&
       (this.filterStatus.toLowerCase() === '' || project.status === this.filterStatus.toLowerCase())

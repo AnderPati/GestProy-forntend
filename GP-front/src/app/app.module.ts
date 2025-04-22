@@ -19,6 +19,7 @@ import { AuthTokenInterceptor } from './interceptors/auth-token.interceptor';
 import { ProjectDetailComponent } from './components/project-detail/project-detail.component';
 import { TaskCalendarComponent } from './components/task-calendar/task-calendar.component';
 import { ProjectSummaryComponent } from './components/project-summary/project-summary.component';
+import { ProjectFilesComponent } from './components/project-files/project-files.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { ProjectSummaryComponent } from './components/project-summary/project-su
     ProjectsComponent,
     ProjectDetailComponent,
     TaskCalendarComponent,
-    ProjectSummaryComponent
+    ProjectSummaryComponent,
+    ProjectFilesComponent
   ],
   imports: [
     BrowserModule,

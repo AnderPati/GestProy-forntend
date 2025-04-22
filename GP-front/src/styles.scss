@@ -66,22 +66,22 @@ body {
     // Lighten versions
     //----
     // Versiones aclaradas
-    --accent-color-light: #{lighten($accent-color-dark, 13%)};
-    --primary-color-light: #{lighten($primary-color-dark, 13%)};
-    --secondary-color-light: #{lighten($secondary-color-dark, 13%)};
-    --background-color-light: #{lighten($background-color-dark, 13%)};
-    --text-color-light: #{lighten($text-color-dark, 13%)};
-    --error-color-light: #{lighten($error-color-dark, 13%)};
-    --button-hover-light: #{lighten($button-hover-dark, 13%)};
+    --accent-color-light: #{darken($accent-color-dark, 13%)};
+    --primary-color-light: #{darken($primary-color-dark, 13%)};
+    --secondary-color-light: #{darken($secondary-color-dark, 13%)};
+    --background-color-light: #{darken($background-color-dark, 5%)};
+    --text-color-light: #{darken($text-color-dark, 13%)};
+    --error-color-light: #{darken($error-color-dark, 13%)};
+    --button-hover-light: #{darken($button-hover-dark, 13%)};
   
     // Darken versions
     //----
     // Versiones oscurecidas
-    --accent-color-dark: #{darken($accent-color-dark, 13%)};
-    --primary-color-dark: #{darken($primary-color-dark, 13%)};
-    --secondary-color-dark: #{darken($secondary-color-dark, 13%)};
-    --background-color-dark: #{darken($background-color-dark, 13%)};
-    --text-color-dark: #{darken($text-color-dark, 13%)};
-    --error-color-dark: #{darken($error-color-dark, 13%)};
-    --button-hover-dark: #{darken($button-hover-dark, 13%)};
+    --accent-color-dark: #{lighten($accent-color-dark, 13%)};
+    --primary-color-dark: #{lighten($primary-color-dark, 13%)};
+    --secondary-color-dark: #{lighten($secondary-color-dark, 13%)};
+    --background-color-dark: #{lighten($background-color-dark, 13%)};
+    --text-color-dark: #{lighten($text-color-dark, 13%)};
+    --error-color-dark: #{lighten($error-color-dark, 13%)};
+    --button-hover-dark: #{lighten($button-hover-dark, 13%)};
   }
