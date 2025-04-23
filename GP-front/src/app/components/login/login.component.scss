@@ -7,7 +7,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 100svh;
   background: linear-gradient(135deg, #f4a261, #9c89b8);
 
   .login-box {
@@ -228,8 +228,6 @@
   .login-container {
     justify-content: flex-start; // Login arriba
     align-items: stretch;
-    padding: 2rem 1rem;
-    height: 100svh; // Permite scroll si es necesario
 
     .login-box {
       width: 100%;

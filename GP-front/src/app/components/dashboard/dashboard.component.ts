@@ -10,12 +10,12 @@ import { ThemeService } from '../../services/theme.service';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  isCollapsed: boolean = false;
-  isMobileOpen: boolean = false;
-  wasCollapsed: boolean = this.isCollapsed;
-  lastWindowWidth: number = window.innerWidth;
-  activeRoute: string = '';
-  isDarkMode: boolean = false;
+  isCollapsed: boolean = false; // Estado actual del sidebar (colapsado o no)
+  isMobileOpen: boolean = false; // Controla si el menú móvil está abierto
+  wasCollapsed: boolean = this.isCollapsed; // Recuerda el estado antes de entrar a móvil
+  lastWindowWidth: number = window.innerWidth; // Guarda el ancho anterior de la ventana
+  activeRoute: string = ''; // Ruta activa en el router
+  isDarkMode: boolean = false; // Tema actual (oscuro o claro)
 
   constructor(
     private authService: AuthService,
@@ -25,65 +25,61 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.isDarkMode = this.themeService.getDarkModeStatus();
+    this.isDarkMode = this.themeService.getDarkModeStatus(); // Carga el tema inicial (oscuro o claro)
     
-    // Obtener la ruta actual al iniciar la página
-    this.activeRoute = this.router.url;
+    this.activeRoute = this.router.url; // Obtiene la ruta activa al iniciar
 
-    // Escuchar cambios en la navegación para actualizar la ruta activa
+    // Actualiza la ruta activa cuando cambia la navegación
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.activeRoute = event.url;
       }
     });
 
-    // Leer el estado del sidebar desde localStorage
+    // Carga el estado del sidebar guardado (si existe)
     const savedState = localStorage.getItem('sidebarCollapsed');
     if (savedState !== null) {
       this.isCollapsed = JSON.parse(savedState);
-      this.wasCollapsed = this.isCollapsed; // Muy importante
+      this.wasCollapsed = this.isCollapsed; // Lo usamos para restaurar después del modo móvil
     }
 
-    // Verificar si el token es válido
+    // Validar existencia de token
     const token = this.authService.getToken();
     if (!token) {
-      this.router.navigate(['/login']); // No hay token, redirigir al login
+      this.router.navigate(['/login']); // Redirige si no hay token
       return;
     }
 
-
-    // Hacer una solicitud al backend para validar el token
+    // Validar token con el backend
     this.http.get('http://127.0.0.1:8000/api/user', {
       headers: { Authorization: `Bearer ${token}` }
     }).subscribe(
+      () => {}, // Token válido: no se hace nada
       () => {
-        // Token válido, continuar en el dashboard
-      },
-      () => {
-        // Token inválido, redirigir al login
+        // Token inválido: cerrar sesión y redirigir
         this.authService.removeToken();
         this.router.navigate(['/login']);
       }
     );
 
-    this.handleResize(); // Ajustar estado al iniciar
-    window.addEventListener('resize', this.handleResize.bind(this));
+    this.handleResize(); // Ajusta el estado inicial según el tamaño de la ventana
+    window.addEventListener('resize', this.handleResize.bind(this)); // Escucha cambios de tamaño
   }
 
   toggleSidebar() {
     const isMobile = window.innerWidth <= 768;
 
     if (isMobile) {
-      this.isMobileOpen = !this.isMobileOpen;
+      this.isMobileOpen = !this.isMobileOpen; // Toggle para menú móvil
     } else {
-      this.isCollapsed = !this.isCollapsed;
-      this.wasCollapsed = this.isCollapsed;
-      localStorage.setItem('sidebarCollapsed', JSON.stringify(this.isCollapsed));
+      this.isCollapsed = !this.isCollapsed; // Cambia estado de sidebar en escritorio
+      this.wasCollapsed = this.isCollapsed; // Guarda nuevo estado
+      localStorage.setItem('sidebarCollapsed', JSON.stringify(this.isCollapsed)); // Persiste en localStorage
     }
   }
 
   closeMobileSidebar() {
-    this.isMobileOpen = false;
+    this.isMobileOpen = false; // Cierra el menú móvil (usado al navegar)
   }
 
   handleResize() {
@@ -91,20 +87,21 @@ export class DashboardComponent implements OnInit {
     const wasMobile = this.lastWindowWidth <= 768;
   
     if (!wasMobile && isMobile) {
-      // Entrando a móvil: guarda el estado actual y fuerza expandido
+      // Cambio de escritorio a móvil: guarda estado anterior y fuerza sidebar expandido
       this.wasCollapsed = this.isCollapsed;
       this.isCollapsed = false;
     }
   
     if (wasMobile && !isMobile) {
-      // Saliendo de móvil: restaura el estado anterior
+      // Cambio de móvil a escritorio: restaura estado anterior
       this.isCollapsed = this.wasCollapsed;
     }
   
-    this.lastWindowWidth = window.innerWidth;
+    this.lastWindowWidth = window.innerWidth; // Actualiza ancho actual
   }
 
   logout() {
+    // Cierra sesión y limpia token
     this.authService.logout().subscribe(() => {
       this.authService.removeToken();
       this.router.navigate(['/login']);
