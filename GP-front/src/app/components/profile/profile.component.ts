@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-
+import { Title } from '@angular/platform-browser';
 import { ProfileService } from '../../services/profile.service';
 import Swal from 'sweetalert2';
 
@@ -21,13 +21,18 @@ export class ProfileComponent implements OnInit {
 
   @ViewChild('fileInput') fileInput!: ElementRef;
 
-  constructor(private profileService: ProfileService) {}
+  constructor(
+    private titleService: Title,
+    private profileService: ProfileService
+  ) {}
 
   ngOnInit() {
+    this.titleService.setTitle('GestProy - Perfil');
     this.profileService.getProfile().subscribe(
       response => {
         this.user = { ...response.data, password: '' }; // Copiamos los datos en `user`
         this.originalUser = { ...response.data, password: '' }; // Guardamos los valores originales
+        this.titleService.setTitle(`GestProy - ${this.user.name}`); // Cambiamos el título de la página
       },
       () => {
         this.errorMessage = 'Error al cargar el perfil.';
@@ -58,12 +63,12 @@ export class ProfileComponent implements OnInit {
       if (!file.type.startsWith('image/')) {
         Swal.fire({
           title: 'Por favor, selecciona un archivo de imagen válido.',
-          color: '#5e4b56',
+          color: '#fff',
           icon: 'error',
-          iconColor: '#5e4b56',
+          iconColor: '#fff',
           toast: true,
           position: 'top',
-          background: 'linear-gradient(135deg, #e63946, #9c89b8)',
+          background: '#e63946',
           showConfirmButton: false,
           timer: 6000
         });
@@ -75,12 +80,12 @@ export class ProfileComponent implements OnInit {
       if (file.size > 2 * 1024 * 1024) {
         Swal.fire({
           title: 'El tamaño de la imagen debe ser menor a 2MB.',
-          color: '#5e4b56',
+          color: '#fff',
           icon: 'error',
-          iconColor: '#5e4b56',
+          iconColor: '#fff',
           toast: true,
           position: 'top',
-          background: 'linear-gradient(135deg, #e63946, #9c89b8)',
+          background: '#e63946',
           showConfirmButton: false,
           timer: 6000
         });
@@ -155,7 +160,7 @@ export class ProfileComponent implements OnInit {
       cancelButtonColor: '#5e4b56',
       confirmButtonText: 'Sí, eliminar',
       cancelButtonText: 'Cancelar',
-      background: '#faf3dd',
+      background: '#fff',
       position: 'top',
     }).then((result) => {
       if (result.isConfirmed) {

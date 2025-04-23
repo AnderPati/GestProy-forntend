@@ -1,21 +1,21 @@
 <div class="dashboard-container">
   <aside class="sidebar" [ngClass]="{ 'collapsed': isCollapsed }">
     <button class="toggle-btn" (click)="toggleSidebar()">
-      <i class="fas" [ngClass]="isCollapsed ? 'fa-arrow-right' : 'fa-arrow-left'"></i>
+      <!-- <i class="fas" [ngClass]="isCollapsed ? 'fa-arrow-right' : 'fa-arrow-left'"></i> -->
+      <img [src]="isCollapsed ? '../../../assets/img/gestproy_logo_isotipo_bgless.png' : '../../../assets/img/gestproy_logo_horizontal_bgless.png'" alt="">
     </button>
-
-    <h2 *ngIf="!isCollapsed">Mi Panel</h2>
+    
     <ul>
       <li data-tooltip="Proyectos" [ngClass]="{'active': activeRoute.includes('/dashboard/projects')}" routerLink="projects"><i class="fas fa-folder"></i> <span *ngIf="!isCollapsed">Proyectos</span></li>
       <li data-tooltip="Tareas" [ngClass]="{'active': activeRoute.includes('/dashboard/tasks')}" routerLink="tasks"><i class="fas fa-list-check"></i> <span *ngIf="!isCollapsed">Tareas</span></li>
       <li data-tooltip="Perfil" [ngClass]="{'active': activeRoute.includes('/dashboard/profile')}" routerLink="profile"><i class="fas fa-user"></i> <span *ngIf="!isCollapsed">Perfil</span></li>
-      <li data-tooltip="Cerrar Sesión" (click)="logout()"><i class="fas fa-sign-out-alt"></i> <span *ngIf="!isCollapsed">Cerrar Sesión</span></li>
+      <li data-tooltip="Cerrar Sesión" (click)="logout()"><i class="fas fa-sign-out-alt"></i> <span *ngIf="!isCollapsed">Cerrar&nbsp;Sesión</span></li>
     </ul>
     <li data-tooltip="Cambiar Tema" class="dark-mode-btn" (click)="toggleDarkMode()">
       <img [src]="isDarkMode ? '../../assets/svg/sun.svg' : '../../assets/svg/moon.svg'" alt="Modo">
     </li>
   </aside>
-
+  
   <main class="main-content">
     <router-outlet></router-outlet>
   </main>

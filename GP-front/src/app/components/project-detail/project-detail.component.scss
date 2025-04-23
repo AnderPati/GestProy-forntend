@@ -38,8 +38,8 @@
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    background: var(--accent-color);
-    color: white;
+    background: var(--primary-color);
+    color: var(--text-color-dark);
     padding: 6px 12px;
     border: none;
     border-radius: 50px;
@@ -49,7 +49,7 @@
     font-size: 1.1rem;
   
     &:hover {
-      background: darken(#9c89b8, 10%);
+      background: var(--primary-color-dark);
     }
   }
   
@@ -81,7 +81,6 @@
     & h3{
         color: var(--text-color) !important;
         margin-top: 0;
-        color: #5e4b56;
     }
   }
 
@@ -101,7 +100,7 @@
   }
   
   .task-card {
-    background: rgba(255, 255, 255, 0.75);
+    background: rgba(230, 230, 230, 0.65);
     padding: 10px;
     border-radius: 8px;
     border: 1.5px solid #ccc;
@@ -124,8 +123,8 @@
   }
   
   .task-tag {
-    background: var(--accent-color);
-    color: white;
+    background: var(--primary-color);
+    color: var(--text-color-dark);
     padding: 2px 8px;
     font-size: 0.75rem;
     border-radius: 50px;
@@ -192,8 +191,8 @@
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    background: var(--accent-color);
-    color: white;
+    background: var(--primary-color);
+    color: var(--text-color-dark);
     padding: 6px 12px;
     border-radius: 50px;
     text-decoration: none;
@@ -202,7 +201,7 @@
     font-size: 1.1rem;
   
     &:hover {
-      background: darken(#9c89b8, 10%);
+      background: var(--primary-color-dark);
     }
   }
 
@@ -210,8 +209,8 @@
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    background: var(--accent-color);
-    color: white;
+    background: var(--primary-color);
+    color: var(--text-color-dark);
     padding: 6px 14px;
     border-radius: 50px;
     border: none;
@@ -220,7 +219,8 @@
     margin-bottom: 10px;
   
     &:hover {
-      background: darken(#9c89b8, 10%);
+      background: var(--primary-color-dark);
+      cursor: pointer;
     }
   }
   

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 
@@ -7,7 +8,7 @@ import { Router } from '@angular/router';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
   name: string = '';
   email: string = '';
   password: string = '';
@@ -21,7 +22,14 @@ export class RegisterComponent {
   passwordError: boolean = false;
   passwordMismatch: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private titleService: Title,
+    private authService: AuthService,
+    private router: Router
+  ) {}
+  ngOnInit(): void {
+    this.titleService.setTitle('GestProy - Registro');
+  }
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;

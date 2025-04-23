@@ -3,9 +3,10 @@
 // Este componente gestiona la interfaz y lógica de inicio de sesión: crea el formulario, valida, alterna visibilidad de contraseña y redirige si ya hay token.
 
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient} from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProfileService } from '../../services/profile.service';
 
@@ -21,14 +22,15 @@ export class LoginComponent implements OnInit {
   isLoading: boolean = false;
 
   constructor(
+    private titleService: Title,
     private authService: AuthService,
     private router: Router,
-    private http: HttpClient,
     private fb: FormBuilder,
     private profileService: ProfileService
   ) {}
 
   ngOnInit() {
+    this.titleService.setTitle('GestProy - Login');
     // Create the reactive form
     //----
     // Crear el formulario reactivo

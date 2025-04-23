@@ -30,12 +30,12 @@ label {
 
 input {
   padding: 8px;
-  border: 1.5px solid var(--accent-color);
+  border: 1.5px solid var(--primary-color);
   border-radius: 5px;
   transition: border-color 0.3s, background 0.3s;
 
   &:focus {
-    box-shadow: 0 0 3px 1px var(--accent-color);
+    box-shadow: 0 0 3px 1px var(--primary-color);
     outline: none;
   }
 }
@@ -47,7 +47,7 @@ input.edited {
 
 button {
   padding: 10px;
-  background-color: var(--accent-color);
+  background-color: var(--primary-color);
   color: white;
   border: none;
   border-radius: 8px;
@@ -71,7 +71,7 @@ button {
     height: 150px;
     object-fit: cover;
     border-radius: 50%;
-    border: 3px solid var(--accent-color);
+    border: 3px solid var(--primary-color);
     transition: opacity 0.3s ease-in-out;
   }
 
@@ -120,7 +120,7 @@ input[type="file"].edited {
 .delete-img-btn {
   margin-top: 10px;
   padding: 8px;
-  background: var(--accent-color);
+  background: var(--primary-color);
   color: white;
   border: none;
   border-radius: 5px;
@@ -139,7 +139,7 @@ input[type="file"].edited {
   margin-top: 30px;
   margin-bottom: 20px;
   text-align: left;
-  border: 2px solid var(--accent-color);
+  border: 2px solid var(--primary-color);
 
   h3 {
     color: var(--text-color);

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService } from '../../services/project.service';
 import { TaskService } from '../../services/task.service';
@@ -26,6 +27,7 @@ export class ProjectDetailComponent implements OnInit {
   progressPercentage: number = 0;
 
   constructor(
+    private titleService: Title,
     private route: ActivatedRoute,
     private projectService: ProjectService,
     private taskService: TaskService,
@@ -33,6 +35,7 @@ export class ProjectDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.titleService.setTitle('GestProy - Proyecto');
     this.projectId = +this.route.snapshot.paramMap.get('id')!;
     this.loadProject();
     const saved = localStorage.getItem('showProjectHeader');
@@ -49,6 +52,7 @@ export class ProjectDetailComponent implements OnInit {
       next: data => {
         this.project = data;
         this.loadTasks();
+        this.titleService.setTitle('GestProy - ' + this.project.name);
       },
       error: error => {
         if (error.status === 403) {
@@ -105,44 +109,47 @@ export class ProjectDetailComponent implements OnInit {
       position: 'top',
       html: `
         <div style="display: flex; flex-direction: column; text-align: left; padding: 10px;">
-          <label for="title" style="font-weight: bold; color: #5e4b56;">Título:  <span style="color: #f4a261;">*</span></label>
-          <input id="title" type="text" class="swal2-input" required style="width: 100%; margin: 0; color: #5e4b56; border: 1.5px solid #5e4b56; border-radius: 8px;">
+          <label for="title" style="font-weight: bold; color: white;">Título:  <span style="color: #f4a261;">*</span></label>
+          <input id="title" type="text" class="swal2-input" required style="width: 100%; margin: 0; color: black; border: 1.5px solid white; border-radius: 8px; background: rgba(255, 255, 255, 0.2);">
   
-          <label for="description" style="font-weight: bold; color: #5e4b56; margin-top: 10px;">Descripción:</label>
+          <label for="description" style="font-weight: bold; color: white; margin-top: 10px;">Descripción:</label>
           <textarea id="description" class="swal2-input"
-            style="height: 80px; border-radius: 8px; padding: 10px; font-size: 1rem; border: 1.5px solid #5e4b56; background: rgba(255, 255, 255, 0.2); color: #333;"></textarea>
+            style="height: 80px; border-radius: 8px; padding: 10px; font-size: 1rem; border: 1.5px solid white; background: rgba(255, 255, 255, 0.2); color: black;"></textarea>
   
             
-            <label for="due_date" style="font-weight: bold; color: #5e4b56; margin-top: 10px;">Fecha de vencimiento:</label>
+            <label for="due_date" style="font-weight: bold; color: white; margin-top: 10px;">Fecha de vencimiento:</label>
             <input id="due_date" type="date" class="swal2-input"
-            style="margin: 0; padding: 10px; font-size: 1rem; border: 1.5px solid #5e4b56; border-radius: 8px;" />
+            style="margin: 0; padding: 10px; font-size: 1rem; border: 1.5px solid white; border-radius: 8px; background: rgba(255, 255, 255, 0.2); color: black;" />
 
-            <label for="tags" style="font-weight: bold; color: #5e4b56; margin-top: 10px;">Etiquetas (separadas por comas):</label>
-            <input id="tags" type="text" class="swal2-input" placeholder="Ej: frontend, urgente, bug" style="width: 100%; margin: 0; color: #5e4b56; border: 1.5px solid #5e4b56; border-radius: 8px;">
+            <label for="tags" style="font-weight: bold; color: white; margin-top: 10px;">Etiquetas (separadas por comas):</label>
+            <input id="tags" type="text" class="swal2-input" placeholder="Ej: frontend, urgente, bug" style="width: 100%; margin: 0; color: black; border: 1.5px solid white; border-radius: 8px; background: rgba(255, 255, 255, 0.2);">
 
-            <label for="priority" style="font-weight: bold; color: #5e4b56; margin-top: 10px;">Prioridad: <span style="color: #f4a261;">*</span></label>
-            <select id="priority" class="swal2-select" style="border-radius: 8px; padding: 10px; width: 100%; margin: 0; font-size: 1rem; border: 1.5px solid #5e4b56;">
+            <label for="priority" style="font-weight: bold; color: white; margin-top: 10px;">Prioridad: <span style="color: #f4a261;">*</span></label>
+            <select id="priority" class="swal2-select" style="border-radius: 8px; padding: 10px; width: 100%; margin: 0; font-size: 1rem; border: 1.5px solid white; background: rgba(255, 255, 255, 0.2); color: black;">
               <option value="baja">Baja</option>
               <option value="media" selected>Media</option>
               <option value="alta">Alta</option>
             </select>
 
-            <label for="status" style="font-weight: bold; color: #5e4b56; margin-top: 10px;">Estado: <span style="color: #f4a261;">*</span></label>
+            <label for="status" style="font-weight: bold; color: white; margin-top: 10px;">Estado: <span style="color: #f4a261;">*</span></label>
             <select id="status" class="swal2-select"
-              style="border-radius: 8px; padding: 10px; width: 100%; margin: 0; font-size: 1rem; border: 1.5px solid #5e4b56;">
+              style="border-radius: 8px; padding: 10px; width: 100%; margin: 0; font-size: 1rem; border: 1.5px solid white; background: rgba(255, 255, 255, 0.2); color: black;">
               <option value="pendiente">Pendiente</option>
               <option value="en progreso">En Progreso</option>
               <option value="completado">Completado</option>
             </select>
         </div>
       `,
-      background: 'linear-gradient(135deg, #faf3dd, #fcd5ce)',
+      background: '#4a7362',
       focusConfirm: false,
       showCancelButton: true,
       confirmButtonText: 'Crear Tarea',
-      confirmButtonColor: '#9c89b8',
+      confirmButtonColor: '#294036',
       cancelButtonText: 'Cancelar',
-      cancelButtonColor: '#5e4b56',
+      cancelButtonColor: '#5a3a3a',
+      customClass: {
+        title: 'sa2Title',
+      },
       preConfirm: () => {
         const title = (document.getElementById('title') as HTMLInputElement).value.trim();
         if (!title) {
@@ -179,6 +186,8 @@ export class ProjectDetailComponent implements OnInit {
       () => {
         Swal.fire({
           icon: 'success',
+          iconColor: '#5e4b56',
+          color: '#5e4b56',
           title: 'Tarea creada.',
           background: 'linear-gradient(135deg, #f4a261, #9c89b8)',
           toast: true,
@@ -200,11 +209,14 @@ export class ProjectDetailComponent implements OnInit {
       Swal.fire({
         title: '¿Quieres desarchivar esta tarea?',
         icon: 'question',
+        iconColor: '#fff',
         showCancelButton: true,
         confirmButtonText: 'Desarchivar',
+        confirmButtonColor: '#294036',
         cancelButtonText: 'Cancelar',
-        background: 'linear-gradient(135deg, #faf3dd, #fcd5ce)',
-        color: '#5e4b56'
+        cancelButtonColor: '#5a3a3a',
+        background: '#7a5c38',
+        color: 'white'
       }).then(result => {
         if (result.isConfirmed) {
           const unarchivedTask = { ...task, archived: false };
@@ -212,11 +224,12 @@ export class ProjectDetailComponent implements OnInit {
             this.loadTasks();
             Swal.fire({
               icon: 'info',
+              iconColor: '#5e4b56',
               title: 'Tarea desarchivada',
               toast: true,
               position: 'top-end',
-              background: 'linear-gradient(135deg, #5e4b56, #bfa2db)',
-              color: '#fff',
+              background: 'linear-gradient(135deg, #f4a261, #9c89b8)',
+              color: '#5e4b56',
               showConfirmButton: false,
               timer: 2000
             });
@@ -230,29 +243,29 @@ export class ProjectDetailComponent implements OnInit {
       position: 'top',
       html: `
         <div style="display: flex; flex-direction: column; text-align: left; padding: 10px;">
-          <label for="title" style="font-weight: bold; color: #5e4b56;">Título: <span style="color: #f4a261;">*</span></label>
-          <input id="title" type="text" class="swal2-input" value="${task.title}" required style="width: 100%; margin: 0; color: #5e4b56; border: 1.5px solid #5e4b56; border-radius: 8px;">
+          <label for="title" style="font-weight: bold; color: white;">Título: <span style="color: #f4a261;">*</span></label>
+          <input id="title" type="text" class="swal2-input" value="${task.title}" required style="width: 100%; margin: 0; background: rgba(255, 255, 255, 0.2); color: black; border: 1.5px solid white; border-radius: 8px;">
   
-          <label for="description" style="font-weight: bold; color: #5e4b56; margin-top: 10px;">Descripción:</label>
+          <label for="description" style="font-weight: bold; color: white; margin-top: 10px;">Descripción:</label>
           <textarea id="description" class="swal2-input"
-            style="height: 80px; border-radius: 8px; padding: 10px; font-size: 1rem; border: 1.5px solid #5e4b56; background: rgba(255, 255, 255, 0.2); color: #333;">${task.description || ''}</textarea>
+            style="height: 80px; border-radius: 8px; padding: 10px; font-size: 1rem; border: 1.5px solid white; background: rgba(255, 255, 255, 0.2); color: black;">${task.description || ''}</textarea>
   
-          <label for="due_date" style="font-weight: bold; color: #5e4b56; margin-top: 10px;">Fecha límite:</label>
-          <input id="due_date" type="date" class="swal2-input" value="${task.due_date || ''}" style="margin: 0; padding: 10px; font-size: 1rem; border: 1.5px solid #5e4b56; border-radius: 8px;"/>
+          <label for="due_date" style="font-weight: bold; color: white; margin-top: 10px;">Fecha límite:</label>
+          <input id="due_date" type="date" class="swal2-input" value="${task.due_date || ''}" style="margin: 0; padding: 10px; font-size: 1rem; border: 1.5px solid white; border-radius: 8px; background: rgba(255, 255, 255, 0.2); color: black;"/>
 
-          <label for="tags" style="font-weight: bold; color: #5e4b56; margin-top: 10px;">Etiquetas (separadas por comas):</label>
-          <input id="tags" type="text" class="swal2-input" placeholder="Ej: frontend, urgente, bug" style="width: 100%; margin: 0; color: #5e4b56; border: 1.5px solid #5e4b56; border-radius: 8px;" value="${task.tags || ''}">
+          <label for="tags" style="font-weight: bold; color: white; margin-top: 10px;">Etiquetas (separadas por comas):</label>
+          <input id="tags" type="text" class="swal2-input" placeholder="Ej: frontend, urgente, bug" style="width: 100%; margin: 0; color: black; border: 1.5px solid white; border-radius: 8px; background: rgba(255, 255, 255, 0.2);" value="${task.tags || ''}">
 
-          <label for="priority" style="font-weight: bold; color: #5e4b56; margin-top: 10px;">Prioridad: <span style="color: #f4a261;">*</span></label>
-          <select id="priority" class="swal2-select" style="border-radius: 8px; padding: 10px; width: 100%; margin: 0; font-size: 1rem; border: 1.5px solid #5e4b56;">
+          <label for="priority" style="font-weight: bold; color: white; margin-top: 10px;">Prioridad: <span style="color: #f4a261;">*</span></label>
+          <select id="priority" class="swal2-select" style="border-radius: 8px; padding: 10px; width: 100%; margin: 0; font-size: 1rem; border: 1.5px solid white; background: rgba(255, 255, 255, 0.2); color: black;">
             <option value="baja" ${task.priority === 'baja' ? 'selected' : ''}>Baja</option>
             <option value="media" ${task.priority === 'media' ? 'selected' : ''}>Media</option>
             <option value="alta" ${task.priority === 'alta' ? 'selected' : ''}>Alta</option>
           </select>
   
-          <label for="status" style="font-weight: bold; color: #5e4b56; margin-top: 10px;">Estado: <span style="color: #f4a261;">*</span></label>
+          <label for="status" style="font-weight: bold; color: white; margin-top: 10px;">Estado: <span style="color: #f4a261;">*</span></label>
           <select id="status" class="swal2-select"
-            style="border-radius: 8px; padding: 10px; width: 100%; margin: 0; font-size: 1rem; border: 1.5px solid #5e4b56;">
+            style="border-radius: 8px; padding: 10px; width: 100%; margin: 0; font-size: 1rem; border: 1.5px solid white; background: rgba(255, 255, 255, 0.2); color: black;">
             <option value="pendiente" ${task.status === 'pendiente' ? 'selected' : ''}>Pendiente</option>
             <option value="en progreso" ${task.status === 'en progreso' ? 'selected' : ''}>En Progreso</option>
             <option value="completado" ${task.status === 'completado' ? 'selected' : ''}>Completado</option>
@@ -263,13 +276,16 @@ export class ProjectDetailComponent implements OnInit {
       showDenyButton: true,
       showCloseButton: true,
       confirmButtonText: 'Guardar Cambios',
-      denyButtonText: 'Eliminar',
-      cancelButtonText: 'Archivar',
-      confirmButtonColor: '#9c89b8',
-      denyButtonColor: '#e63946',
-      cancelButtonColor: '#5e4b56',
-      background: 'linear-gradient(135deg, #faf3dd, #fcd5ce)',
+      denyButtonText: 'Archivar',
+      cancelButtonText: 'Eliminar',
+      confirmButtonColor: '#294036',
+      denyButtonColor: '#5e4b56',
+      cancelButtonColor: '#5a3a3a',
+      background: '#a67c52',
       focusConfirm: false,
+      customClass: {
+        title: 'sa2Title',
+      },
       preConfirm: () => {
         const title = (document.getElementById('title') as HTMLInputElement).value.trim();
         if (!title) {
@@ -294,6 +310,8 @@ export class ProjectDetailComponent implements OnInit {
           this.loadTasks();
           Swal.fire({
             icon: 'success',
+            iconColor: '#5e4b56',
+            color: '#5e4b56',
             title: 'Tarea actualizada',
             toast: true,
             position: 'top-end',
@@ -303,23 +321,29 @@ export class ProjectDetailComponent implements OnInit {
           });
         });
   
-      } else if (result.isDenied) {
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
         // Confirmar antes de eliminar
         Swal.fire({
           title: '¿Eliminar esta tarea?',
           text: 'Esta acción no se puede deshacer.',
           icon: 'warning',
+          iconColor: '#fff',
+          color: '#fff',
+          position: 'top',
           showCancelButton: true,
-          confirmButtonColor: '#e63946',
-          cancelButtonColor: '#aaa',
           confirmButtonText: 'Sí, eliminar',
-          cancelButtonText: 'Cancelar'
+          confirmButtonColor: '#e63946',
+          cancelButtonText: 'Cancelar',
+          cancelButtonColor: '#4a7362',
+          background: '#8c3b3b',
         }).then(confirmDelete => {
           if (confirmDelete.isConfirmed) {
             this.taskService.deleteTask(task.id).subscribe(() => {
               this.loadTasks();
               Swal.fire({
                 icon: 'success',
+                iconColor: '#5e4b56',
+                color: '#5e4b56',
                 title: 'Tarea eliminada.',
                 toast: true,
                 position: 'top-end',
@@ -330,7 +354,7 @@ export class ProjectDetailComponent implements OnInit {
             });
           }
         });
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
+      } else if (result.isDenied) {
         const archivedTask = {
           ...task, // datos actuales de la tarea
           archived: true // solo cambia esto
@@ -340,11 +364,12 @@ export class ProjectDetailComponent implements OnInit {
           this.loadTasks();
           Swal.fire({
             icon: 'info',
+            iconColor: '#5e4b56',
             title: 'Tarea archivada',
             toast: true,
             position: 'top-end',
-            background: 'linear-gradient(135deg, #5e4b56, #bfa2db)',
-            color: '#fff',
+            background: 'linear-gradient(135deg, #f4a261, #9c89b8)',
+            color: '#5e4b56',
             showConfirmButton: false,
             timer: 2000
           });

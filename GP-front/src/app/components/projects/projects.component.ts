@@ -1,4 +1,5 @@
 import { Component, OnInit, HostListener } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ProjectService } from '../../services/project.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
@@ -17,9 +18,14 @@ export class ProjectsComponent implements OnInit {
  
   isGridView: boolean = false;
   
-  constructor(private projectService: ProjectService, private router: Router) {}
+  constructor(
+    private titleService: Title,
+    private projectService: ProjectService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
+    this.titleService.setTitle('GestProy - Proyectos');
     const savedView = localStorage.getItem('projectsView');
     if (savedView !== null) {
       this.isGridView = savedView === 'grid';
@@ -80,14 +86,18 @@ export class ProjectsComponent implements OnInit {
     const { value: name } = await Swal.fire({
       title: 'Nombre del nuevo proyecto:',
       input: 'text',
-      background: 'linear-gradient(135deg, #faf3dd, #fcd5ce)',
       position: 'top',
       allowOutsideClick: false,
       showCancelButton: true,
+      background: 'linear-gradient(180deg, #4a7362, #4a7362, transparent)',
       confirmButtonText: 'Siguiente',
-      confirmButtonColor: '#9c89b8',
+      confirmButtonColor: '#4a7362',
       cancelButtonText: 'Cancelar',
-      cancelButtonColor: '#5e4b56',
+      cancelButtonColor: '#8d5b5b',
+      customClass: {
+        title: 'sa2Title',
+        input: 'sa2Title',
+      },
       inputValidator: (value) => {
         return value ? null : 'El nombre del proyecto es obligatorio';
       }
@@ -101,40 +111,44 @@ export class ProjectsComponent implements OnInit {
       position: 'top',
       html: `
         <div style="display: flex; flex-direction: column; text-align: left; padding: 10px;">
-          <label for="description" style="font-weight: bold; color: #5e4b56;">Descripción:</label>
-          <textarea id="description" class="swal2-input" placeholder="Descripción del proyecto"
-            style="height: 80px; border-radius: 8px; padding: 10px; font-size: 1rem; border: 1.5px solid #5e4b56; background: rgba(255, 255, 255, 0.2); color: #333; transition: border 0.3s ease-in-out;"></textarea>
+          <label for="description" style="font-weight: bold; color: white;">Descripción:</label>
+          <textarea id="description" class="swal2-input"
+            style="height: 80px; border-radius: 8px; padding: 10px; font-size: 1rem; border: 1.5px solid white; background: rgba(255, 255, 255, 0.2); color: black; transition: border 0.3s ease-in-out;"></textarea>
   
           <div style="display: flex; gap: 10px; margin-top: 10px;">
             <div>
-              <label for="start_date" style="font-weight: bold; color: #5e4b56;">Fecha de inicio: <span style="color: #f4a261;">*</span></label>
+              <label for="start_date" style="font-weight: bold; color: white;">Fecha de inicio: <span style="color: #f4a261;">*</span></label>
               <input type="date" id="start_date" class="swal2-input"
-              style="margin: 0; width: 100%;  border-radius: 8px; padding: 10px; font-size: 1rem; border: 1.5px solid #5e4b56; background: rgba(255,255,255,0.2); color: #333; margin-bottom: 10px;" required>
+              style="margin: 0; width: 100%;  border-radius: 8px; padding: 10px; font-size: 1rem; border: 1.5px solid white; background: rgba(255,255,255,0.2); color: black; margin-bottom: 10px;" required>
             </div>
             <div>
-              <label for="end_date" style="font-weight: bold; color: #5e4b56;">Fecha de fin:</label>
+              <label for="end_date" style="font-weight: bold; color: white;">Fecha de fin:</label>
               <input type="date" id="end_date" class="swal2-input"
-                style="margin: 0; width: 100%; border-radius: 8px; padding: 10px; font-size: 1rem; border: 1.5px solid #5e4b56; background: rgba(255,255,255,0.2); color: #333; margin-bottom: 10px;">
+                style="margin: 0; width: 100%; border-radius: 8px; padding: 10px; font-size: 1rem; border: 1.5px solid white; background: rgba(255, 255, 255, 0.2); color: black; margin-bottom: 10px;">
             </div>
           </div>
   
-          <label for="status" style="font-weight: bold; color: #5e4b56;">Estado: <span style="color: #f4a261;">*</span></label>
+          <label for="status" style="font-weight: bold; color: white;">Estado: <span style="color: #f4a261;">*</span></label>
           <select id="status" class="swal2-select"
-            style="margin: 0; border-radius: 8px; padding: 10px; width: 100%; font-size: 1rem; border: 1.5px solid #5e4b56; background: rgba(255, 255, 255, 0.2); color: #333;">
+            style="margin: 0; border-radius: 8px; padding: 10px; width: 100%; font-size: 1rem; border: 1.5px solid white; background: rgba(255, 255, 255, 0.2); color: black;">
             <option value="pendiente">Pendiente</option>
             <option value="en progreso">En Progreso</option>
             <option value="completado">Completado</option>
           </select>
-          <span style="color: #5e4b56; margin-top: 10px; display: block; font-size: 0.8rem; text-align: left;">Los campos con * son obligatorios.</span>
+          <span style="color: black; margin-top: 10px; display: block; font-size: 0.8rem; text-align: left;">Los campos con * son obligatorios.</span>
         </div>
       `,
-      background: 'linear-gradient(135deg, #faf3dd, #fcd5ce)',
+      background: '#4a7362',
       focusConfirm: false,
       showCancelButton: true,
       confirmButtonText: 'Crear Proyecto',
-      confirmButtonColor: '#9c89b8',
+      confirmButtonColor: '#294036',
       cancelButtonText: 'Cancelar',
-      cancelButtonColor: '#5e4b56',
+      cancelButtonColor: '#5a3a3a',
+      customClass: {
+        title: 'sa2Title',
+        input: 'sa2Title',
+      },
       preConfirm: () => {
         const startDate = (document.getElementById('start_date') as HTMLInputElement).value;
         const endDate = (document.getElementById('end_date') as HTMLInputElement).value;
@@ -192,61 +206,64 @@ export class ProjectsComponent implements OnInit {
   }  
 
   async editProject(project: any) {
-    const { value: name } = await Swal.fire({
-      title: 'Editar Nombre',
-      input: 'text',
-      inputValue: project.name,
-      showCancelButton: true,
-      confirmButtonText: 'Siguiente',
-      cancelButtonText: 'Cancelar',
-      background: 'linear-gradient(135deg, #faf3dd, #fcd5ce)',
-      position: 'top',
-      inputValidator: (value) => {
-          return value ? null : 'El nombre no puede estar vacío';
-      }
-    });
-
-    if (!name) return;
-
     const { value: formValues } = await Swal.fire({
-      title: name,
+      title: 'Editar Proyecto',
       html: `
-      <div style="display: flex; flex-direction: column; text-align: left; padding: 10px;">
-          <label for="description" style="font-weight: bold; color: #5e4b56;">Descripción:</label>
+        <div style="display: flex; flex-direction: column; text-align: left; padding: 10px;">
+          <label for="name" style="font-weight: bold; color: white;">Nombre: <span style="color: #f4a261;">*</span></label>
+          <input id="name" class="swal2-input" placeholder="Nombre del proyecto" value="${project.name || ''}"
+            style="border-radius: 8px; padding: 10px; font-size: 1rem; border: 1.5px solid white; background: rgba(255, 255, 255, 0.2); color: black; transition: border 0.3s ease-in-out; width: 100%; margin-left: 0;">
+  
+          <label for="description" style="font-weight: bold; color: white; margin-top: 10px;">Descripción:</label>
           <textarea id="description" class="swal2-input" placeholder="Descripción del proyecto"
-            style="height: 80px; border-radius: 8px; padding: 10px; font-size: 1rem; border: 1.5px solid #5e4b56; background: rgba(255, 255, 255, 0.2); color: #333; transition: border 0.3s ease-in-out;">${project.description || ''}</textarea>
-
+            style="height: 80px; border-radius: 8px; padding: 10px; font-size: 1rem; border: 1.5px solid white; background: rgba(255, 255, 255, 0.2); color: black; transition: border 0.3s ease-in-out;">${project.description || ''}</textarea>
+  
           <div style="display: flex; gap: 10px; margin-top: 10px;">
-          <div>
-            <label for="start_date" style="font-weight: bold; color: #5e4b56;">Fecha de inicio: <span style="color: #f4a261;">*</span></label>
-            <input type="date" id="start_date" class="swal2-input" value="${project.start_date || ''}"
-            style="margin: 0; width: 100%;  border-radius: 8px; padding: 10px; font-size: 1rem; border: 1.5px solid #5e4b56; background: rgba(255,255,255,0.2); color: #333; margin-bottom: 10px;" required>
+            <div>
+              <label for="start_date" style="font-weight: bold; color: white;">Fecha de inicio: <span style="color: #f4a261;">*</span></label>
+              <input type="date" id="start_date" class="swal2-input" value="${project.start_date || ''}"
+                style="margin: 0; width: 100%; border-radius: 8px; padding: 10px; font-size: 1rem; border: 1.5px solid white; background: rgba(255,255,255,0.2); color: black; margin-bottom: 10px;" required>
+            </div>
+            <div>
+              <label for="end_date" style="font-weight: bold; color: white;">Fecha de fin:</label>
+              <input type="date" id="end_date" class="swal2-input" value="${project.end_date || ''}"
+                style="margin: 0; width: 100%; border-radius: 8px; padding: 10px; font-size: 1rem; border: 1.5px solid white; background: rgba(255,255,255,0.2); color: black; margin-bottom: 10px;">
+            </div>
           </div>
-          <div>
-            <label for="end_date" style="font-weight: bold; color: #5e4b56;">Fecha de fin:</label>
-            <input type="date" id="end_date" class="swal2-input" value="${project.end_date || ''}"
-              style="margin: 0; width: 100%; border-radius: 8px; padding: 10px; font-size: 1rem; border: 1.5px solid #5e4b56; background: rgba(255,255,255,0.2); color: #333; margin-bottom: 10px;">
-          </div>
-        </div>
-          <label for="status" style="font-weight: bold; color: #5e4b56; margin-top: 15px;">Estado: <span style="color: #f4a261;">*</span></label>
+  
+          <label for="status" style="font-weight: bold; color: white; margin-top: 15px;">Estado: <span style="color: #f4a261;">*</span></label>
           <select id="status" class="swal2-select"
-            style="border-radius: 8px; padding: 10px; width: 100%; margin-left: 0; margin-top: 0; font-size: 1rem; border: 1.5px solid #5e4b56; background: rgba(255, 255, 255, 0.2); color: #333; transition: border 0.3s ease-in-out;">
+            style="border-radius: 8px; padding: 10px; width: 100%; margin-left: 0; margin-top: 0; font-size: 1rem; border: 1.5px solid white; background: rgba(255, 255, 255, 0.2); color: black; transition: border 0.3s ease-in-out;">
             <option value="pendiente" ${project.status === 'pendiente' ? 'selected' : ''}>Pendiente</option>
             <option value="en progreso" ${project.status === 'en progreso' ? 'selected' : ''}>En Progreso</option>
             <option value="completado" ${project.status === 'completado' ? 'selected' : ''}>Completado</option>
           </select>
-          <span style="color: #5e4b56; margin-top: 10px; display: block; font-size: 0.8rem; text-align: left;">Los campos con * son obligatorios.</span>
+  
+          <span style="color: black; margin-top: 10px; display: block; font-size: 0.8rem; text-align: left;">Los campos con * son obligatorios.</span>
         </div>
       `,
-      background: 'linear-gradient(135deg, #faf3dd, #fcd5ce)',
+      background: '#a67c52',
       focusConfirm: false,
       showCancelButton: true,
       confirmButtonText: 'Actualizar Proyecto',
+      confirmButtonColor: '#294036',
       cancelButtonText: 'Cancelar',
+      cancelButtonColor: '#5a3a3a',
       position: 'top',
+      customClass: {
+        title: 'sa2Title',
+      },
       preConfirm: () => {
+        const name = (document.getElementById('name') as HTMLInputElement).value.trim();
+        const description = (document.getElementById('description') as HTMLInputElement).value;
         const startDate = (document.getElementById('start_date') as HTMLInputElement).value;
         const endDate = (document.getElementById('end_date') as HTMLInputElement).value;
+        const status = (document.getElementById('status') as HTMLSelectElement).value;
+  
+        if (!name) {
+          Swal.showValidationMessage('El nombre no puede estar vacío');
+          return false;
+        }
   
         if (!startDate) {
           Swal.showValidationMessage('La fecha de inicio es obligatoria');
@@ -254,25 +271,26 @@ export class ProjectsComponent implements OnInit {
         }
   
         return {
-          description: (document.getElementById('description') as HTMLInputElement).value,
+          name,
+          description,
           start_date: startDate,
           end_date: endDate || null,
-          status: (document.getElementById('status') as HTMLSelectElement).value
+          status
         };
       }
     });
-
+  
     if (!formValues) return;
-
+  
     const updatedProject = {
       id: project.id,
-      name,
+      name: formValues.name,
       description: formValues.description,
       start_date: formValues.start_date,
       end_date: formValues.end_date,
       status: formValues.status
     };
-
+  
     this.projectService.updateProject(project.id, updatedProject).subscribe(
       response => {
         Swal.fire({
@@ -294,16 +312,20 @@ export class ProjectsComponent implements OnInit {
     );
   }
   
+  
   deleteProject(id: number) {
     Swal.fire({
       title: '¿Eliminar este proyecto?',
       text: 'Esta acción no se puede deshacer.',
       icon: 'warning',
-      background: 'rgba(0, 0, 0, 0.7)',
-      color: "white",
+      iconColor: 'white',
+      background: '#8c3b3b',
+      color: 'white',
       showCancelButton: true,
       confirmButtonText: 'Sí, eliminar',
+      confirmButtonColor: '#e63946',
       cancelButtonText: 'Cancelar',
+      cancelButtonColor: '#4a7362',
       position: 'top'
     }).then((result) => {
       if (result.isConfirmed) {

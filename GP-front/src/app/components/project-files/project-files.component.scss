@@ -15,7 +15,7 @@
     align-items: center;
   
     .dropzone {
-      border: 2px dashed var(--accent-color);
+      border: 2px dashed var(--primary-color);
       background: rgba(255, 255, 255, 0.05);
       padding: 10px 0;
       margin-top: 20px;
@@ -33,7 +33,7 @@
     
       i {
         font-size: 2rem;
-        color: var(--accent-color);
+        color: var(--primary-color);
       }
     
       p {
@@ -44,7 +44,7 @@
       }
     
       .upload-btn {
-        background-color: var(--accent-color);
+        background-color: var(--primary-color);
         color: var(--text-color);
         border: none;
         padding: 8px 12px;
@@ -59,13 +59,13 @@
         }
     
         &:hover {
-          background-color: var(--accent-color);
+          background-color: var(--primary-color);
         }
       }
     
       &.active {
         background: rgba(255, 255, 255, 0.1);
-        border-color: var(--accent-color);
+        border-color: var(--primary-color);
       }
     }
   }
@@ -187,7 +187,7 @@
   .btn-volver {
     display: inline-flex;
     align-items: center;
-    background: var(--accent-color);
+    background: var(--primary-color);
     color: white;
     gap: 8px;
     padding: 8px 14px;
@@ -196,6 +196,6 @@
     font-size: .9rem;
   
     &:hover {
-      background: var(--accent-color-dark);
+      background: var(--primary-color-dark);
     }
   }
