@@ -12,6 +12,8 @@ import { ThemeService } from '../../services/theme.service';
 export class DashboardComponent implements OnInit {
   isCollapsed: boolean = false;
   isMobileOpen: boolean = false;
+  wasCollapsed: boolean = this.isCollapsed;
+  lastWindowWidth: number = window.innerWidth;
   activeRoute: string = '';
   isDarkMode: boolean = false;
 
@@ -39,6 +41,7 @@ export class DashboardComponent implements OnInit {
     const savedState = localStorage.getItem('sidebarCollapsed');
     if (savedState !== null) {
       this.isCollapsed = JSON.parse(savedState);
+      this.wasCollapsed = this.isCollapsed; // Muy importante
     }
 
     // Verificar si el token es válido
@@ -63,11 +66,8 @@ export class DashboardComponent implements OnInit {
       }
     );
 
-    window.addEventListener('resize', () => {
-      if (window.innerWidth > 768) {
-        this.isMobileOpen = false;
-      }
-    });
+    this.handleResize(); // Ajustar estado al iniciar
+    window.addEventListener('resize', this.handleResize.bind(this));
   }
 
   toggleSidebar() {
@@ -77,6 +77,7 @@ export class DashboardComponent implements OnInit {
       this.isMobileOpen = !this.isMobileOpen;
     } else {
       this.isCollapsed = !this.isCollapsed;
+      this.wasCollapsed = this.isCollapsed;
       localStorage.setItem('sidebarCollapsed', JSON.stringify(this.isCollapsed));
     }
   }
@@ -84,7 +85,24 @@ export class DashboardComponent implements OnInit {
   closeMobileSidebar() {
     this.isMobileOpen = false;
   }
+
+  handleResize() {
+    const isMobile = window.innerWidth <= 768;
+    const wasMobile = this.lastWindowWidth <= 768;
   
+    if (!wasMobile && isMobile) {
+      // Entrando a móvil: guarda el estado actual y fuerza expandido
+      this.wasCollapsed = this.isCollapsed;
+      this.isCollapsed = false;
+    }
+  
+    if (wasMobile && !isMobile) {
+      // Saliendo de móvil: restaura el estado anterior
+      this.isCollapsed = this.wasCollapsed;
+    }
+  
+    this.lastWindowWidth = window.innerWidth;
+  }
 
   logout() {
     this.authService.logout().subscribe(() => {
