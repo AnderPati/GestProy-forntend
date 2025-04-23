@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FileService } from '../../services/file.service';
 import Swal from 'sweetalert2';
@@ -13,6 +13,9 @@ export class ProjectFilesComponent implements OnInit {
   projectId!: number;
   files: any[] = [];
   selectedFile: File | null = null;
+  isDragging = false;
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
+
 
   constructor(
     private route: ActivatedRoute,
@@ -33,6 +36,25 @@ export class ProjectFilesComponent implements OnInit {
 
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
+  }
+
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+    this.isDragging = true;
+  }
+
+  onDragLeave(event: DragEvent) {
+    event.preventDefault();
+    this.isDragging = false;
+  }
+
+  onDrop(event: DragEvent) {
+    event.preventDefault();
+    this.isDragging = false;
+    const files = event.dataTransfer?.files;
+    if (files && files.length > 0) {
+      this.selectedFile = files[0];
+    }
   }
 
   upload() {
@@ -69,11 +91,9 @@ export class ProjectFilesComponent implements OnInit {
   
       if (isImage) {
         Swal.fire({
-          title: file.original_name,
-          html: `<img src="${url}" style="max-width: 1000px; width: 90%; max-height: 1000px; height: 90%; border-radius: 10px;" />`,
+          html: `<img src="${url}" style="max-width: 1000px; width: 90%; max-height: 1000px; height: 90%; border-radius: 10px; margin-top: 30px;" />`,
           width: 'auto',
-          background: 'linear-gradient(135deg, #faf3dd, #fcd5ce)',
-          color: '#5e4b56',
+          background: 'transparent',
           showCloseButton: true,
           showConfirmButton: false
         });

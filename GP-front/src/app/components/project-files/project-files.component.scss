@@ -9,64 +9,67 @@
   
   .upload-section {
     display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    align-items: center;
+    flex-direction: column;
+    gap: 15px;
     margin-bottom: 20px;
+    align-items: center;
   
-    .upload-label {
-      background-color: var(--accent-color);
-      color: white;
-      padding: 8px 14px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: background 0.2s ease;
-  
-      &:hover {
-        background-color: var(--accent-color);
-      }
-  
-      i {
-        font-size: 1rem;
-      }
-    }
-  
-    .file-selected {
-      font-size: 0.9rem;
+    .dropzone {
+      border: 2px dashed var(--accent-color);
+      background: rgba(255, 255, 255, 0.05);
+      padding: 10px 0;
+      margin-top: 20px;
+      width: 100%;
+      border-radius: 12px;
+      text-align: center;
       color: var(--text-color);
-      max-width: 250px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-  
-    .upload-btn {
-      background-color: #5e4b56;
-      color: white;
-      border: none;
-      padding: 8px 14px;
-      border-radius: 8px;
       cursor: pointer;
-      font-weight: bold;
-      display: inline-flex;
+      transition: background 0.3s ease-in-out, border-color 0.3s ease-in-out;
+    
+      display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 6px;
-      transition: background 0.2s ease;
-  
-      &:hover {
-        background-color: darken(#5e4b56, 10%);
+      gap: 10px;
+    
+      i {
+        font-size: 2rem;
+        color: var(--accent-color);
       }
-  
-      &:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
+    
+      p {
+        margin: 0;
+        font-weight: bold;
+        word-break: break-word;
+        max-width: 100%;
+      }
+    
+      .upload-btn {
+        background-color: var(--accent-color);
+        color: var(--text-color);
+        border: none;
+        padding: 8px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background 0.2s ease;
+
+        i {
+          font-size: 1rem;
+          color: var(--text-color);
+        }
+    
+        &:hover {
+          background-color: var(--accent-color);
+        }
+      }
+    
+      &.active {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: var(--accent-color);
       }
     }
   }
+  
   
   
   .file-list {

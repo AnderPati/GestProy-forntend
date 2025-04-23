@@ -4,22 +4,30 @@
       <i class="fa-solid fa-arrow-left"></i> Volver al proyecto
     </a>
   </div>
-  <h2>Archivos del Proyecto</h2>
 
   <div class="upload-section">
-    <label class="upload-label">
-      <input type="file" name="file" (change)="onFileSelected($event)" hidden>
-      <i class="fa-solid fa-upload"></i> Seleccionar archivo
-    </label>
-  
-    <span class="file-selected" *ngIf="selectedFile">
-      {{ selectedFile.name }}
-    </span>
-  
-    <button class="upload-btn" [disabled]="!selectedFile" (click)="upload()">
-      <i class="fa-solid fa-cloud-arrow-up"></i> Subir
-    </button>
+    <div class="dropzone"
+       (click)="fileInput.click()"
+       (dragover)="onDragOver($event)"
+       (dragleave)="onDragLeave($event)"
+       (drop)="onDrop($event)"
+       [class.active]="isDragging">
+       
+      <ng-container *ngIf="!selectedFile">
+        <i class="fa-solid fa-cloud-arrow-up"></i>
+        <p>Haz clic o arrastra un archivo para subirlo</p>
+      </ng-container>
+
+      <ng-container *ngIf="selectedFile">
+        <i class="fa-solid fa-file"></i>
+        <p>{{ selectedFile.name }}</p>
+        <button class="upload-btn" (click)="upload(); $event.stopPropagation()"><i class="fa-solid fa-cloud-arrow-up"></i> Subir</button>
+      </ng-container>
+
+      <input #fileInput type="file" name="file" hidden (change)="onFileSelected($event)">
+    </div>
   </div>
+  
 
   <div *ngIf="files.length === 0">No hay archivos subidos aún.</div>
 
