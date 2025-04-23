@@ -20,12 +20,14 @@
   position: relative;
   overflow: hidden;
   transform: translateX(0);
-    transition: transform 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
   
   &.collapsed {
     width: 40px;
     
     li {
+      padding-left: 8px;
+      margin-top: 5px;
       
       &::after {
         content: attr(data-tooltip);
@@ -69,12 +71,13 @@
   li {
     display: flex;
     align-items: center;
-    padding: 10px;
+    padding: 8px;
     cursor: pointer;
     border-radius: 10px;
     transition: background 0.3s;
     color: var(--text-color);
     position: relative;
+    margin-top: 5px;
     
     a {
       text-decoration: none;
@@ -127,7 +130,7 @@
   cursor: pointer;
   color: white;
   transition: all 0.3s;
-  margin-top: auto;
+  margin-top: auto !important;
   padding-top: 8px;
   padding-bottom: 2px;
   border-radius: 10px;
