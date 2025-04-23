@@ -21,9 +21,11 @@
   overflow: hidden;
   transform: translateX(0);
   transition: all 0.3s ease-in-out;
+  z-index: 1000;
   
   &.collapsed {
     width: 40px;
+    overflow: visible;
     
     li {
       padding-left: 8px;
@@ -42,15 +44,15 @@
         font-size: 0.9rem;
         white-space: nowrap;
         opacity: 0;
-        visibility: hidden;
+        visibility: visible;
         transition: opacity 0.3s ease-in-out;
+        z-index: 1000;
       }
-      
       &:hover::after {
         opacity: 1;
         visibility: visible;
-        z-index: 999;
       }
+      
       
       i {
         margin-right: 0;
