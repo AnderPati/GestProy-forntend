@@ -11,6 +11,7 @@ import { ThemeService } from '../../services/theme.service';
 })
 export class DashboardComponent implements OnInit {
   isCollapsed: boolean = false;
+  isMobileOpen: boolean = false;
   activeRoute: string = '';
   isDarkMode: boolean = false;
 
@@ -61,12 +62,29 @@ export class DashboardComponent implements OnInit {
         this.router.navigate(['/login']);
       }
     );
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768) {
+        this.isMobileOpen = false;
+      }
+    });
   }
 
   toggleSidebar() {
-    this.isCollapsed = !this.isCollapsed;
-    localStorage.setItem('sidebarCollapsed', JSON.stringify(this.isCollapsed));
+    const isMobile = window.innerWidth <= 768;
+
+    if (isMobile) {
+      this.isMobileOpen = !this.isMobileOpen;
+    } else {
+      this.isCollapsed = !this.isCollapsed;
+      localStorage.setItem('sidebarCollapsed', JSON.stringify(this.isCollapsed));
+    }
   }
+
+  closeMobileSidebar() {
+    this.isMobileOpen = false;
+  }
+  
 
   logout() {
     this.authService.logout().subscribe(() => {

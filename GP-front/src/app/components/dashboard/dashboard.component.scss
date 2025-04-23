@@ -19,6 +19,8 @@
   transition: width 0.3s ease-in-out;
   position: relative;
   overflow: hidden;
+  transform: translateX(0);
+    transition: transform 0.3s ease-in-out;
   
   &.collapsed {
     width: 40px;
@@ -142,6 +144,81 @@
   //background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 4 4'%3E%3Cpath fill='lightgrey' fill-opacity='0.4' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
   overflow: auto;
 }
+
+.hamburger-toggle {
+  display: none;
+  z-index: 900;
+}
+
+@media (max-width: 768px) {
+
+  .backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 998; // Justo por debajo del sidebar
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 999;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    width: 200px;
+    box-shadow: 3px 0 15px rgba(0, 0, 0, 0.3);
+
+    &.mobile-open {
+      transform: translateX(0);
+    }
+
+    .toggle-btn {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--primary-color);
+      border-radius: 5px;
+      img {
+        height: 30px;
+      }
+    }
+  }
+
+  .hamburger-toggle {
+    position: fixed;
+    bottom: 16px;
+    left: 0;
+    z-index: 1000;
+    background: var(--primary-color);
+    border: none;
+    border-radius: 0 100% 100% 0;
+    padding: 10px 15px;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: block;
+    transition: all 0.3s ease-in-out;
+    i{
+      color: var(--text-color);
+      transition: all 0.3s ease-in-out;
+      transform: rotate(0deg);
+    }
+  }
+
+  .hamburgerOpen{
+    left: 239px;
+    i{
+      transform: rotate(180deg);
+    }
+  }
+}
+
 
 @keyframes fadeInRight {
   from {
