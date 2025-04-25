@@ -81,5 +81,23 @@ body {
   }
 
   .sa2Title {
-    color: white; /* Cambia este valor por el color que quieras */
+    color: white;
+  }
+
+  .custom-toast {
+    width: auto !important;
+    padding: 10px !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: unset !important;
+    overflow: hidden !important;
+    max-width: none !important;
+    box-sizing: content-box !important;
+    border-radius: 100%;
+  }
+  
+  .custom-toast .swal2-icon {
+    font-size: 2rem;
+    margin: 0 !important;
   }

@@ -27,12 +27,12 @@ export class ProfileComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.titleService.setTitle('GestProy - Perfil');
+    this.titleService.setTitle('Perfil');
     this.profileService.getProfile().subscribe(
       response => {
         this.user = { ...response.data, password: '' }; // Copiamos los datos en `user`
         this.originalUser = { ...response.data, password: '' }; // Guardamos los valores originales
-        this.titleService.setTitle(`GestProy - ${this.user.name}`); // Cambiamos el título de la página
+        this.titleService.setTitle(`Perfil - ${this.user.name}`); // Cambiamos el título de la página
       },
       () => {
         this.errorMessage = 'Error al cargar el perfil.';
@@ -125,15 +125,15 @@ export class ProfileComponent implements OnInit {
       response => {
         
         Swal.fire({
-          title: 'Perfil actualizado',
-          color: '#5e4b56',
-          icon: 'success',
-          iconColor: '#5e4b56',
-          background: 'linear-gradient(135deg, #f4a261, #9c89b8)',
           toast: true,
           position: 'top-end',
+          background: 'transparent',
+          icon: 'success',
           showConfirmButton: false,
-          timer: 6000
+          timer: 3000,
+          customClass: {
+            popup: 'custom-toast'
+          }
         });
   
         this.user = { ...response.user, password: '' }; // Actualizar la vista con los nuevos datos
@@ -167,15 +167,15 @@ export class ProfileComponent implements OnInit {
         this.profileService.deleteProfileImage().subscribe(
           response => {
             Swal.fire({
-              title: 'Perfil actualizado',
-              color: '#5e4b56',
-              icon: 'success',
-              iconColor: '#5e4b56',
-              background: 'linear-gradient(135deg, #f4a261, #9c89b8)',
               toast: true,
               position: 'top-end',
+              background: 'transparent',
+              icon: 'success',
               showConfirmButton: false,
-              timer: 3000
+              timer: 3000,
+              customClass: {
+                popup: 'custom-toast'
+              }
             });
             this.user.profile_image = null;
             this.imagePreview = null;

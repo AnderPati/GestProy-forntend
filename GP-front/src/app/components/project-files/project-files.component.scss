@@ -1,201 +1,341 @@
 .files-container {
-    max-width: 900px;
-    margin: auto;
-    padding: 20px;
-    background-color: var(--background-color-light);
-    border-radius: 10px;
-    color: var(--text-color);
-  }
-  
-  .upload-section {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-bottom: 20px;
-    align-items: center;
-  
-    .dropzone {
-      border: 2px dashed var(--primary-color);
-      background: rgba(255, 255, 255, 0.05);
-      padding: 10px 0;
-      margin-top: 20px;
-      width: 100%;
-      border-radius: 12px;
-      text-align: center;
-      color: var(--text-color);
-      cursor: pointer;
-      transition: background 0.3s ease-in-out, border-color 0.3s ease-in-out;
-    
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-    
-      i {
-        font-size: 2rem;
-        color: var(--primary-color);
-      }
-    
-      p {
-        margin: 0;
-        font-weight: bold;
-        word-break: break-word;
-        max-width: 100%;
-      }
-    
-      .upload-btn {
-        background-color: var(--primary-color);
-        color: var(--text-color);
-        border: none;
-        padding: 8px 12px;
-        border-radius: 6px;
-        cursor: pointer;
-        font-weight: bold;
-        transition: background 0.2s ease;
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+  background-color: var(--background-color-light);
+  border-radius: 10px;
+  color: var(--text-color);
+}
 
-        i {
-          font-size: 1rem;
-          color: var(--text-color);
-        }
-    
-        &:hover {
-          background-color: var(--primary-color);
-        }
-      }
-    
-      &.active {
-        background: rgba(255, 255, 255, 0.1);
-        border-color: var(--primary-color);
-      }
-    }
-  }
-  
-  
-  
-  .file-list {
+.upload-section {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+  align-items: center;
+
+  .dropzone {
+    border: 2px dashed var(--primary-color);
+    background: rgba(255, 255, 255, 0.05);
+    padding: 10px 0;
+    margin-top: 20px;
+    width: 100%;
+    border-radius: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.3s, border-color 0.3s;
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 10px;
-    padding: 0;
-  
-    li {
-      display: flex;
-      align-items: center;
-      background: var(--background-color);
-      padding: 10px 15px;
-      border-radius: 8px;
-      height: auto;
+
+    i {
+      font-size: 2rem;
+      color: var(--primary-color);
+    }
+
+    p {
+      margin: 0;
+      font-weight: bold;
+      word-break: break-word;
+      max-width: 100%;
+    }
+
+    .upload-btn {
+      background-color: var(--primary-color);
+      color: var(--text-color);
+      border: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.2s;
+
+      i {
+        font-size: 1rem;
+        color: var(--text-color);
+      }
 
       &:hover {
-        background-color: var(--background-color-dark);
+        background-color: var(--primary-color-dark);
+      }
+    }
+
+    &.active {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--primary-color);
+    }
+  }
+}
+
+.folder-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+
+  .folder-card {
+    background-color: var(--background-color);
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+
+    i {
+      font-size: 2.2rem;
+      color: var(--primary-color);
+    }
+
+    span {
+      font-weight: bold;
+      color: var(--text-color);
+      word-break: break-word;
+    }
+
+    small {
+      position: absolute;
+      top: 30px;
+      font-weight: 900;
+    }
+
+    &:hover {
+      background-color: var(--background-color-dark);
+    }
+
+    &.create-folder {
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 2px dashed var(--primary-color);
+      color: var(--primary-color);
+
+      i {
+        color: var(--primary-color);
       }
 
-      .file-name {
-        flex: 1;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        font-weight: bold;
-        color: var(--text-color);
-        @media (max-width: 600px) {
-          margin-right: 20px;
-        }
-      }
-
-      .file-size {
-        width: 100px;
-        text-align: right;
-        color: #666;
-        font-size: 0.9rem;
-
-        @media (max-width: 600px) {
-          display: none;
-        }
-      }
-  
-      .file-actions.desktop {
-        display: flex;
-        gap: 10px;
-        margin-left: 20px;
-    
-        @media (max-width: 600px) {
-          display: none;
-        }
-    
-        button {
-          background: none;
-          border: none;
-          color: var(--text-color);
-          font-size: 1.2rem;
-          transition: 0.2s;
-          cursor: pointer;
-    
-          &:hover {
-            transform: scale(1.1);
-            color: var(--text-color-dark);
-          }
-        }
-      }
-    
-      .file-actions.mobile {
-        display: none;
-        position: relative;
-    
-        @media (max-width: 600px) {
-          display: flex;
-          justify-content: flex-end;
-          align-items: center;
-        }
-    
-        button {
-          background: none;
-          border: none;
-          font-size: 1.4rem;
-          cursor: pointer;
-          color: var(--text-color);
-        }
-    
-        .dropdown-menu {
-          position: absolute;
-          top: 40px;
-          right: -15px;
-          background: var(--background-color-dark);
-          border-radius: 8px;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-          z-index: 999;
-          display: flex;
-          flex-direction: column;
-    
-          button {
-            padding: 10px;
-            background: none;
-            border: none;
-            border-radius: 8px;
-            color: white;
-            text-align: center;
-            cursor: pointer;
-    
-            &:hover {
-              background-color: rgba(255, 255, 255, 0.1);
-            }
-          }
-        }
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.1);
       }
     }
   }
-  
-  .btn-volver {
-    display: inline-flex;
-    align-items: center;
+}
+
+.folder-actions {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+
+  button {
+    background: transparent;
+    border: none;
+    padding: 3px 12px;
+    cursor: pointer;
+    border-radius: 100%;
+
+    i {
+      font-size: 1.5rem !important;
+    }
+
+    &:hover{
+      background: var(--background-color);
+    }
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    transform: translateX(100%);
+    background: var(--background-color-dark);
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    z-index: 200; // subido para que nunca quede debajo
+    padding: 5px;
+
+    button {
+      background: none;
+      border: none;
+      padding: 4px 8px;
+      color: var(--text-color);
+      text-align: left;
+      cursor: pointer;
+      width: 150px;
+      border-radius: 8px;
+
+      i{
+        font-size: .8rem !important;
+        color: var(--text-color) !important;
+        margin-right: 10px;
+      }
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+    }
+  }
+}
+
+.folder-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+
+  h3 {
+    font-size: 1.2rem;
+    color: var(--text-color);
+    margin: 0;
+  }
+
+  button {
     background: var(--primary-color);
     color: white;
-    gap: 8px;
-    padding: 8px 14px;
-    border-radius: 50px;
-    text-decoration: none;
-    font-size: .9rem;
-  
+    border: none;
+    padding: 6px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
     &:hover {
       background: var(--primary-color-dark);
     }
   }
+}
+
+.file-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0;
+
+  li {
+    display: flex;
+    align-items: center;
+    background: var(--background-color);
+    padding: 10px 15px;
+    border-radius: 8px;
+    height: auto;
+
+    &:hover {
+      background-color: var(--background-color-dark);
+    }
+
+    .file-name {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: bold;
+      color: var(--text-color);
+
+      @media (max-width: 600px) {
+        margin-right: 20px;
+      }
+    }
+
+    .file-size {
+      width: 100px;
+      text-align: right;
+      color: #666;
+      font-size: 0.9rem;
+
+      @media (max-width: 600px) {
+        display: none;
+      }
+    }
+
+    .file-actions.desktop {
+      display: flex;
+      gap: 10px;
+      margin-left: 20px;
+
+      @media (max-width: 600px) {
+        display: none;
+      }
+
+      button {
+        background: none;
+        border: none;
+        color: var(--text-color);
+        font-size: 1.2rem;
+        transition: 0.2s;
+        cursor: pointer;
+
+        &:hover {
+          transform: scale(1.1);
+          color: var(--text-color-dark);
+        }
+      }
+    }
+
+    .file-actions.mobile {
+      display: none;
+      position: relative;
+
+      @media (max-width: 600px) {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+      }
+
+      button {
+        background: none;
+        border: none;
+        font-size: 1.4rem;
+        cursor: pointer;
+        color: var(--text-color);
+      }
+
+      .dropdown-menu {
+        position: absolute;
+        top: 40px;
+        right: -15px;
+        background: var(--background-color-dark);
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 999;
+        display: flex;
+        flex-direction: column;
+
+        button {
+          padding: 10px;
+          background: none;
+          border: none;
+          border-radius: 8px;
+          color: white;
+          text-align: center;
+          cursor: pointer;
+
+          &:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+          }
+        }
+      }
+    }
+  }
+}
+
+.btn-volver {
+  display: inline-flex;
+  align-items: center;
+  background: var(--primary-color);
+  color: white;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-size: .9rem;
+
+  &:hover {
+    background: var(--primary-color-dark);
+  }
+}

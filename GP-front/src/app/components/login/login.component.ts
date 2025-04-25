@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.titleService.setTitle('GestProy - Login');
+    this.titleService.setTitle('Login');
     // Create the reactive form
     //----
     // Crear el formulario reactivo

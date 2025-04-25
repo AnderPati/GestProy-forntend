@@ -35,7 +35,7 @@ export class ProjectDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.titleService.setTitle('GestProy - Proyecto');
+    this.titleService.setTitle('Proyecto');
     this.projectId = +this.route.snapshot.paramMap.get('id')!;
     this.loadProject();
     const saved = localStorage.getItem('showProjectHeader');
@@ -52,7 +52,7 @@ export class ProjectDetailComponent implements OnInit {
       next: data => {
         this.project = data;
         this.loadTasks();
-        this.titleService.setTitle('GestProy - ' + this.project.name);
+        this.titleService.setTitle(this.project.name);
       },
       error: error => {
         if (error.status === 403) {
@@ -64,7 +64,7 @@ export class ProjectDetailComponent implements OnInit {
             text: 'El proyecto que estás intentando buscar no existe.',
             position: 'top',
             showConfirmButton: false,
-            timer: 4000,
+            timer: 6000,
             timerProgressBar: true,
             background: 'rgba(0, 0, 0, 0.7)',
             color: '#fff',
@@ -185,15 +185,15 @@ export class ProjectDetailComponent implements OnInit {
     this.taskService.createTask(this.projectId, newTask).subscribe(
       () => {
         Swal.fire({
-          icon: 'success',
-          iconColor: '#5e4b56',
-          color: '#5e4b56',
-          title: 'Tarea creada.',
-          background: 'linear-gradient(135deg, #f4a261, #9c89b8)',
           toast: true,
-          position: 'top-end',
+          position: 'top',
+          background: 'transparent',
+          icon: 'success',
           showConfirmButton: false,
-          timer: 2500
+          timer: 2000,
+          customClass: {
+            popup: 'custom-toast'
+          }
         });
         this.loadTasks();
       },
@@ -223,15 +223,15 @@ export class ProjectDetailComponent implements OnInit {
           this.taskService.updateTask(task.id, unarchivedTask).subscribe(() => {
             this.loadTasks();
             Swal.fire({
-              icon: 'info',
-              iconColor: '#5e4b56',
-              title: 'Tarea desarchivada',
               toast: true,
-              position: 'top-end',
-              background: 'linear-gradient(135deg, #f4a261, #9c89b8)',
-              color: '#5e4b56',
+              position: 'top',
+              background: 'transparent',
+              icon: 'success',
               showConfirmButton: false,
-              timer: 2000
+              timer: 1500,
+              customClass: {
+                popup: 'custom-toast'
+              }
             });
           });
         }
@@ -309,15 +309,15 @@ export class ProjectDetailComponent implements OnInit {
         this.taskService.updateTask(task.id, updatedTask).subscribe(() => {
           this.loadTasks();
           Swal.fire({
-            icon: 'success',
-            iconColor: '#5e4b56',
-            color: '#5e4b56',
-            title: 'Tarea actualizada',
             toast: true,
-            position: 'top-end',
-            background: 'linear-gradient(135deg, #f4a261, #9c89b8)',
+            position: 'top',
+            background: 'transparent',
+            icon: 'success',
             showConfirmButton: false,
-            timer: 2000
+            timer: 1500,
+            customClass: {
+              popup: 'custom-toast'
+            }
           });
         });
   
@@ -341,15 +341,15 @@ export class ProjectDetailComponent implements OnInit {
             this.taskService.deleteTask(task.id).subscribe(() => {
               this.loadTasks();
               Swal.fire({
-                icon: 'success',
-                iconColor: '#5e4b56',
-                color: '#5e4b56',
-                title: 'Tarea eliminada.',
                 toast: true,
-                position: 'top-end',
-                background: 'linear-gradient(135deg,#f4a261, #9c89b8)',
+                position: 'top',
+                background: 'transparent',
+                icon: 'success',
                 showConfirmButton: false,
-                timer: 2000
+                timer: 1500,
+                customClass: {
+                  popup: 'custom-toast'
+                }
               });
             });
           }
@@ -363,15 +363,15 @@ export class ProjectDetailComponent implements OnInit {
         this.taskService.updateTask(task.id, archivedTask).subscribe(() => {
           this.loadTasks();
           Swal.fire({
-            icon: 'info',
-            iconColor: '#5e4b56',
-            title: 'Tarea archivada',
             toast: true,
-            position: 'top-end',
-            background: 'linear-gradient(135deg, #f4a261, #9c89b8)',
-            color: '#5e4b56',
+            position: 'top',
+            background: 'transparent',
+            icon: 'success',
             showConfirmButton: false,
-            timer: 2000
+            timer: 1500,
+            customClass: {
+              popup: 'custom-toast'
+            }
           });
         });
       } 

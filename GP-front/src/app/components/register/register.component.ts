@@ -28,7 +28,7 @@ export class RegisterComponent implements OnInit {
     private router: Router
   ) {}
   ngOnInit(): void {
-    this.titleService.setTitle('GestProy - Registro');
+    this.titleService.setTitle('Registro');
   }
 
   togglePasswordVisibility() {

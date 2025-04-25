@@ -1,18 +1,20 @@
 <div class="files-container">
+  <!-- Volver al proyecto -->
   <div class="volver-atras">
     <a [routerLink]="['/dashboard/projects', projectId]" class="btn-volver">
       <i class="fa-solid fa-arrow-left"></i> Volver al proyecto
     </a>
   </div>
 
+  <!-- Subida de archivos -->
   <div class="upload-section">
     <div class="dropzone"
-       (click)="fileInput.click()"
-       (dragover)="onDragOver($event)"
-       (dragleave)="onDragLeave($event)"
-       (drop)="onDrop($event)"
-       [class.active]="isDragging">
-       
+         (click)="fileInput.click()"
+         (dragover)="onDragOver($event)"
+         (dragleave)="onDragLeave($event)"
+         (drop)="onDrop($event)"
+         [class.active]="isDragging">
+
       <ng-container *ngIf="!selectedFile">
         <i class="fa-solid fa-cloud-arrow-up"></i>
         <p>Haz clic o arrastra un archivo para subirlo</p>
@@ -21,38 +23,76 @@
       <ng-container *ngIf="selectedFile">
         <i class="fa-solid fa-file"></i>
         <p>{{ selectedFile.name }}</p>
-        <button class="upload-btn" (click)="upload(); $event.stopPropagation()"><i class="fa-solid fa-cloud-arrow-up"></i> Subir</button>
+        <button class="upload-btn" (click)="upload(); $event.stopPropagation()">
+          <i class="fa-solid fa-cloud-arrow-up"></i> Subir
+        </button>
       </ng-container>
 
-      <input #fileInput type="file" name="file" hidden (change)="onFileSelected($event)">
+      <input #fileInput type="file" hidden (change)="onFileSelected($event)">
     </div>
   </div>
-  
 
-  <div *ngIf="files.length === 0">No hay archivos subidos aún.</div>
+  <!-- Navegación de carpetas -->
+  <div class="folder-nav">
+    <button *ngIf="currentFolderId" (click)="goBackFolder()">
+      <i class="fa-solid fa-arrow-left"></i> Volver
+    </button>
+    <h3>
+      <span *ngIf="currentFolderName">
+        <i class="fa-solid fa-folder-open"></i>&nbsp;
+      </span>{{ currentFolderName || '' }}
+    </h3>
+  </div>
 
+  <!-- Visualización de carpetas -->
+  <div class="folder-grid" *ngIf="!currentFolderId">
+    <div class="folder-card" *ngFor="let folder of folders" (click)="openFolder(folder)">
+      <i class="fa-solid fa-folder"></i>
+      <span>{{ folder.name }}</span>
+      <small>{{ folder.fileCount || 0 }}</small>
+
+      <div class="folder-actions">
+        <button (click)="toggleFolderDropdown(folder, $event)">
+          <i class="fa-solid fa-ellipsis-vertical"></i>
+        </button>
+
+        <div class="dropdown-menu" *ngIf="folder.dropdownOpen">
+          <button (click)="renameFolder(folder); $event.stopPropagation()"><i class="fa-solid fa-pen"></i>Renombrar</button>
+          <button (click)="deleteFolder(folder); $event.stopPropagation()"><i class="fa-solid fa-trash"></i>Eliminar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="folder-card create-folder" (click)="promptNewFolder()">
+      <i class="fa-solid fa-folder-plus"></i>
+      <span>Nueva carpeta</span>
+    </div>
+  </div>
+
+  <!-- Visualización de archivos -->
   <ul class="file-list">
-    <li *ngFor="let file of files">
+    <li *ngFor="let file of filteredFiles">
       <div class="file-name" title="{{ file.original_name }}">
         {{ file.original_name }}
       </div>
       <div class="file-size">
         {{ (file.size / 1024).toFixed(2) }} KB
       </div>
-      <!-- Desktop actions -->
+
       <div class="file-actions desktop">
         <button (click)="preview(file)"><i class="fa-solid fa-expand"></i></button>
+        <button (click)="promptMoveFile(file)"><i class="fa-solid fa-file-export"></i></button>
         <button (click)="download(file.id, file.original_name)"><i class="fa-solid fa-cloud-arrow-down"></i></button>
         <button (click)="delete(file.id)"><i class="fa-solid fa-trash"></i></button>
       </div>
 
-      <!-- Mobile dropdown -->
       <div class="file-actions mobile">
         <button (click)="toggleDropdown(file)">
           <i class="fa-solid fa-ellipsis-vertical"></i>
         </button>
         <div class="dropdown-menu" *ngIf="file.dropdownOpen">
           <button (click)="preview(file); file.dropdownOpen = false"><i class="fa-solid fa-expand"></i></button>
+          <button (click)="promptMoveFile(file); file.dropdownOpen = false"><i class="fa-solid fa-folder-open"></i></button>
           <button (click)="download(file.id, file.original_name); file.dropdownOpen = false"><i class="fa-solid fa-cloud-arrow-down"></i></button>
           <button (click)="delete(file.id); file.dropdownOpen = false"><i class="fa-solid fa-trash"></i></button>
         </div>
@@ -60,5 +100,3 @@
     </li>
   </ul>
 </div>
-
-

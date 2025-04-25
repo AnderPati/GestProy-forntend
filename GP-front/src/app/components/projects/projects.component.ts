@@ -25,13 +25,14 @@ export class ProjectsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.titleService.setTitle('GestProy - Proyectos');
+    this.titleService.setTitle('Proyectos');
     const savedView = localStorage.getItem('projectsView');
     if (savedView !== null) {
       this.isGridView = savedView === 'grid';
     }
     this.loadProjects();
   }
+
   filteredProjects(): any[] {
     return this.projects.filter(project => 
       (this.filterName === '' || project.name.toLowerCase().includes(this.filterName.toLowerCase())) &&
@@ -187,15 +188,15 @@ export class ProjectsComponent implements OnInit {
     this.projectService.createProject(newProject).subscribe(
       response => {
         Swal.fire({
-          title: response.message,
-          color: '#5e4b56',
-          icon: 'success',
-          iconColor: '#5e4b56',
-          background: 'linear-gradient(135deg, #f4a261, #9c89b8)',
           toast: true,
-          position: 'top-end',
+          position: 'top',
+          background: 'transparent',
+          icon: 'success',
           showConfirmButton: false,
-          timer: 3000
+          timer: 3000,
+          customClass: {
+            popup: 'custom-toast'
+          }
         });
         this.loadProjects();
       },
@@ -294,15 +295,15 @@ export class ProjectsComponent implements OnInit {
     this.projectService.updateProject(project.id, updatedProject).subscribe(
       response => {
         Swal.fire({
-          title: response.message,
-          color: '#5e4b56',
-          icon: 'success',
-          iconColor: '#5e4b56',
-          background: 'linear-gradient(135deg, #f4a261, #9c89b8)',
           toast: true,
-          position: 'top-end',
+          position: 'top',
+          background: 'transparent',
+          icon: 'success',
           showConfirmButton: false,
-          timer: 3000
+          timer: 2000,
+          customClass: {
+            popup: 'custom-toast'
+          }
         });
         this.loadProjects();
       },
@@ -332,15 +333,15 @@ export class ProjectsComponent implements OnInit {
         this.projectService.deleteProject(id).subscribe(
           response => {
             Swal.fire({
-              title: "Proyecto Eliminado",
-              color: '#5e4b56',
-              icon: 'success',
-              iconColor: '#5e4b56',
-              background: 'linear-gradient(135deg, #f4a261, #9c89b8)',
               toast: true,
-              position: 'top-end',
+              position: 'top',
+              background: 'transparent',
+              icon: 'success',
               showConfirmButton: false,
-              timer: 3000
+              timer: 2000,
+              customClass: {
+                popup: 'custom-toast'
+              }
             });
             this.loadProjects();
           },

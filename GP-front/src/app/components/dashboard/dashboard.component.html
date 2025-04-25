@@ -3,7 +3,7 @@
   
   <aside class="sidebar" [ngClass]="{ 'collapsed': isCollapsed, 'mobile-open': isMobileOpen }">
     <button class="toggle-btn" (click)="toggleSidebar()">
-      <img [src]="isCollapsed ? '../../../assets/img/gestproy_logo_isotipo_bgless.png' : '../../../assets/img/gestproy_logo_horizontal_bgless.png'" alt="">
+      <img [src]="'../../../assets/img/' + (isCollapsed ? 'gestproy_logo_isotipo_bgless' : 'gestproy_logo_horizontal_bgless') + (isDarkMode ? '' : '_light') + '.png'" alt="">
     </button>
     
     <ul>
