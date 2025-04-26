@@ -20,6 +20,7 @@ import { ProjectDetailComponent } from './components/project-detail/project-deta
 import { TaskCalendarComponent } from './components/task-calendar/task-calendar.component';
 import { ProjectSummaryComponent } from './components/project-summary/project-summary.component';
 import { ProjectFilesComponent } from './components/project-files/project-files.component';
+import { MoveFileModalComponent } from './components/modals/move-file-modal/move-file-modal.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { ProjectFilesComponent } from './components/project-files/project-files.
     ProjectDetailComponent,
     TaskCalendarComponent,
     ProjectSummaryComponent,
-    ProjectFilesComponent
+    ProjectFilesComponent,
+    MoveFileModalComponent
   ],
   imports: [
     BrowserModule,

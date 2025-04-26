@@ -1,9 +1,12 @@
 <div class="files-container">
   <!-- Volver al proyecto -->
-  <div class="volver-atras">
+  <div class="botones-header">
     <a [routerLink]="['/dashboard/projects', projectId]" class="btn-volver">
       <i class="fa-solid fa-arrow-left"></i> Volver al proyecto
     </a>
+    <button class="btn-detalles" (click)="showProjectDetails()">
+      <i class="fa-solid fa-circle-info"></i> Detalles
+    </button>
   </div>
 
   <!-- Subida de archivos -->
@@ -57,8 +60,10 @@
         </button>
 
         <div class="dropdown-menu" *ngIf="folder.dropdownOpen">
+          <button class="btnDelete" (click)="deleteFolder(folder); $event.stopPropagation()"><i class="fa-solid fa-trash"></i>Eliminar</button>
+          <hr class="dropdown-divider" />
+          <button (click)="downloadFolder(folder); $event.stopPropagation()" [disabled]="folder.fileCount === 0" [ngClass]="folder.fileCount === 0 ? 'disabledLink' : ''"><i class="fa-solid fa-file-zipper"></i>Descargar carpeta</button>
           <button (click)="renameFolder(folder); $event.stopPropagation()"><i class="fa-solid fa-pen"></i>Renombrar</button>
-          <button (click)="deleteFolder(folder); $event.stopPropagation()"><i class="fa-solid fa-trash"></i>Eliminar</button>
         </div>
       </div>
     </div>
@@ -72,18 +77,48 @@
   <!-- Visualización de archivos -->
   <ul class="file-list">
     <li *ngFor="let file of filteredFiles">
+      <div class="file-thumbnail">
+        <ng-container [ngSwitch]="getFileType(file.mime_type)">
+          
+          <!-- Imágenes -->
+          <ng-container *ngSwitchCase="'image'">
+            <img [src]="previews[file.id]" *ngIf="previews[file.id]" alt="Miniatura" />
+          </ng-container>
+      
+          <!-- PDF -->
+          <ng-container *ngSwitchCase="'pdf'">
+            <i class="fa-solid fa-file-pdf"></i>
+          </ng-container>
+      
+          <!-- CSV -->
+          <ng-container *ngSwitchCase="'csv'">
+            <i class="fa-solid fa-file-csv"></i>
+          </ng-container>
+      
+          <!-- Código -->
+          <ng-container *ngSwitchCase="'code'">
+            <i class="fa-solid fa-file-code"></i>
+          </ng-container>
+      
+          <!-- Default -->
+          <ng-container *ngSwitchDefault>
+            <i class="fa-solid fa-file"></i>
+          </ng-container>
+      
+        </ng-container>
+      </div>
       <div class="file-name" title="{{ file.original_name }}">
         {{ file.original_name }}
       </div>
       <div class="file-size">
-        {{ (file.size / 1024).toFixed(2) }} KB
+        {{ file.size < 1048576 ? (file.size / 1024).toFixed(2) + ' KB' : (file.size / 1048576).toFixed(2) + ' MB' }}
       </div>
 
       <div class="file-actions desktop">
-        <button (click)="preview(file)"><i class="fa-solid fa-expand"></i></button>
-        <button (click)="promptMoveFile(file)"><i class="fa-solid fa-file-export"></i></button>
-        <button (click)="download(file.id, file.original_name)"><i class="fa-solid fa-cloud-arrow-down"></i></button>
-        <button (click)="delete(file.id)"><i class="fa-solid fa-trash"></i></button>
+        <button (click)="preview(file)" title="Ver"><i class="fa-solid fa-expand"></i></button>
+        <button (click)="promptMoveFile(file)" title="Mover"><i class="fa-solid fa-file-export"></i></button>
+        <button (click)="download(file.id, file.original_name)" title="Descargar"><i class="fa-solid fa-cloud-arrow-down"></i></button>
+        <button (click)="delete(file.id, file.original_name)" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
       </div>
 
       <div class="file-actions mobile">
@@ -94,9 +129,18 @@
           <button (click)="preview(file); file.dropdownOpen = false"><i class="fa-solid fa-expand"></i></button>
           <button (click)="promptMoveFile(file); file.dropdownOpen = false"><i class="fa-solid fa-folder-open"></i></button>
           <button (click)="download(file.id, file.original_name); file.dropdownOpen = false"><i class="fa-solid fa-cloud-arrow-down"></i></button>
-          <button (click)="delete(file.id); file.dropdownOpen = false"><i class="fa-solid fa-trash"></i></button>
+          <button (click)="delete(file.id, file.original_name); file.dropdownOpen = false"><i class="fa-solid fa-trash"></i></button>
         </div>
       </div>
     </li>
   </ul>
 </div>
+
+<app-move-file-modal
+  [folders]="folders"
+  [currentFolderId]="currentFolderId"
+  [fileToMove]="modalFileToMove"
+  [show]="modalFileToMove !== null"
+  (close)="modalFileToMove = null"
+  (move)="onFolderMove($event)">
+</app-move-file-modal>

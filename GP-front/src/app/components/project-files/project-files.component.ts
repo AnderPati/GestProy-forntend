@@ -17,6 +17,8 @@ export class ProjectFilesComponent implements OnInit {
   currentFolderId: number | null = null;
   currentFolderName: string | null = null;
   isDragging = false;
+  modalFileToMove: any = null;
+  previews: { [fileId: string]: string } = {};
 
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
@@ -49,12 +51,21 @@ export class ProjectFilesComponent implements OnInit {
     });
   }
 
-  loadFiles() {
-    this.fileService.getFiles(this.projectId).subscribe(files => {
-      this.files = files;
-      this.updateFolderCounts();
-    });
-  }
+  
+loadFiles() {
+  this.fileService.getFiles(this.projectId).subscribe(files => {
+    this.files = files;
+    for (const file of this.files) {
+      if (file.mime_type.startsWith('image/')) {
+        this.fileService.downloadFile(file.id).subscribe(blob => {
+          const url = URL.createObjectURL(blob);
+          this.previews[file.id] = url;
+        });
+      }
+    }
+    this.updateFolderCounts();
+  });
+}
 
   updateFolderCounts() {
     this.folders.forEach(folder => {
@@ -115,9 +126,38 @@ export class ProjectFilesComponent implements OnInit {
     });
   }
 
-  delete(fileId: number) {
-    this.fileService.deleteFile(fileId).subscribe(() => {
-      this.loadFiles();
+  delete(fileId: number, fileName: string) {
+    Swal.fire({
+      title: `¿Eliminar archivo permanentemente?`,
+      text: fileName,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#e63946',
+      cancelButtonColor: '#aaa',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then(result => {
+      if (result.isConfirmed) {
+        this.fileService.deleteFile(fileId).subscribe({
+          next: () => {
+            this.loadFiles();
+            Swal.fire({
+              toast: true,
+              position: 'top',
+              background: 'transparent',
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 1500,
+              customClass: {
+                popup: 'custom-toast'
+              }
+            });
+          },
+          error: err => {
+            Swal.fire('Error', err.error.message || 'No se pudo eliminar el archivo', 'error');
+          }
+        });
+      }
     });
   }
 
@@ -229,53 +269,29 @@ export class ProjectFilesComponent implements OnInit {
     });
   }
 
-  promptMoveFile(file: any) {
-    Swal.fire({
-      title: 'Mover archivo',
-      input: 'select',
-      inputOptions: {
-        '': 'Carpeta principal',
-        ...this.folders.reduce((acc, folder) => {
-          acc[folder.id] = folder.name;
-          return acc;
-        }, {} as any)
-      },
-      inputPlaceholder: 'Selecciona carpeta',
-      showCancelButton: true,
-      confirmButtonText: 'Mover',
-      cancelButtonText: 'Cancelar'
-    }).then(result => {
-      if (result.isConfirmed && result.value !== undefined) {
-        const newFolderId = result.value || null;
-
-        this.fileService.updateFileFolder(file.id, result.value).subscribe(() => {
-          Swal.fire({
-            toast: true,
-            position: 'top',
-            background: 'transparent',
-            icon: 'success',
-            showConfirmButton: false,
-            timer: 1500,
-            customClass: {
-              popup: 'custom-toast'
-            }
-          });
-          this.loadFiles();
-        });
-      }
+  downloadFolder(folder: any) {
+    this.fileService.downloadFolder(this.projectId, folder.id).subscribe((blob) => {
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `${folder.name}.zip`;
+      link.click();
+      this.folders.forEach(f => f.dropdownOpen = false);
     });
   }
 
   deleteFolder(folder: any) {
     Swal.fire({
       title: `¿Eliminar carpeta "${folder.name}"?`,
-      text: 'Esto eliminará la carpeta si está vacía.',
       icon: 'warning',
+      iconColor: 'white',
+      color: 'white',
+      background: '#8c3b3b',
       showCancelButton: true,
-      confirmButtonColor: '#e63946',
-      cancelButtonColor: '#aaa',
       confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar'
+      confirmButtonColor: '#e63946',
+      cancelButtonText: 'Cancelar',
+      cancelButtonColor: '#4a7362',
+      position: 'top'
     }).then(result => {
       if (result.isConfirmed) {
         this.fileService.deleteFolder(this.projectId, folder.id).subscribe({
@@ -295,10 +311,118 @@ export class ProjectFilesComponent implements OnInit {
             });
           },
           error: err => {
-            Swal.fire('Error', err.error.message || 'No se pudo eliminar la carpeta', 'error');
+            Swal.fire({
+              toast: true,
+              position: 'top',
+              icon: 'error',
+              background: 'rgba(0, 0, 0, 0.7)',
+              color: 'white',
+              title: err.error.message || 'No se pudo eliminar la carpeta',
+              showConfirmButton: false,
+              timer: 5000,
+              timerProgressBar: true
+            });
           }
         });
       }
     });
+  }
+
+  promptMoveFile(file: any) {
+    this.modalFileToMove = file;
+  }
+
+  onFolderMove(newFolderId: number | null) {
+    if (!this.modalFileToMove) return;
+
+    this.fileService.updateFileFolder(this.modalFileToMove.id, newFolderId).subscribe(() => {
+      this.loadFiles();
+      this.modalFileToMove = null;
+    });
+  }
+
+  showProjectDetails() {
+    // Datos generales
+    const totalFiles = this.files.length;
+    const totalSize = this.files.reduce((sum, f) => sum + f.size, 0);
+  
+    // Archivos de la carpeta raíz (sin carpeta asignada)
+    const rootFiles = this.files.filter(f => !f.folder_id);
+    const rootSize = rootFiles.reduce((sum, f) => sum + f.size, 0);
+
+    // Datos por carpeta
+    const folderSummaries = this.folders.map(folder => {
+      const filesInFolder = this.files.filter(f => f.folder_id === folder.id);
+      const sizeInFolder = filesInFolder.reduce((sum, f) => sum + f.size, 0);
+      return {
+        name: folder.name,
+        count: filesInFolder.length,
+        size: sizeInFolder
+      };
+    });
+  
+    let html = `
+      <div style="text-align: left; padding: 10px;">
+        <h3 style="margin-top: 0;">Información general</h3>
+        <p>
+          <small>
+            <label style="display: inline-block; width: 200px;"><i class="fa-solid fa-folder-tree" style="width: 20px;"></i> Total</label>
+            <label style="display: inline-block; width: 100px;">${totalSize < 1048576 ? (totalSize / 1024).toFixed(2) + '&nbsp;KB' : (totalSize / 1048576).toFixed(2) + '&nbsp;MB'}</label>
+             ${totalFiles}&nbsp;archivos
+          </small>
+        </p>
+        <h3>Por carpeta:</h3>
+        <small>
+          <p style="margin: 2px 0;">
+            <label style="display: inline-block; width: 200px;"><i class="fa-solid fa-folder-closed" style="width: 20px;"></i> Raíz</label>
+            <label style="display: inline-block; width: 100px;">${rootSize < 1048576 ? (rootSize / 1024).toFixed(2) + '&nbsp;KB' : (rootSize / 1048576).toFixed(2) + '&nbsp;MB'}</label>
+            ${rootFiles.length}&nbsp;archivos
+          </p>`;
+
+    if (folderSummaries.length === 0) {
+      html += `<p>No hay carpetas creadas.</p>`;
+    } else {
+      folderSummaries.forEach(folder => {
+        html += `
+          <hr style="border: 1px solid #272727; margin: 0 0;">
+          <p style="margin: 2px 0;">
+            <label style="display: inline-block; width: 200px;"><i class="fa-solid fa-folder" style="width: 20px;"></i> ${folder.name}</label> 
+            <label style="display: inline-block; width: 100px;">${folder.size < 1048576 ? (folder.size / 1024).toFixed(2) + '&nbsp;KB' : (folder.size / 1048576).toFixed(2) + '&nbsp;MB'}</label> 
+            ${folder.count}&nbsp;archivos
+          </p>`;
+      });
+    }
+
+    html += `</small></div>`;
+
+    Swal.fire({
+      html,
+      position: 'top',
+      background: 'rgb(25, 25, 25)',
+      color: 'white',
+      width: '500px',
+      showCloseButton: true,
+      showConfirmButton: false
+    });
+  }
+  
+  getThumbnailUrl(file: any): string {
+    return URL.createObjectURL(new Blob([file.previewBlob], { type: file.mime_type }));
+  }
+
+  getFileType(mimeType: string): string {
+    if (mimeType.startsWith('image/')) {
+      return 'image';
+    }
+    if (mimeType === 'application/pdf') {
+      return 'pdf';
+    }
+    if (mimeType === 'text/csv' || mimeType === 'application/vnd.ms-excel' || mimeType === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+      return 'csv';
+    }
+    if (mimeType.startsWith('text/') || mimeType === 'application/json' || mimeType === 'application/javascript') {
+      return 'code';
+    }
+    return 'default';
   }
 }

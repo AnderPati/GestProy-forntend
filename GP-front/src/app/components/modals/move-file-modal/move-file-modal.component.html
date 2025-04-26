@@ -1,0 +1,35 @@
+<div class="move-modal-backdrop" *ngIf="show">
+    <div class="move-modal">
+      <h2>Mover archivo</h2>
+      <h3 style="font-size: 1rem;"><i class="fa-solid fa-file"></i> {{ fileToMove?.original_name }}</h3>
+      <p>Selecciona una nueva ubicación:</p>
+  
+      <div class="folder-grid">
+        <div class="folder-option"
+             [class.selected]="selectedFolderId === null"
+             [class.disabled]="!canSelectFolder(null)"
+             (click)="canSelectFolder(null) && selectFolder(null)">
+          <i class="fa-solid fa-folder-tree"></i>
+          <span>Raíz</span>
+        </div>
+      
+        <div 
+            *ngFor="let folder of folders"
+            class="folder-option"
+            [class.selected]="selectedFolderId === folder.id"
+            [class.disabled]="!canSelectFolder(folder.id)"
+            (click)="canSelectFolder(folder.id) && selectFolder(folder.id)"
+            >
+            <i class="fa-solid" [ngClass]="selectedFolderId === folder.id ? 'fa-folder-open' : 'fa-folder'"></i>
+            {{ folder.name }}
+        </div>
+      </div>
+      
+  
+      <div class="modal-actions">
+        <button (click)="close.emit()">Cancelar</button>
+        <button class="primary" (click)="confirmMove()">Mover aquí</button>
+      </div>
+    </div>
+  </div>
+  

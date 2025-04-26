@@ -21,7 +21,7 @@ export class FileService {
     return this.http.post(`${this.api}/projects/${projectId}/files`, formData);
   }
 
-  updateFileFolder(fileId: number, folderId: number) {
+  updateFileFolder(fileId: number, folderId: number | null) {
     return this.http.put(`${this.api}/files/${fileId}`, { folder_id: folderId });
   }
 
@@ -47,7 +47,7 @@ export class FileService {
     return this.http.delete(`${this.api}/projects/${projectId}/folders/${folderId}`);
   }
 
-  downloadFolder(folderId: number): Observable<Blob> {
+  downloadFolder(projectId: number, folderId: number): Observable<Blob> {
     return this.http.get(`${this.api}/folders/${folderId}/download`, {
       responseType: 'blob'
     });

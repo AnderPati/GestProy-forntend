@@ -43,14 +43,11 @@
         border-radius: 0 5px 5px 0;
         font-size: 0.9rem;
         white-space: nowrap;
-        opacity: 0;
-        visibility: visible;
-        transition: opacity 0.3s ease-in-out;
+        display: none;
         z-index: 1000;
       }
       &:hover::after {
-        opacity: 1;
-        visibility: visible;
+        display: block;
       }
       
       
