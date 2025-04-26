@@ -18,6 +18,10 @@ export class ProfileComponent implements OnInit {
   selectedFile: File | null = null;
   hovering: boolean = false;
   imagePreview: string | ArrayBuffer | null = null;
+  usedStorage: number = 0;
+  storageLimit: number = 0;
+  freeStorage: number = 0;
+  displayedStoragePercentage: number = 0;
 
   @ViewChild('fileInput') fileInput!: ElementRef;
 
@@ -38,6 +42,36 @@ export class ProfileComponent implements OnInit {
         this.errorMessage = 'Error al cargar el perfil.';
       }
     );
+    this.profileService.getStorageUsage().subscribe(data => {
+      this.usedStorage = data.used;
+      this.storageLimit = data.storage_limit;
+      this.freeStorage = data.free;
+
+      this.animateStoragePercentage();
+    });
+  }
+
+  get storageUsagePercentage(): number {
+    return this.storageLimit > 0 ? (this.usedStorage / this.storageLimit) * 100 : 0;
+  }
+
+  animateStoragePercentage() {
+    const duration = 1000; // duración total en ms (1 segundo)
+    const frameRate = 30; // 60 frames por segundo
+    const totalFrames = duration / (1000 / frameRate);
+    const increment = this.storageUsagePercentage / totalFrames;
+    
+    let currentFrame = 0;
+  
+    const interval = setInterval(() => {
+      this.displayedStoragePercentage += increment;
+      currentFrame++;
+  
+      if (currentFrame >= totalFrames) {
+        this.displayedStoragePercentage = this.storageUsagePercentage; // aseguramos que termine exacto
+        clearInterval(interval);
+      }
+    }, 1000 / frameRate);
   }
 
   triggerFileInput() {

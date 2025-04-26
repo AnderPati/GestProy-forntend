@@ -51,7 +51,7 @@
   <div class="folder-grid" *ngIf="!currentFolderId">
     <div class="folder-card" *ngFor="let folder of folders" (click)="openFolder(folder)">
       <i class="fa-solid fa-folder"></i>
-      <span>{{ folder.name }}</span>
+      <span title="{{ folder.name }}">{{ folder.name }}</span>
       <small>{{ folder.fileCount || 0 }}</small>
 
       <div class="folder-actions">
@@ -70,7 +70,6 @@
 
     <div class="folder-card create-folder" (click)="promptNewFolder()">
       <i class="fa-solid fa-folder-plus"></i>
-      <span>Nueva carpeta</span>
     </div>
   </div>
 

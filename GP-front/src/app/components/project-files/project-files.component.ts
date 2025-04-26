@@ -1,5 +1,5 @@
 import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FileService } from '../../services/file.service';
 import Swal from 'sweetalert2';
 import { ChangeDetectorRef } from '@angular/core';
@@ -25,7 +25,8 @@ export class ProjectFilesComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private fileService: FileService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -108,12 +109,35 @@ loadFiles() {
 
   upload() {
     if (!this.selectedFile) return;
-
+  
     this.fileService
       .uploadFile(this.projectId, this.selectedFile, this.currentFolderId)
-      .subscribe(() => {
-        this.selectedFile = null;
-        this.loadFiles();
+      .subscribe({
+        next: () => {
+          this.selectedFile = null;
+          this.loadFiles();
+        },
+        error: (err) => {
+          if (err.status === 400 && err.error?.message === 'Has excedido tu límite de almacenamiento.') {
+            Swal.fire({
+              position: 'top',
+              title: '¡Espacio insuficiente!',
+              text: 'Has alcanzado el límite de almacenamiento de tu cuenta. Elimina archivos antiguos para seguir subiendo nuevos archivos.',
+              icon: 'warning',
+              color: 'white',
+              confirmButtonText: 'Entendido',
+              confirmButtonColor: '#4a7362',
+              background: 'rgb(28, 15, 0)',
+              footer: 'En tu perfil puedes encontrar más información.'
+            });
+          } else {
+            Swal.fire(
+              'Error al subir el archivo',
+              err.error.message || 'Ocurrió un error inesperado. Por favor, intenta más tarde.',
+              'error'
+            );
+          }
+        }
       });
   }
 

@@ -73,14 +73,15 @@
 
 .folder-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  min-height: 110px;
   gap: 20px;
   margin-bottom: 30px;
 
   .folder-card {
     background-color: var(--background-color);
     padding: 20px;
-    border-radius: 12px;
+    border-radius: 10px;
     text-align: center;
     cursor: pointer;
     transition: background 0.2s;
@@ -96,9 +97,16 @@
     }
 
     span {
+      font-size: 1rem;
       font-weight: bold;
       color: var(--text-color);
       word-break: break-word;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3; /* Número máximo de líneas */
+      text-overflow: ellipsis;
+      max-height: calc(1.5em * 3); /* 3 líneas * altura de línea */
     }
 
     small {
@@ -118,6 +126,7 @@
 
       i {
         color: var(--primary-color);
+        margin: auto;
       }
 
       &:hover {
@@ -160,6 +169,7 @@
     flex-direction: column;
     z-index: 200; // subido para que nunca quede debajo
     padding: 5px;
+    cursor: default;
 
     button {
       background: none;
@@ -217,6 +227,12 @@
     font-size: 1.2rem;
     color: var(--text-color);
     margin: 0;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1; /* Número máximo de líneas */
+    text-overflow: ellipsis;
+    max-height: calc(1.5em * 1); /* 3 líneas * altura de línea */
   }
 
   button {

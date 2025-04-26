@@ -65,6 +65,30 @@
       <span *ngIf="isLoading" class="loading-spinner">...</span>
     </button>
   </form>
+
+  <div class="storage-usage">
+    <h3>Almacenamiento usado:</h3>
+    
+    <div class="progress-bar-container">
+      <small [style.left.%]="storageUsagePercentage">
+        {{ displayedStoragePercentage | number:'1.0-2' }}%
+      </small>
+      <div class="progress-bar" [style.width.%]="storageUsagePercentage"></div>
+    </div>
+    <p>
+      {{
+        usedStorage >= 1073741824
+          ? (usedStorage / 1073741824).toFixed(2) + ' GB'
+          : (usedStorage / 1048576).toFixed(2) + ' MB'
+      }}
+      de
+      {{
+        storageLimit >= 1073741824
+          ? (storageLimit / 1073741824) + ' GB'
+          : (storageLimit / 1048576) + ' MB'
+      }}
+    </p>
+  </div>
 </div>
 
   

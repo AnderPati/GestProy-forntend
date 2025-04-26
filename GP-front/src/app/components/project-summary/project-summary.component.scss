@@ -30,6 +30,7 @@
   .progress-bar {
     height: 100%;
     background: linear-gradient(to right, #66bb6a, #43a047);
+    box-shadow: 2.5px 0px 0px 0px var(--background-color-light);
     transition: width 1s ease-in-out;
     border-radius: 50px;
   }
@@ -58,9 +59,9 @@
   .back-btn {
     text-decoration: none;
     background: var(--primary-color);
-    color: white;
+    color: var(--text-color);
     padding: 8px 16px;
-    border-radius: 8px;
+    border-radius: 50px;
     display: inline-flex;
     align-items: center;
     gap: 6px;

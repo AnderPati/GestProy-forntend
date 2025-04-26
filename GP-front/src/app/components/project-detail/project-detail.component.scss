@@ -53,18 +53,6 @@
     }
   }
   
-//   .task-list {
-//     list-style: none;
-//     padding-left: 0;
-  
-//     li {
-//       margin-bottom: 10px;
-//       padding: 10px;
-//       border: 1px solid #ccc;
-//       border-radius: 6px;
-//       background: rgba(255, 255, 255, 0.2);
-//     }
-//   }
 .kanban-board {
     display: flex;
     gap: 10px;
@@ -143,6 +131,7 @@
   .progress-bar {
     height: 100%;
     background: linear-gradient(to right, #00ff0d3a, #43a047);
+    box-shadow: 2px 0px 0px 0px var(--background-color-light);
     transition: width 0.3s ease-in-out;
     border-radius: 8px;
   }
@@ -221,6 +210,125 @@
     &:hover {
       background: var(--primary-color-dark);
       cursor: pointer;
+    }
+  }
+
+  @media (max-width: 1150px) and (min-width: 769px) {
+    .project-detail-container {
+      padding: 20px;
+  
+      .task-header {
+        flex-wrap: wrap;
+        gap: 10px;
+  
+        button, .calendar-link, .files-link {
+          font-size: 1rem;
+          padding: 8px 12px;
+        }
+      }
+  
+      .kanban-board {
+        flex-wrap: wrap;
+        gap: 20px;
+        overflow-x: visible;
+      }
+  
+      .kanban-column {
+        flex: 1 1 45%;
+        min-width: 300px;
+      }
+    }
+  }
+  
+  
+  @media (max-width: 768px) {
+    .project-detail-container {
+      padding: 10px;
+  
+      .toggle-header-btn {
+        font-size: 1.6rem;
+        text-align: center;
+        width: 100%;
+      }
+  
+      .header-info {
+        padding: 10px;
+      }
+  
+      .task-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+  
+        button, .calendar-link, .files-link {
+          width: 100%;
+          justify-content: center;
+          padding: 8px;
+          font-size: 1rem;
+          border-radius: 12px;
+          margin-bottom: 10px;
+        }
+      }
+  
+      .kanban-board {
+        flex-direction: column;
+        gap: 16px;
+        overflow-x: visible;
+      }
+  
+      .kanban-column {
+        min-width: 90%;
+      }
+  
+      .task-list {
+        gap: 8px;
+      }
+  
+      .task-card {
+        font-size: 0.95rem;
+        padding: 8px;
+        border-radius: 8px;
+      }
+  
+      .task-priority {
+        font-size: 0.7rem;
+        padding: 2px 6px;
+      }
+  
+      .task-tag {
+        font-size: 0.7rem;
+        padding: 2px 6px;
+      }
+  
+      small, .progress-label {
+        font-size: 0.75rem;
+      }
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .project-detail-container {
+      .toggle-header-btn {
+        font-size: 1.4rem;
+      }
+  
+      .task-header h3 {
+        font-size: 1.4rem;
+      }
+  
+      .task-header button, .calendar-link, .files-link, .summary-link {
+        font-size: 0.95rem;
+        padding: 7px;
+      }
+  
+      .task-card {
+        font-size: 0.9rem;
+        padding: 6px;
+      }
+  
+      .task-priority, .task-tag {
+        font-size: 0.65rem;
+      }
     }
   }
   
