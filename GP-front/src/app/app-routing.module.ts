@@ -9,6 +9,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { TaskCalendarComponent } from './components/task-calendar/task-calendar.component';
 import { ProjectSummaryComponent } from './components/project-summary/project-summary.component';
 import { ProjectFilesComponent } from './components/project-files/project-files.component';
+import { TasksComponent } from './components/tasks/tasks.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -21,6 +22,7 @@ const routes: Routes = [
       { path: 'projects/:id/calendar', component: TaskCalendarComponent },
       { path: 'projects/:id/summary', component: ProjectSummaryComponent },
       { path: 'projects/:id/files', component: ProjectFilesComponent },
+      { path: 'tasks', component: TasksComponent },
       { path: 'profile', component: ProfileComponent },
       { path: '', redirectTo: 'projects', pathMatch: 'full' } // Default redirect inside dashboard | Redirige a projects por defecto dentro de dashboard
     ]},

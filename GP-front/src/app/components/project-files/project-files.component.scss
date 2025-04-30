@@ -5,9 +5,7 @@
   background-color: var(--background-color-light);
   border-radius: 10px;
   color: var(--text-color);
-  opacity: 0;
-  transform: translateY(-10px);
-  animation: fadeInDown 1s ease-in-out forwards;
+  animation: fadeInDown 300ms ease-in-out forwards;
 }
 
 .upload-section {

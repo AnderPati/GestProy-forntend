@@ -1,0 +1,134 @@
+.task-center {
+    padding: 20px;
+    color: var(--text-color);
+    animation: fadeInDown 300ms ease-in-out forwards;
+  
+    h2 {
+      margin-top: 0;
+      text-align: left;
+      font-weight: bold;
+    }
+  
+    .filters-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      align-items: flex-end;
+      margin-bottom: 40px;
+  
+      .filter-group {
+        display: flex;
+        flex-direction: column;
+        min-width: 180px;
+  
+        label {
+          font-size: 14px;
+          margin-bottom: 5px;
+          font-weight: 600;
+        }
+  
+        input, select {
+          padding: 10px;
+          border: 1px solid var(--primary-color);
+          border-radius: 8px;
+          background: var(--background-color-light);
+          color: var(--text-color);
+          font-weight: 500;
+        }
+      }
+  
+      .filter-buttons {
+        display: flex;
+        gap: 10px;
+  
+        button {
+          padding: 12px 20px;
+          border: none;
+          border-radius: 50px;
+          background: var(--primary-color);
+          color: var(--text-color);
+          font-weight: bold;
+          cursor: pointer;
+          transition: background 0.3s;
+  
+          &:hover {
+            background: var(--primary-color-dark);
+          }
+        }
+      }
+    }
+  
+    .task-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+
+        .task-card {
+          background: rgba(127, 127, 127, 0.15);
+          padding: 15px;
+          border-radius: 8px;
+          border: 1.5px solid var(--primary-color-light);
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+          transition: transform 0.3s ease, background 0.3s ease;
+          cursor: pointer;
+          color: var(--text-color) !important;
+      
+          h4 {
+            margin: 0 0 10px;
+            font-size: 1.2rem;
+          }
+      
+          p {
+            margin: 0 0 10px;
+            font-size: 1rem;
+          }
+      
+          .task-info {
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid rgba(127, 127, 127, 0.3);
+            padding-top: 8px;
+            margin-top: 10px;
+          }
+      
+          &:hover {
+            background: var(--background-color);
+            transform: translateY(-3px);
+          }
+        }
+      }
+
+   .project-group{
+        background-color: var(--background-color-light);
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 15px;
+        animation: fadeInDown 300ms ease-in-out forwards;
+
+        h3{
+            margin-top: 0;
+            font-size: 1.5rem;
+        }
+   }
+      
+  }
+
+  .no-tasks-found {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-top: 50px;
+    color: var(--text-color);
+    animation: fadeInDown 300ms ease-in-out forwards;
+  }
+  
+  @keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

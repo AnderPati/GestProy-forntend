@@ -21,6 +21,7 @@ import { TaskCalendarComponent } from './components/task-calendar/task-calendar.
 import { ProjectSummaryComponent } from './components/project-summary/project-summary.component';
 import { ProjectFilesComponent } from './components/project-files/project-files.component';
 import { MoveFileModalComponent } from './components/modals/move-file-modal/move-file-modal.component';
+import { TasksComponent } from './components/tasks/tasks.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { MoveFileModalComponent } from './components/modals/move-file-modal/move
     TaskCalendarComponent,
     ProjectSummaryComponent,
     ProjectFilesComponent,
-    MoveFileModalComponent
+    MoveFileModalComponent,
+    TasksComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,82 @@
+<div class="task-center">
+    <h2>Centro de Tareas</h2>
+  
+    <div class="filters-container">
+      <div class="filter-group">
+        <label>Buscar:</label>
+        <input type="text" placeholder="Por texto..." [(ngModel)]="filters.search">
+      </div>
+  
+      <div class="filter-group">
+        <label>Proyecto:</label>
+        <select [(ngModel)]="filters.project_name">
+          <option value="">Todos</option>
+          <option *ngFor="let project of projectNames" [value]="project">
+            {{ project }}
+          </option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Estado:</label>
+        <select [(ngModel)]="filters.status">
+          <option value="">Todos</option>
+          <option value="pendiente">Pendiente</option>
+          <option value="en progreso">En Progreso</option>
+          <option value="completado">Completado</option>
+        </select>
+      </div>
+  
+      <div class="filter-group">
+        <label>Antes de fecha límite:</label>
+        <input type="date" [(ngModel)]="filters.due_before">
+      </div>
+  
+      <div class="filter-group">
+        <label>Después de fecha límite:</label>
+        <input type="date" [(ngModel)]="filters.due_after">
+      </div>
+  
+      <div class="filter-group">
+        <label>Ordenar por:</label>
+        <select [(ngModel)]="filters.sort_by">
+          <option value="">Ninguno</option>
+          <option value="due_date">Fecha Límite</option>
+          <option value="priority">Prioridad</option>
+          <option value="status">Estado</option>
+        </select>
+      </div>
+  
+      <div class="filter-group">
+        <label>Orden <i class="fa-solid fa-arrows-up-down"></i>:</label>
+        <select [(ngModel)]="filters.sort_direction">
+          <option value="">Ninguno</option>
+          <option value="asc">Ascendente</option>
+          <option value="desc">Descendente</option>
+        </select>
+      </div>
+  
+      <div class="filter-buttons">
+        <button (click)="applyFilters()"><i class="fa-solid fa-filter"></i> Aplicar filtros</button>
+        <button (click)="resetFilters()"><i class="fa-solid fa-filter-circle-xmark"></i> Limpiar filtros</button>
+      </div>
+    </div>
+  
+    <div class="project-group" *ngFor="let project of tasksGroupedKeys()">
+        <h3 class="project-title">{{ project }}</h3>
+      
+        <div class="task-list">
+          <div *ngFor="let task of tasksGroupedByProject[project]" class="task-card">
+            <h4>{{ task.title }}</h4>
+            <p>{{ task.description }}</p>
+            <div class="task-info">
+              <small>{{ task.due_date }}</small>
+              <small>{{ task.status }}</small>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+  <div *ngIf="tasksGroupedKeys().length === 0" class="no-tasks-found">
+        Ups... Parece que no hay tareas que mostrar.
+  </div>

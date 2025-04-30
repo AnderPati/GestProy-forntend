@@ -1,7 +1,7 @@
 <div class="project-detail-container" *ngIf="project">
     <button class="toggle-header-btn" (click)="toggleHeader()">
       {{ project.name }}
-      <i class="fa" [ngClass]="showHeader ? 'fa-solid fa-angle-up' : 'fa-solid fa-angle-down'"></i>
+      <i class="fa fa-solid fa-circle-chevron-down" [ngClass]="showHeader ? 'fa-open' : ''"></i>
     </button>
     <div class="header-info" *ngIf="showHeader">
       <p *ngIf="project.description">{{ project.description }}</p>

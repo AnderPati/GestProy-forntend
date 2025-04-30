@@ -10,6 +10,16 @@
       color: var(--text-color);
       margin: 0;
       padding: 0;
+      
+
+      .fa{
+        color: var(--text-color);
+        transition: transform 300ms ease-in-out;
+      }
+
+      .fa-open{
+        transform: rotate(-180deg);
+      }
     }
     .header-info{
       background-color: var(--background-color-light);
@@ -23,9 +33,7 @@
         margin: 20px 0;
     }
 
-    opacity: 0;
-    transform: translateY(-10px);
-    animation: fadeInDown 500ms ease-in-out forwards;
+    animation: fadeInDown 300ms ease-in-out forwards;
   }
   
   .task-header {

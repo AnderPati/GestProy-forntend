@@ -3,7 +3,7 @@
 // Este servicio gestiona operaciones relacionadas con tareas: obtener tareas de un proyecto, y hacer CRUD de tareas individuales.
 
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -16,6 +16,18 @@ export class TaskService {
 
   getTasks(projectId: number): Observable<any> {
     return this.http.get(`${this.baseUrl}/projects/${projectId}/tasks`); // Get all tasks for a given project | Obtiene todas las tareas de un proyecto
+  }
+
+  getAllTasks(filters: any = {}): Observable<any[]> {
+    let params = new HttpParams();
+
+    Object.keys(filters).forEach(key => {
+      if (filters[key] !== null && filters[key] !== undefined && filters[key] !== '') {
+        params = params.set(key, filters[key]);
+      }
+    });
+
+    return this.http.get<any[]>(`${this.baseUrl}/tasks`, { params });
   }
 
   createTask(projectId: number, task: any): Observable<any> {
