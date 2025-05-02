@@ -27,6 +27,7 @@ export class ProjectDetailComponent implements OnInit {
   progressPercentage: number = 0;
   isMobile: boolean = false;
   resizeListener: any;
+  isLoading: boolean = false;
 
   constructor(
     private titleService: Title,
@@ -61,6 +62,7 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   loadProject() {
+    this.isLoading = true;
     this.projectService.getProject(this.projectId).subscribe({
       next: data => {
         this.project = data;
@@ -79,16 +81,19 @@ export class ProjectDetailComponent implements OnInit {
             showConfirmButton: false,
             timer: 6000,
             timerProgressBar: true,
-            background: 'rgba(0, 0, 0, 0.7)',
             color: '#fff',
             iconColor: '#fff',
+            customClass: {
+              popup: 'swal-backdrop'
+            },
             didOpen: (toast) => {
               toast.addEventListener('mouseenter', Swal.stopTimer)
               toast.addEventListener('mouseleave', Swal.resumeTimer)
             }
           });
         }
-      }
+      },
+      complete: () => this.isLoading = false
     });
   }
 
@@ -121,15 +126,19 @@ export class ProjectDetailComponent implements OnInit {
       allowOutsideClick: false,
       position: 'top',
       html: this.getCreateTaskFormHtml(),
-      background: '#4a7362',
       focusConfirm: false,
       showCancelButton: true,
       confirmButtonText: 'Crear Tarea',
-      confirmButtonColor: '#294036',
+      confirmButtonColor: '#38785c',
       cancelButtonText: 'Cancelar',
-      cancelButtonColor: '#5a3a3a',
+      cancelButtonColor: '#693131',
       customClass: {
-        title: 'sa2Title',
+        popup: 'swal-backdrop'
+      },
+      didOpen: () => {
+        document.querySelectorAll<HTMLInputElement>('input[type="date"]').forEach(input => {
+          input.addEventListener('focus', () => input.showPicker?.());
+        });
       },
       preConfirm: () => {
         const title = (document.getElementById('title') as HTMLInputElement).value.trim();
@@ -150,8 +159,6 @@ export class ProjectDetailComponent implements OnInit {
     });
   
     if (!formValues) return;
-
-    console.log('Form values:', formValues);
   
     const newTask = {
       title: formValues.title,
@@ -183,11 +190,12 @@ export class ProjectDetailComponent implements OnInit {
         iconColor: '#fff',
         showCancelButton: true,
         confirmButtonText: 'Desarchivar',
-        confirmButtonColor: '#294036',
+        confirmButtonColor: '#38785c',
         cancelButtonText: 'Cancelar',
-        cancelButtonColor: '#5a3a3a',
-        background: '#7a5c38',
-        color: 'white'
+        cancelButtonColor: '#693131',
+        customClass: {
+          popup: 'swal-backdrop'
+        },
       }).then(result => {
         if (result.isConfirmed) {
           const unarchivedTask = { ...task, archived: false };
@@ -209,13 +217,17 @@ export class ProjectDetailComponent implements OnInit {
       confirmButtonText: 'Guardar Cambios',
       denyButtonText: 'Archivar',
       cancelButtonText: 'Eliminar',
-      confirmButtonColor: '#294036',
+      confirmButtonColor: '#38785c',
       denyButtonColor: '#5e4b56',
-      cancelButtonColor: '#5a3a3a',
-      background: '#a67c52',
+      cancelButtonColor: '#693131',
       focusConfirm: false,
       customClass: {
-        title: 'sa2Title',
+        popup: 'swal-backdrop'
+      },
+      didOpen: () => {
+        document.querySelectorAll<HTMLInputElement>('input[type="date"]').forEach(input => {
+          input.addEventListener('focus', () => input.showPicker?.());
+        });
       },
       preConfirm: () => {
         const title = (document.getElementById('title') as HTMLInputElement).value.trim();
@@ -253,10 +265,12 @@ export class ProjectDetailComponent implements OnInit {
           position: 'top',
           showCancelButton: true,
           confirmButtonText: 'Sí, eliminar',
-          confirmButtonColor: '#e63946',
+          confirmButtonColor: '#693131',
           cancelButtonText: 'Cancelar',
           cancelButtonColor: '#4a7362',
-          background: '#8c3b3b',
+          customClass: {
+            popup: 'swal-backdrop'
+          },
         }).then(confirmDelete => {
           if (confirmDelete.isConfirmed) {
             this.taskService.deleteTask(task.id).subscribe(() => {
@@ -333,26 +347,26 @@ export class ProjectDetailComponent implements OnInit {
     return `
       <div style="display: flex; flex-direction: column; text-align: left; padding: 10px;">
         <label for="title" style="font-weight: bold; color: white;">Título: <span style="color: #f4a261;">*</span></label>
-        <input id="title" type="text" class="swal2-input" required style="width: 100%; margin: 0; color: black; border: 1.5px solid white; border-radius: 8px; background: rgba(255, 255, 255, 0.2);">
+        <input id="title" type="text" class="swal2-input" required style="width: 100%; margin: 0; color: white; border: 1.5px solid white; border-radius: 8px; background: rgba(0, 0, 0, 0.5);">
   
         <label for="description" style="font-weight: bold; color: white; margin-top: 10px;">Descripción:</label>
-        <textarea id="description" class="swal2-input" style="height: 80px; border-radius: 8px; padding: 10px; font-size: 1rem; border: 1.5px solid white; background: rgba(255, 255, 255, 0.2); color: black;"></textarea>
+        <textarea id="description" class="swal2-input" style="height: 80px; border-radius: 8px; padding: 10px; font-size: 1rem; border: 1.5px solid white; background: rgba(0, 0, 0, 0.5); color: white;"></textarea>
   
         <label for="due_date" style="font-weight: bold; color: white; margin-top: 10px;">Fecha de vencimiento:</label>
-        <input id="due_date" type="date" class="swal2-input" style="margin: 0; padding: 10px; font-size: 1rem; border: 1.5px solid white; border-radius: 8px; background: rgba(255, 255, 255, 0.2); color: black;" />
+        <input id="due_date" type="date" class="swal2-input" style="margin: 0; padding: 10px; font-size: 1rem; border: 1.5px solid white; border-radius: 8px; background: rgba(0, 0, 0, 0.5); color: white;" />
   
         <label for="tags" style="font-weight: bold; color: white; margin-top: 10px;">Etiquetas (separadas por comas):</label>
-        <input id="tags" type="text" class="swal2-input" placeholder="Ej: frontend, urgente, bug" style="width: 100%; margin: 0; color: black; border: 1.5px solid white; border-radius: 8px; background: rgba(255, 255, 255, 0.2);">
+        <input id="tags" type="text" class="swal2-input" placeholder="Ej: frontend, urgente, bug" style="width: 100%; margin: 0; color: white; border: 1.5px solid white; border-radius: 8px; background: rgba(0, 0, 0, 0.5);">
   
         <label for="priority" style="font-weight: bold; color: white; margin-top: 10px;">Prioridad: <span style="color: #f4a261;">*</span></label>
-        <select id="priority" class="swal2-select" style="border-radius: 8px; padding: 10px; width: 100%; margin: 0; font-size: 1rem; border: 1.5px solid white; background: rgba(255, 255, 255, 0.2); color: black;">
+        <select id="priority" class="swal2-select" style="border-radius: 8px; padding: 10px; width: 100%; margin: 0; font-size: 1rem; border: 1.5px solid white; background: rgba(0, 0, 0, 0.5); color: white;">
           <option value="baja">Baja</option>
           <option value="media" selected>Media</option>
           <option value="alta">Alta</option>
         </select>
   
         <label for="status" style="font-weight: bold; color: white; margin-top: 10px;">Estado: <span style="color: #f4a261;">*</span></label>
-        <select id="status" class="swal2-select" style="border-radius: 8px; padding: 10px; width: 100%; margin: 0; font-size: 1rem; border: 1.5px solid white; background: rgba(255, 255, 255, 0.2); color: black;">
+        <select id="status" class="swal2-select" style="border-radius: 8px; padding: 10px; width: 100%; margin: 0; font-size: 1rem; border: 1.5px solid white; background: rgba(0, 0, 0, 0.5); color: white;">
           <option value="pendiente">Pendiente</option>
           <option value="en progreso">En Progreso</option>
           <option value="completado">Completado</option>
@@ -367,32 +381,41 @@ export class ProjectDetailComponent implements OnInit {
     return `
       <div style="display: flex; flex-direction: column; text-align: left; padding: 10px;">
         <label for="title" style="font-weight: bold; color: white;">Título: <span style="color: #f4a261;">*</span></label>
-        <input id="title" type="text" class="swal2-input" value="${safe(task.title)}" required style="width: 100%; margin: 0; background: rgba(255, 255, 255, 0.2); color: black; border: 1.5px solid white; border-radius: 8px;">
+        <input id="title" type="text" class="swal2-input" value="${safe(task.title)}" required style="width: 100%; margin: 0; background: rgba(0, 0, 0, 0.5); color: white; border: 1.5px solid white; border-radius: 8px;">
   
         <label for="description" style="font-weight: bold; color: white; margin-top: 10px;">Descripción:</label>
-        <textarea id="description" class="swal2-input" style="height: 80px; border-radius: 8px; padding: 10px; font-size: 1rem; border: 1.5px solid white; background: rgba(255, 255, 255, 0.2); color: black;">${safe(task.description)}</textarea>
+        <textarea id="description" class="swal2-input" style="height: 80px; border-radius: 8px; padding: 10px; font-size: 1rem; border: 1.5px solid white; background: rgba(0, 0, 0, 0.5); color: white;">${safe(task.description)}</textarea>
   
         <label for="due_date" style="font-weight: bold; color: white; margin-top: 10px;">Fecha límite:</label>
-        <input id="due_date" type="date" class="swal2-input" value="${safe(task.due_date)}" style="margin: 0; padding: 10px; font-size: 1rem; border: 1.5px solid white; border-radius: 8px; background: rgba(255, 255, 255, 0.2); color: black;"/>
+        <input id="due_date" type="date" class="swal2-input" value="${safe(task.due_date)}" style="margin: 0; padding: 10px; font-size: 1rem; border: 1.5px solid white; border-radius: 8px; background: rgba(0, 0, 0, 0.5); color: white;"/>
   
         <label for="tags" style="font-weight: bold; color: white; margin-top: 10px;">Etiquetas (separadas por comas):</label>
-        <input id="tags" type="text" class="swal2-input" placeholder="Ej: frontend, urgente, bug" value="${safe(task.tags)}" style="width: 100%; margin: 0; color: black; border: 1.5px solid white; border-radius: 8px; background: rgba(255, 255, 255, 0.2);">
+        <input id="tags" type="text" class="swal2-input" placeholder="Ej: frontend, urgente, bug" value="${safe(task.tags)}" style="width: 100%; margin: 0; color: white; border: 1.5px solid white; border-radius: 8px; background: rgba(0, 0, 0, 0.5);">
   
         <label for="priority" style="font-weight: bold; color: white; margin-top: 10px;">Prioridad: <span style="color: #f4a261;">*</span></label>
-        <select id="priority" class="swal2-select" style="border-radius: 8px; padding: 10px; width: 100%; margin: 0; font-size: 1rem; border: 1.5px solid white; background: rgba(255, 255, 255, 0.2); color: black;">
+        <select id="priority" class="swal2-select" style="border-radius: 8px; padding: 10px; width: 100%; margin: 0; font-size: 1rem; border: 1.5px solid white; background: rgba(0, 0, 0, 0.5); color: white;">
           <option value="baja" ${isSelected(task.priority, 'baja')}>Baja</option>
           <option value="media" ${isSelected(task.priority, 'media')}>Media</option>
           <option value="alta" ${isSelected(task.priority, 'alta')}>Alta</option>
         </select>
   
         <label for="status" style="font-weight: bold; color: white; margin-top: 10px;">Estado: <span style="color: #f4a261;">*</span></label>
-        <select id="status" class="swal2-select" style="border-radius: 8px; padding: 10px; width: 100%; margin: 0; font-size: 1rem; border: 1.5px solid white; background: rgba(255, 255, 255, 0.2); color: black;">
+        <select id="status" class="swal2-select" style="border-radius: 8px; padding: 10px; width: 100%; margin: 0; font-size: 1rem; border: 1.5px solid white; background: rgba(0, 0, 0, 0.5); color: white;">
           <option value="pendiente" ${isSelected(task.status, 'pendiente')}>Pendiente</option>
           <option value="en progreso" ${isSelected(task.status, 'en progreso')}>En Progreso</option>
           <option value="completado" ${isSelected(task.status, 'completado')}>Completado</option>
         </select>
       </div>
     `;
+  }
+
+  formatDateToSpanish(dateStr?: string): string {
+    if (!dateStr) return 'Fecha no disponible';
+    const date = new Date(dateStr);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
   }
   
 }

@@ -5,6 +5,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Task, TaskStatus } from '../models/task.model';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +29,10 @@ export class TaskService {
     });
 
     return this.http.get<any[]>(`${this.baseUrl}/tasks`, { params });
+  }
+
+  getUpcomingTasks(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/tasks/upcoming`);
   }
 
   createTask(projectId: number, task: any): Observable<any> {

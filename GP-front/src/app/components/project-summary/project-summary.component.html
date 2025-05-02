@@ -1,8 +1,8 @@
 <div class="summary-container" *ngIf="project">
     <h2>{{ project.name }}</h2>
     <p><strong>Estado:</strong> {{ project.status | titlecase }}</p>
-    <p><strong>Inicio:</strong> {{ project.start_date }} 
-      <span *ngIf="project.end_date">| <strong>Fin:</strong> {{ project.end_date }}</span>
+    <p><strong>Inicio:</strong> {{ formatDateToSpanish(project.start_date) }} 
+      <span *ngIf="project.end_date">| <strong>Fin:</strong> {{ formatDateToSpanish(project.end_date) }}</span>
     </p>
   
     <p *ngIf="project.description"><strong>Descripción:</strong><br>{{ project.description }}</p>

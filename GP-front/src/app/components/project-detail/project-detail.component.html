@@ -1,4 +1,7 @@
-<div class="project-detail-container" *ngIf="project">
+<div class="overlay-loader" *ngIf="isLoading">
+  <div class="spinner"></div>
+</div>
+<div class="project-detail-container" *ngIf="!isLoading && project">
     <button class="toggle-header-btn" (click)="toggleHeader()">
       {{ project.name }}
       <i class="fa fa-solid fa-circle-chevron-down" [ngClass]="showHeader ? 'fa-open' : ''"></i>
@@ -6,8 +9,8 @@
     <div class="header-info" *ngIf="showHeader">
       <p *ngIf="project.description">{{ project.description }}</p>
       <p><strong>Estado:</strong> {{ project.status }}</p>
-      <p><strong>Inicio:</strong> {{ project.start_date }}</p>
-      <p *ngIf="project.end_date"><strong>Fin:</strong> {{ project.end_date }}</p>
+      <p><strong>Inicio:</strong> {{ formatDateToSpanish(project.start_date) }}</p>
+      <p *ngIf="project.end_date"><strong>Fin:</strong> {{ formatDateToSpanish(project.end_date) }}</p>
       <div *ngIf="tasks.length !== 0">
         <small class="progress-label">{{ progressPercentage }}% completado</small>
         <div class="progress-container">
@@ -77,7 +80,7 @@
                   </span>
                 </div>
                 <span *ngIf="task.description"><hr>{{ task.description }}</span>
-                <small *ngIf="task.due_date"><hr>📅 {{ task.due_date }}</small>
+                <small *ngIf="task.due_date"><hr>📅 {{ formatDateToSpanish(task.due_date) }}</small>
             </ng-container>
             <ng-template #archivedTask>
               <strong>{{ task.title }}</strong>

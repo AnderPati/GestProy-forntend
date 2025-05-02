@@ -25,8 +25,11 @@
         </div>
     </div>
       
-      
-    <div class="calendar-container" *ngIf="calendarOptions">
+    <div *ngIf="isLoading" class="spinner-container">
+      <div class="loader"></div>
+    </div>
+    
+    <div class="calendar-container" *ngIf="!isLoading && calendarOptions">
         <full-calendar [options]="calendarOptions"></full-calendar>
     </div>
 </div>

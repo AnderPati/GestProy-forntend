@@ -80,10 +80,6 @@ body {
     --button-hover-dark: #{lighten($button-hover-dark, 13%)};
   }
 
-  .sa2Title {
-    color: white;
-  }
-
   .custom-toast {
     width: auto !important;
     padding: 10px !important;
@@ -95,9 +91,35 @@ body {
     max-width: none !important;
     box-sizing: content-box !important;
     border-radius: 100%;
+    backdrop-filter: blur(2px);
+    border: 1px solid var(--primary-color-dark) !important;
   }
   
   .custom-toast .swal2-icon {
     font-size: 2rem;
     margin: 0 !important;
   }
+
+  .swal-upcoming {
+    background-color: rgba(0, 0, 0, 0.7) !important;
+    color: white;
+    border: var(--primary-color-dark) 2px solid;
+    border-radius: 10px;
+    width: 500px !important;
+    backdrop-filter: blur(3px);
+  }
+
+  .swal-upcoming-confirm-custom{
+    background-color: var(--primary-color-dark);
+    color: var(--text-color-dark);
+    border-radius: 50px;
+  }
+
+  .swal-backdrop{
+    background-color: rgba(0, 0, 0, 0.7) !important;
+    backdrop-filter: blur(4px);
+    border-radius: 20px;
+    border: 2px solid var(--primary-color-dark);
+    color: white;
+  }
+  

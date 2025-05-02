@@ -47,7 +47,7 @@ input.edited {
 button {
   padding: 10px;
   background-color: var(--primary-color);
-  color: white;
+  color: var(--text-color);
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -105,7 +105,7 @@ button {
 input[type="file"] {
   margin-top: 10px;
   padding: 8px;
-  background: white;
+  background: var(--text-color);
   border-radius: 5px;
   cursor: pointer;
 }
@@ -120,7 +120,7 @@ input[type="file"].edited {
   margin-top: 10px;
   padding: 8px;
   background: var(--primary-color);
-  color: white;
+  color: var(--text-color);
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -233,4 +233,20 @@ input[type="file"].edited {
       opacity: 1;
       transform: translateY(0);
   }
+}
+
+.spinner-button {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 3px solid var(--text-color);
+  border-top: 3px solid transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

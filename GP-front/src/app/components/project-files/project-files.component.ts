@@ -127,8 +127,11 @@ loadFiles() {
               color: 'white',
               confirmButtonText: 'Entendido',
               confirmButtonColor: '#4a7362',
-              background: 'rgb(28, 15, 0)',
-              footer: 'En tu perfil puedes encontrar más información.'
+              footer: 'En tu perfil puedes encontrar más información.',
+              customClass: {
+                popup: 'swal-backdrop'
+              },
+              
             });
           } else {
             Swal.fire(
@@ -156,10 +159,13 @@ loadFiles() {
       text: fileName,
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#e63946',
-      cancelButtonColor: '#aaa',
+      confirmButtonColor: '#693131',
+      cancelButtonColor: '#38785c',
       confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar'
+      cancelButtonText: 'Cancelar',
+      customClass: {
+        popup: 'swal-backdrop'
+      },
     }).then(result => {
       if (result.isConfirmed) {
         this.fileService.deleteFile(fileId).subscribe({
@@ -242,14 +248,12 @@ loadFiles() {
       input: 'text',
       inputPlaceholder: 'Nombre de la carpeta',
       showCancelButton: true,
-      background: 'linear-gradient(180deg, #4a7362, #4a7362, transparent)',
       confirmButtonText: 'Crear',
-      confirmButtonColor: '#4a7362',
+      confirmButtonColor: '#38785c',
       cancelButtonText: 'Cancelar',
-      cancelButtonColor: '#8d5b5b',
+      cancelButtonColor: '#693131',
       customClass: {
-        title: 'sa2Title',
-        input: 'sa2Title',
+        popup: 'swal-backdrop'
       },
     }).then(result => {
       if (result.isConfirmed && result.value) {
@@ -273,21 +277,29 @@ loadFiles() {
       input: 'text',
       inputValue: folder.name,
       showCancelButton: true,
-      background: 'linear-gradient(180deg, #a67c52, #a67c52, transparent)',
       confirmButtonText: 'Renombrar',
-      confirmButtonColor: '#a67c52',
+      confirmButtonColor: '#38785c',
       cancelButtonText: 'Cancelar',
-      cancelButtonColor: '#8d5b5b',
+      cancelButtonColor: '#693131',
       customClass: {
-        title: 'sa2Title',
-        input: 'sa2Title',
+        popup: 'swal-backdrop'
       },
     }).then(result => {
       if (result.isConfirmed && result.value.trim()) {
         const newName = result.value.trim();
         this.fileService.renameFolder(this.projectId, folder.id, newName).subscribe(() => {
           this.loadFolders();
-          Swal.fire('Renombrada', 'La carpeta ha sido renombrada', 'success');
+          Swal.fire({
+            toast: true,
+            position: 'top',
+            background: 'transparent',
+            icon: 'success',
+            showConfirmButton: false,
+            timer: 1500,
+            customClass: {
+              popup: 'custom-toast'
+            }
+          });
         });
       }
     });
@@ -307,15 +319,15 @@ loadFiles() {
     Swal.fire({
       title: `¿Eliminar carpeta "${folder.name}"?`,
       icon: 'warning',
-      iconColor: 'white',
-      color: 'white',
-      background: '#8c3b3b',
       showCancelButton: true,
       confirmButtonText: 'Sí, eliminar',
-      confirmButtonColor: '#e63946',
+      confirmButtonColor: '#693131',
       cancelButtonText: 'Cancelar',
-      cancelButtonColor: '#4a7362',
-      position: 'top'
+      cancelButtonColor: '#38785c',
+      position: 'top',
+      customClass: {
+        popup: 'swal-backdrop'
+      },
     }).then(result => {
       if (result.isConfirmed) {
         this.fileService.deleteFolder(this.projectId, folder.id).subscribe({
@@ -344,7 +356,10 @@ loadFiles() {
               title: err.error.message || 'No se pudo eliminar la carpeta',
               showConfirmButton: false,
               timer: 5000,
-              timerProgressBar: true
+              timerProgressBar: true,
+              customClass: {
+                popup: 'swal-backdrop'
+              },
             });
           }
         });

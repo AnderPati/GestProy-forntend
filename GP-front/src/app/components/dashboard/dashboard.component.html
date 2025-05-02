@@ -27,4 +27,9 @@
   <main class="main-content">
     <router-outlet></router-outlet>
   </main>
+
+  <button *ngIf="notificationClosed && pendingTasksCount > 0" class="floating-bell" (click)="showNotificationDetails()">
+    <i class="fa-solid fa-bell"></i>
+    <span class="count-badge">{{ pendingTasksCount }}</span>
+  </button>
 </div>

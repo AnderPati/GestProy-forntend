@@ -6,6 +6,7 @@ import { ActivatedRoute} from '@angular/router';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import Swal from 'sweetalert2';
+import esLocale from '@fullcalendar/core/locales/es';
 
 @Component({
   selector: 'app-task-calendar',
@@ -16,6 +17,7 @@ export class TaskCalendarComponent implements OnInit {
   tasks: Task[] = [];
   calendarOptions!: CalendarOptions;
   projectId!: number;
+  isLoading: boolean = false;
 
   constructor(
     private taskService: TaskService,
@@ -28,9 +30,16 @@ export class TaskCalendarComponent implements OnInit {
   }
 
   loadTasks(): void {
-    this.taskService.getTasks(this.projectId).subscribe((data: Task[]) => {
-      this.tasks = data.filter(t => t.due_date); // Solo tareas con fecha
-      this.initCalendar();
+    this.isLoading = true;
+    this.taskService.getTasks(this.projectId).subscribe({
+      next: (data: Task[]) => {
+        this.tasks = data.filter(t => t.due_date);
+        this.initCalendar();
+      },
+      error: () => {},
+      complete: () => {
+        this.isLoading = false;
+      }
     });
   }
 
@@ -39,10 +48,13 @@ export class TaskCalendarComponent implements OnInit {
       plugins: [dayGridPlugin, interactionPlugin],
       initialView: 'dayGridMonth',
       editable: true,
+      firstDay: 1,
+      locale: esLocale,
       events: this.tasks.map(task => ({
         id: task.id.toString(),
         title: task.title,
         date: task.due_date,
+        priority: task.priority,
         backgroundColor:
           task.status === 'completado'
             ? '#66bb6a'
@@ -54,7 +66,11 @@ export class TaskCalendarComponent implements OnInit {
 
       })),
       eventClick: this.onEventClick.bind(this),
-      eventDrop: this.onEventDrop.bind(this)
+      eventDrop: this.onEventDrop.bind(this),
+      eventDidMount: (info) => {
+        const tooltip = `${info.event.title}\nPrioridad: ${info.event.extendedProps['priority']}`;
+        info.el.setAttribute('title', tooltip);
+      }
     };
   }
 
@@ -64,16 +80,19 @@ export class TaskCalendarComponent implements OnInit {
       Swal.fire({
         title: task.title,
         html: `
-          <p><strong>Estado:</strong> ${task.status}</p>
-          <p><strong>Descripción:</strong> ${task.description || '-'}</p>
-          <p><strong>Vencimiento:</strong> ${task.due_date}</p>
-          <p><strong>Etiquetas:</strong> ${task.tags || '-'}</p>
-          <p><strong>Prioridad:</strong> ${task.priority}</p>
+          <div style="text-align: left;">
+            <p><strong>Estado:</strong> ${task.status}</p>
+            <p><strong>Descripción:</strong> ${task.description || '-'}</p>
+            <p><strong>Vencimiento:</strong> ${this.formatDateToSpanish(task.due_date)}</p>
+            <p><strong>Etiquetas:</strong> ${task.tags || '-'}</p>
+            <p><strong>Prioridad:</strong> ${task.priority}</p>
+          </div>
         `,
-        confirmButtonText: 'Cerrar',
-        confirmButtonColor: '#9c89b8',
-        background: 'linear-gradient(135deg, #faf3dd, #fcd5ce)',
-        color: '#5e4b56'
+        showCloseButton: true,
+        showConfirmButton: false,
+        customClass: {
+          popup: 'swal-backdrop'
+        },
       });
     }
   }
@@ -126,5 +145,12 @@ export class TaskCalendarComponent implements OnInit {
     });
   }
   
-  
+  formatDateToSpanish(dateStr?: string): string {
+    if (!dateStr) return 'Fecha no disponible';
+    const date = new Date(dateStr);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  }
 }

@@ -1,4 +1,8 @@
-<div class="projects-container">
+<div *ngIf="isLoading" class="spinner-container">
+  <div class="loader"></div>
+</div>
+
+<div class="projects-container" *ngIf="!isLoading">
   <div class="projetcs-header" *ngIf="projects.length >= 1">
     <div class="flex-header">
       <h2>Mis Proyectos</h2>
@@ -41,8 +45,8 @@
       <div class="project-actions">
         <button class="options-btn" (click)="toggleMenu($event, project.id)">⋮</button>
         <div class="dropdown-menu" *ngIf="openMenu === project.id" (click)="$event.stopPropagation()">
-          <button (click)="editProject(project); $event.stopPropagation()">✏️ Editar</button>
-          <button (click)="deleteProject(project.id); $event.stopPropagation()">🗑️ Eliminar</button>
+          <button (click)="editProject(project); $event.stopPropagation()"><i class="fa-solid fa-pen"></i> Editar</button>
+          <button (click)="deleteProject(project.id); $event.stopPropagation()"><i class="fa-solid fa-trash"></i> Eliminar</button>
         </div>
       </div>
     </div>

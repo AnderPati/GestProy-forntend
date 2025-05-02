@@ -61,16 +61,20 @@
         <button (click)="resetFilters()"><i class="fa-solid fa-filter-circle-xmark"></i> Limpiar filtros</button>
       </div>
     </div>
-  
-    <div class="project-group" *ngFor="let project of tasksGroupedKeys()">
-      <h3 class="project-title">
-        {{ project }}
-        <small class="task-count">
-          {{ tasksGroupedByProject[project].length }}
-          {{ tasksGroupedByProject[project].length === 1 ? 'tarea' : 'tareas' }}
-        </small>
-      </h3>
-      
+    
+    <div *ngIf="isLoading" class="spinner-container">
+      <div class="loader"></div>
+    </div>
+    <div *ngIf="!isLoading">
+      <div class="project-group" *ngFor="let project of tasksGroupedKeys()">
+        <h3 class="project-title">
+          {{ project }}
+          <small class="task-count">
+            {{ tasksGroupedByProject[project].length }}
+            {{ tasksGroupedByProject[project].length === 1 ? 'tarea' : 'tareas' }}
+          </small>
+        </h3>
+        
         <div class="task-list">
           <div *ngFor="let task of tasksGroupedByProject[project]" class="task-card">
             <h4>{{ task.title }}</h4>
@@ -96,7 +100,8 @@
           </div>
         </div>
       </div>
-  </div>
-  <div *ngIf="tasksGroupedKeys().length === 0" class="no-tasks-found">
-        Ups... Parece que no hay tareas que mostrar.
+      <div *ngIf="tasksGroupedKeys().length === 0" class="no-tasks-found">
+            Ups... Parece que no hay tareas que mostrar.
+      </div>
+    </div>
   </div>
