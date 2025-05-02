@@ -63,15 +63,35 @@
     </div>
   
     <div class="project-group" *ngFor="let project of tasksGroupedKeys()">
-        <h3 class="project-title">{{ project }}</h3>
+      <h3 class="project-title">
+        {{ project }}
+        <small class="task-count">
+          {{ tasksGroupedByProject[project].length }}
+          {{ tasksGroupedByProject[project].length === 1 ? 'tarea' : 'tareas' }}
+        </small>
+      </h3>
       
         <div class="task-list">
           <div *ngFor="let task of tasksGroupedByProject[project]" class="task-card">
             <h4>{{ task.title }}</h4>
-            <p>{{ task.description }}</p>
-            <div class="task-info">
-              <small>{{ task.due_date }}</small>
-              <small>{{ task.status }}</small>
+            <div class="task-content">
+              <div class="tags" *ngIf="task.tags">
+                <span *ngFor="let tag of task.tags.split(',')" class="tag">{{ tag.trim() }}</span>
+              </div>
+              <p>{{ task.description }}</p>
+              <div class="task-info">
+                <small>{{ task.due_date || "sin fecha" }}</small>
+                <small>{{ task.priority }}</small>
+                <small>{{ task.status }}</small>
+              </div>
+            </div>
+            
+            <div class="task-actions">
+              <button (click)="deleteTask(task.id)" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+              <div>
+                <button (click)="editTask(task)" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                <button (click)="toggleStatus(task)" title="Cambiar estado"><i class="fa-solid fa-repeat"></i></button>
+              </div>
             </div>
           </div>
         </div>

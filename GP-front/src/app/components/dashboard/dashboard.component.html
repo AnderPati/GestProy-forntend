@@ -7,11 +7,11 @@
     </button>
     
     <ul>
-      <li data-tooltip="Proyectos" [ngClass]="{'active': activeRoute.includes('/dashboard/projects')}" routerLink="projects"><i class="fas fa-folder"></i> <span *ngIf="!isCollapsed">Proyectos</span></li>
-      <li data-tooltip="Tareas" [ngClass]="{'active': activeRoute.includes('/dashboard/tasks')}" routerLink="tasks"><i class="fas fa-list-check"></i> <span *ngIf="!isCollapsed">Tareas</span></li>
-      <li data-tooltip="Perfil" [ngClass]="{'active': activeRoute.includes('/dashboard/profile')}" routerLink="profile"><i class="fas fa-user"></i> <span *ngIf="!isCollapsed">Perfil</span></li>
+      <li data-tooltip="Proyectos" [ngClass]="{'active': activeRoute.includes('/dashboard/projects')}" routerLink="projects" (click)="isMobile ? closeMobileSidebar() : null"><i class="fas fa-folder"></i> <span *ngIf="!isCollapsed">Proyectos</span></li>
+      <li data-tooltip="Tareas" [ngClass]="{'active': activeRoute.includes('/dashboard/tasks')}" routerLink="tasks" (click)="isMobile ? closeMobileSidebar() : null"><i class="fas fa-list-check"></i> <span *ngIf="!isCollapsed">Tareas</span></li>
+      <li data-tooltip="Perfil" [ngClass]="{'active': activeRoute.includes('/dashboard/profile')}" routerLink="profile" (click)="isMobile ? closeMobileSidebar() : null"><i class="fas fa-user"></i> <span *ngIf="!isCollapsed">Perfil</span></li>
       <li data-tooltip="Cerrar Sesión" (click)="logout()"><i class="fa-solid fa-right-from-bracket fa-rotate-180"></i> <span *ngIf="!isCollapsed">Cerrar&nbsp;Sesión</span></li>
-    </ul>
+    </ul> 
     <li data-tooltip="Cambiar Tema" class="dark-mode-btn" (click)="toggleDarkMode()">
       <img [src]="isDarkMode ? '../../assets/svg/sun.svg' : '../../assets/svg/moon.svg'" alt="Modo">
     </li>

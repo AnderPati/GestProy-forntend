@@ -61,6 +61,7 @@
             <div
               *ngFor="let task of tasksByStatus[status]"
               cdkDrag
+              [cdkDragDisabled]="isMobile"
               class="task-card"
               (click)="editTask(task)"
               [ngClass]="{ 'archived': task.archived }"

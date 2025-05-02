@@ -110,35 +110,7 @@ export class ProjectsComponent implements OnInit {
       title: name,
       allowOutsideClick: false,
       position: 'top',
-      html: `
-        <div style="display: flex; flex-direction: column; text-align: left; padding: 10px;">
-          <label for="description" style="font-weight: bold; color: white;">Descripción:</label>
-          <textarea id="description" class="swal2-input"
-            style="height: 80px; border-radius: 8px; padding: 10px; font-size: 1rem; border: 1.5px solid white; background: rgba(255, 255, 255, 0.2); color: black; transition: border 0.3s ease-in-out;"></textarea>
-  
-          <div style="display: flex; gap: 10px; margin-top: 10px;">
-            <div>
-              <label for="start_date" style="font-weight: bold; color: white;">Fecha de inicio: <span style="color: #f4a261;">*</span></label>
-              <input type="date" id="start_date" class="swal2-input"
-              style="margin: 0; width: 100%;  border-radius: 8px; padding: 10px; font-size: 1rem; border: 1.5px solid white; background: rgba(255,255,255,0.2); color: black; margin-bottom: 10px;" required>
-            </div>
-            <div>
-              <label for="end_date" style="font-weight: bold; color: white;">Fecha de fin:</label>
-              <input type="date" id="end_date" class="swal2-input"
-                style="margin: 0; width: 100%; border-radius: 8px; padding: 10px; font-size: 1rem; border: 1.5px solid white; background: rgba(255, 255, 255, 0.2); color: black; margin-bottom: 10px;">
-            </div>
-          </div>
-  
-          <label for="status" style="font-weight: bold; color: white;">Estado: <span style="color: #f4a261;">*</span></label>
-          <select id="status" class="swal2-select"
-            style="margin: 0; border-radius: 8px; padding: 10px; width: 100%; font-size: 1rem; border: 1.5px solid white; background: rgba(255, 255, 255, 0.2); color: black;">
-            <option value="pendiente">Pendiente</option>
-            <option value="en progreso">En Progreso</option>
-            <option value="completado">Completado</option>
-          </select>
-          <span style="color: black; margin-top: 10px; display: block; font-size: 0.8rem; text-align: left;">Los campos con * son obligatorios.</span>
-        </div>
-      `,
+      html: this.getCreateContinueProjectFormHtml(),
       background: '#4a7362',
       focusConfirm: false,
       showCancelButton: true,
@@ -187,17 +159,7 @@ export class ProjectsComponent implements OnInit {
   
     this.projectService.createProject(newProject).subscribe(
       response => {
-        Swal.fire({
-          toast: true,
-          position: 'top',
-          background: 'transparent',
-          icon: 'success',
-          showConfirmButton: false,
-          timer: 3000,
-          customClass: {
-            popup: 'custom-toast'
-          }
-        });
+        this.successToast();
         this.loadProjects();
       },
       () => {
@@ -209,40 +171,7 @@ export class ProjectsComponent implements OnInit {
   async editProject(project: any) {
     const { value: formValues } = await Swal.fire({
       title: 'Editar Proyecto',
-      html: `
-        <div style="display: flex; flex-direction: column; text-align: left; padding: 10px;">
-          <label for="name" style="font-weight: bold; color: white;">Nombre: <span style="color: #f4a261;">*</span></label>
-          <input id="name" class="swal2-input" placeholder="Nombre del proyecto" value="${project.name || ''}"
-            style="border-radius: 8px; padding: 10px; font-size: 1rem; border: 1.5px solid white; background: rgba(255, 255, 255, 0.2); color: black; transition: border 0.3s ease-in-out; width: 100%; margin-left: 0;">
-  
-          <label for="description" style="font-weight: bold; color: white; margin-top: 10px;">Descripción:</label>
-          <textarea id="description" class="swal2-input" placeholder="Descripción del proyecto"
-            style="height: 80px; border-radius: 8px; padding: 10px; font-size: 1rem; border: 1.5px solid white; background: rgba(255, 255, 255, 0.2); color: black; transition: border 0.3s ease-in-out;">${project.description || ''}</textarea>
-  
-          <div style="display: flex; gap: 10px; margin-top: 10px;">
-            <div>
-              <label for="start_date" style="font-weight: bold; color: white;">Fecha de inicio: <span style="color: #f4a261;">*</span></label>
-              <input type="date" id="start_date" class="swal2-input" value="${project.start_date || ''}"
-                style="margin: 0; width: 100%; border-radius: 8px; padding: 10px; font-size: 1rem; border: 1.5px solid white; background: rgba(255,255,255,0.2); color: black; margin-bottom: 10px;" required>
-            </div>
-            <div>
-              <label for="end_date" style="font-weight: bold; color: white;">Fecha de fin:</label>
-              <input type="date" id="end_date" class="swal2-input" value="${project.end_date || ''}"
-                style="margin: 0; width: 100%; border-radius: 8px; padding: 10px; font-size: 1rem; border: 1.5px solid white; background: rgba(255,255,255,0.2); color: black; margin-bottom: 10px;">
-            </div>
-          </div>
-  
-          <label for="status" style="font-weight: bold; color: white; margin-top: 15px;">Estado: <span style="color: #f4a261;">*</span></label>
-          <select id="status" class="swal2-select"
-            style="border-radius: 8px; padding: 10px; width: 100%; margin-left: 0; margin-top: 0; font-size: 1rem; border: 1.5px solid white; background: rgba(255, 255, 255, 0.2); color: black; transition: border 0.3s ease-in-out;">
-            <option value="pendiente" ${project.status === 'pendiente' ? 'selected' : ''}>Pendiente</option>
-            <option value="en progreso" ${project.status === 'en progreso' ? 'selected' : ''}>En Progreso</option>
-            <option value="completado" ${project.status === 'completado' ? 'selected' : ''}>Completado</option>
-          </select>
-  
-          <span style="color: black; margin-top: 10px; display: block; font-size: 0.8rem; text-align: left;">Los campos con * son obligatorios.</span>
-        </div>
-      `,
+      html: this.getEditProjectFormHtml(project),
       background: '#a67c52',
       focusConfirm: false,
       showCancelButton: true,
@@ -294,17 +223,7 @@ export class ProjectsComponent implements OnInit {
   
     this.projectService.updateProject(project.id, updatedProject).subscribe(
       response => {
-        Swal.fire({
-          toast: true,
-          position: 'top',
-          background: 'transparent',
-          icon: 'success',
-          showConfirmButton: false,
-          timer: 2000,
-          customClass: {
-            popup: 'custom-toast'
-          }
-        });
+        this.successToast();
         this.loadProjects();
       },
       () => {
@@ -332,17 +251,7 @@ export class ProjectsComponent implements OnInit {
       if (result.isConfirmed) {
         this.projectService.deleteProject(id).subscribe(
           response => {
-            Swal.fire({
-              toast: true,
-              position: 'top',
-              background: 'transparent',
-              icon: 'success',
-              showConfirmButton: false,
-              timer: 2000,
-              customClass: {
-                popup: 'custom-toast'
-              }
-            });
+            this.successToast();
             this.loadProjects();
           },
           () => {
@@ -352,4 +261,124 @@ export class ProjectsComponent implements OnInit {
       }
     });
   }
+  
+  successToast() {
+      Swal.fire({
+        toast: true,
+        position: 'top',
+        background: 'transparent',
+        icon: 'success',
+        showConfirmButton: false,
+        timer: 2000,
+        customClass: {
+          popup: 'custom-toast'
+        }
+      });
+    }
+
+  /*
+  Método para obtener el HTML del formulario de creación de proyecto, continuación de proyecto y edición de proyecto.
+  Se utiliza para mostrar el formulario en un modal de SweetAlert2.
+  */
+
+  private getCreateProjectFormHtml(): string {
+  return `
+    <div style="display: flex; flex-direction: column; text-align: left; padding: 10px;">
+      <label for="description" style="font-weight: bold; color: white;">Descripción:</label>
+      <textarea id="description" class="swal2-input" style="height: 80px; border-radius: 8px; padding: 10px; font-size: 1rem; border: 1.5px solid white; background: rgba(255, 255, 255, 0.2); color: black;"></textarea>
+
+      <div style="display: flex; gap: 10px; margin-top: 10px;">
+        <div>
+          <label for="start_date" style="font-weight: bold; color: white;">Fecha de inicio: <span style="color: #f4a261;">*</span></label>
+          <input type="date" id="start_date" class="swal2-input" style="width: 100%; border-radius: 8px; padding: 10px; border: 1.5px solid white; background: rgba(255,255,255,0.2); color: black;">
+        </div>
+        <div>
+          <label for="end_date" style="font-weight: bold; color: white;">Fecha de fin:</label>
+          <input type="date" id="end_date" class="swal2-input" style="width: 100%; border-radius: 8px; padding: 10px; border: 1.5px solid white; background: rgba(255,255,255,0.2); color: black;">
+        </div>
+      </div>
+
+      <label for="status" style="font-weight: bold; color: white;">Estado: <span style="color: #f4a261;">*</span></label>
+      <select id="status" class="swal2-select" style="border-radius: 8px; padding: 10px; width: 100%; border: 1.5px solid white; background: rgba(255,255,255,0.2); color: black;">
+        <option value="pendiente">Pendiente</option>
+        <option value="en progreso">En Progreso</option>
+        <option value="completado">Completado</option>
+      </select>
+
+      <span style="color: black; margin-top: 10px; display: block; font-size: 0.8rem; text-align: left;">Los campos con * son obligatorios.</span>
+    </div>
+  `;
+}
+
+private getCreateContinueProjectFormHtml(): string {
+  return `
+    <div style="display: flex; flex-direction: column; text-align: left; padding: 10px;">
+      <label for="description" style="font-weight: bold; color: white;">Descripción:</label>
+      <textarea id="description" class="swal2-input"
+        style="height: 80px; border-radius: 8px; padding: 10px; font-size: 1rem; border: 1.5px solid white; background: rgba(255, 255, 255, 0.2); color: black; transition: border 0.3s ease-in-out;"></textarea>
+
+      <div style="display: flex; gap: 10px; margin-top: 10px;">
+        <div>
+          <label for="start_date" style="font-weight: bold; color: white;">Fecha de inicio: <span style="color: #f4a261;">*</span></label>
+          <input type="date" id="start_date" class="swal2-input"
+          style="margin: 0; width: 100%;  border-radius: 8px; padding: 10px; font-size: 1rem; border: 1.5px solid white; background: rgba(255,255,255,0.2); color: black; margin-bottom: 10px;" required>
+        </div>
+        <div>
+          <label for="end_date" style="font-weight: bold; color: white;">Fecha de fin:</label>
+          <input type="date" id="end_date" class="swal2-input"
+            style="margin: 0; width: 100%; border-radius: 8px; padding: 10px; font-size: 1rem; border: 1.5px solid white; background: rgba(255, 255, 255, 0.2); color: black; margin-bottom: 10px;">
+        </div>
+      </div>
+
+      <label for="status" style="font-weight: bold; color: white;">Estado: <span style="color: #f4a261;">*</span></label>
+      <select id="status" class="swal2-select"
+        style="margin: 0; border-radius: 8px; padding: 10px; width: 100%; font-size: 1rem; border: 1.5px solid white; background: rgba(255, 255, 255, 0.2); color: black;">
+        <option value="pendiente">Pendiente</option>
+        <option value="en progreso">En Progreso</option>
+        <option value="completado">Completado</option>
+      </select>
+      <span style="color: black; margin-top: 10px; display: block; font-size: 0.8rem; text-align: left;">Los campos con * son obligatorios.</span>
+    </div>
+  `;
+}
+
+private getEditProjectFormHtml(project: any): string {
+  const safe = (val: any) => String(val ?? '');
+  const selected = (val: string, opt: string) => val === opt ? 'selected' : '';
+  return `
+    <div style="display: flex; flex-direction: column; text-align: left; padding: 10px;">
+          <label for="name" style="font-weight: bold; color: white;">Nombre: <span style="color: #f4a261;">*</span></label>
+          <input id="name" class="swal2-input" placeholder="Nombre del proyecto" value="${safe(project.name) || ''}"
+            style="border-radius: 8px; padding: 10px; font-size: 1rem; border: 1.5px solid white; background: rgba(255, 255, 255, 0.2); color: black; transition: border 0.3s ease-in-out; width: 100%; margin-left: 0;">
+  
+          <label for="description" style="font-weight: bold; color: white; margin-top: 10px;">Descripción:</label>
+          <textarea id="description" class="swal2-input" placeholder="Descripción del proyecto"
+            style="height: 80px; border-radius: 8px; padding: 10px; font-size: 1rem; border: 1.5px solid white; background: rgba(255, 255, 255, 0.2); color: black; transition: border 0.3s ease-in-out;">${safe(project.description) || ''}</textarea>
+  
+          <div style="display: flex; gap: 10px; margin-top: 10px;">
+            <div>
+              <label for="start_date" style="font-weight: bold; color: white;">Fecha de inicio: <span style="color: #f4a261;">*</span></label>
+              <input type="date" id="start_date" class="swal2-input" value="${safe(project.start_date) || ''}"
+                style="margin: 0; width: 100%; border-radius: 8px; padding: 10px; font-size: 1rem; border: 1.5px solid white; background: rgba(255,255,255,0.2); color: black; margin-bottom: 10px;" required>
+            </div>
+            <div>
+              <label for="end_date" style="font-weight: bold; color: white;">Fecha de fin:</label>
+              <input type="date" id="end_date" class="swal2-input" value="${safe(project.end_date) || ''}"
+                style="margin: 0; width: 100%; border-radius: 8px; padding: 10px; font-size: 1rem; border: 1.5px solid white; background: rgba(255,255,255,0.2); color: black; margin-bottom: 10px;">
+            </div>
+          </div>
+  
+          <label for="status" style="font-weight: bold; color: white; margin-top: 15px;">Estado: <span style="color: #f4a261;">*</span></label>
+          <select id="status" class="swal2-select"
+            style="border-radius: 8px; padding: 10px; width: 100%; margin-left: 0; margin-top: 0; font-size: 1rem; border: 1.5px solid white; background: rgba(255, 255, 255, 0.2); color: black; transition: border 0.3s ease-in-out;">
+            <option value="pendiente" ${selected(project.status, 'pendiente')} ? 'selected' : ''}>Pendiente</option>
+            <option value="en progreso" ${selected(project.status, 'en progreso')}>En Progreso</option>
+            <option value="completado" ${selected(project.status, 'completado')}>Completado</option>
+          </select>
+  
+          <span style="color: black; margin-top: 10px; display: block; font-size: 0.8rem; text-align: left;">Los campos con * son obligatorios.</span>
+        </div>
+  `;
+}
+
 }

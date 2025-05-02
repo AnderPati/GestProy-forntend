@@ -113,14 +113,15 @@ export class TaskCalendarComponent implements OnInit {
       }
   
       Swal.fire({
-        icon: 'success',
-        title: 'Fecha actualizada',
         toast: true,
-        position: 'top-end',
-        timer: 2000,
+        position: 'top',
+        background: 'transparent',
+        icon: 'success',
         showConfirmButton: false,
-        background: 'linear-gradient(135deg, #f4a261, #9c89b8)',
-        color: '#fff'
+        timer: 2000,
+        customClass: {
+          popup: 'custom-toast'
+        }
       });
     });
   }

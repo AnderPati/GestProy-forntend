@@ -66,6 +66,10 @@ export class DashboardComponent implements OnInit {
     window.addEventListener('resize', this.handleResize.bind(this)); // Escucha cambios de tamaño
   }
 
+  get isMobile(): boolean {
+    return window.innerWidth <= 768;
+  }
+
   toggleSidebar() {
     const isMobile = window.innerWidth <= 768;
 
