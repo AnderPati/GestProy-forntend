@@ -47,6 +47,16 @@ export class ProjectSummaryComponent implements OnInit {
     return this.tasks.filter(t => t.archived).length;
   }
 
+  getDaysLeft(): string | null {
+    if (!this.project?.end_date) return null;
+    const end = new Date(this.project.end_date);
+    const today = new Date();
+    const diff = Math.ceil((end.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+    if (diff < 0) return 'Finalizado';
+    if (diff === 0) return 'Último día';
+    return `${diff} día(s) restante(s)`;
+  }
+
   formatDateToSpanish(dateStr?: string): string {
     if (!dateStr) return 'Fecha no disponible';
     const date = new Date(dateStr);

@@ -5,6 +5,8 @@
       <span *ngIf="project.end_date">| <strong>Fin:</strong> {{ formatDateToSpanish(project.end_date) }}</span>
     </p>
   
+    <p *ngIf="project.end_date"><strong>Tiempo restante:</strong> {{ getDaysLeft() }}</p>
+
     <p *ngIf="project.description"><strong>Descripción:</strong><br>{{ project.description }}</p>
   
     <div class="progress-bar-container">

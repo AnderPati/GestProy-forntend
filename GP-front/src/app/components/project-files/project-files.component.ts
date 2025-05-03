@@ -36,11 +36,7 @@ export class ProjectFilesComponent implements OnInit {
     this.projectId = +this.route.snapshot.paramMap.get('id')!;
     this.loadFiles();
     this.loadFolders();
-
-    this.profileService.getStorageUsage().subscribe(data => {
-      this.usedStorage = data.used;
-      this.storageLimit = data.storage_limit;
-    });
+    this.updateStorageUsage()
   }
 
   get filteredFiles() {
@@ -124,6 +120,7 @@ loadFiles() {
         next: () => {
           this.selectedFile = null;
           this.loadFiles();
+          this.updateStorageUsage();
         },
         error: (err) => {
           if (err.status === 400 && err.error?.message === 'Has excedido tu límite de almacenamiento.') {
@@ -180,6 +177,7 @@ loadFiles() {
         this.fileService.deleteFile(fileId).subscribe({
           next: () => {
             this.loadFiles();
+            this.updateStorageUsage();
             Swal.fire({
               toast: true,
               position: 'top',
@@ -514,7 +512,13 @@ loadFiles() {
       },
     });
   }
-  
+
+  updateStorageUsage() {
+    this.profileService.getStorageUsage().subscribe(data => {
+      this.usedStorage = data.used;
+      this.storageLimit = data.storage_limit;
+    });
+  }  
   
   getThumbnailUrl(file: any): string {
     return URL.createObjectURL(new Blob([file.previewBlob], { type: file.mime_type }));
