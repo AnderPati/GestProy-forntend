@@ -114,12 +114,51 @@ body {
     color: var(--text-color-dark);
     border-radius: 50px;
   }
-
-  .swal-backdrop{
-    background-color: rgba(0, 0, 0, 0.7) !important;
-    backdrop-filter: blur(4px);
-    border-radius: 20px;
+  
+  .swal-backdrop {
+    background: linear-gradient(135deg, rgba(50, 50, 50, 0.8), rgba(50, 50, 50, 0.8), rgba(50, 50, 50, 1)) !important;
+    backdrop-filter: blur(3px);
     border: 2px solid var(--primary-color-dark);
     color: white;
+    overflow: hidden;
+    border-radius: 20px;
+  }
+
+  @keyframes growFromBubble {
+    0% {
+      transform: scale(0);
+      transform-origin: bottom right;
+      opacity: 1;
+      border-radius: 100px;
+    }
+    100% {
+      transform: scale(1);
+      transform-origin: bottom right;
+      opacity: 1;
+      border-radius: 20px;
+    }
   }
   
+  @keyframes shrinkToBubble {
+    0% {
+      transform: scale(1);
+      transform-origin: bottom right;
+      opacity: 1;
+      border-radius: 20px;
+    }
+    100% {
+      transform: scale(0);
+      transform-origin: bottom right;
+      opacity: 1;
+      border-radius: 100px;
+    }
+  }
+  
+  
+  .swal-custom-show {
+    animation: growFromBubble 200ms ease-out;
+  }
+  
+  .swal-custom-hide {
+    animation: shrinkToBubble 200ms ease-in;
+  }

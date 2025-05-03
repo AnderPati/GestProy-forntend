@@ -84,7 +84,7 @@
               </div>
               <p>{{ task.description }}</p>
               <div class="task-info">
-                <small>{{ task.due_date || "sin fecha" }}</small>
+                <small>{{ formatDateToSpanish(task.due_date) || "sin fecha" }}</small>
                 <small>{{ task.priority }}</small>
                 <small>{{ task.status }}</small>
               </div>

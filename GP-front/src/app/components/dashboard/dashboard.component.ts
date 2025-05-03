@@ -217,6 +217,7 @@ export class DashboardComponent implements OnInit {
     Swal.fire({
       title: 'Tareas próximas a vencer',
       html: this.pendingTasksHtml,
+      position: 'bottom-end',
       icon: 'info',
       width: '600px',
       color: 'white',
@@ -224,6 +225,12 @@ export class DashboardComponent implements OnInit {
       showConfirmButton: false,
       customClass: {
         popup: 'swal-backdrop'
+      },
+      showClass: {
+        popup: 'swal-custom-show'
+      },
+      hideClass: {
+        popup: 'swal-custom-hide'
       }
     });
   }

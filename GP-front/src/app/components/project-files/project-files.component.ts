@@ -1,8 +1,9 @@
 import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute} from '@angular/router';
 import { FileService } from '../../services/file.service';
 import Swal from 'sweetalert2';
 import { ChangeDetectorRef } from '@angular/core';
+import { ProfileService } from '../../services/profile.service';
 
 @Component({
   selector: 'app-project-files',
@@ -19,6 +20,8 @@ export class ProjectFilesComponent implements OnInit {
   isDragging = false;
   modalFileToMove: any = null;
   previews: { [fileId: string]: string } = {};
+  usedStorage: number = 0;
+  storageLimit: number = 0;
 
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
@@ -26,13 +29,18 @@ export class ProjectFilesComponent implements OnInit {
     private route: ActivatedRoute,
     private fileService: FileService,
     private cdr: ChangeDetectorRef,
-    private router: Router
+    private profileService: ProfileService
   ) {}
 
   ngOnInit(): void {
     this.projectId = +this.route.snapshot.paramMap.get('id')!;
     this.loadFiles();
     this.loadFolders();
+
+    this.profileService.getStorageUsage().subscribe(data => {
+      this.usedStorage = data.used;
+      this.storageLimit = data.storage_limit;
+    });
   }
 
   get filteredFiles() {
@@ -158,6 +166,7 @@ loadFiles() {
       title: `¿Eliminar archivo permanentemente?`,
       text: fileName,
       icon: 'warning',
+      position: 'top',
       showCancelButton: true,
       confirmButtonColor: '#693131',
       cancelButtonColor: '#38785c',
@@ -351,7 +360,6 @@ loadFiles() {
               toast: true,
               position: 'top',
               icon: 'error',
-              background: 'rgba(0, 0, 0, 0.7)',
               color: 'white',
               title: err.error.message || 'No se pudo eliminar la carpeta',
               showConfirmButton: false,
@@ -381,15 +389,14 @@ loadFiles() {
   }
 
   showProjectDetails() {
-    // Datos generales
     const totalFiles = this.files.length;
     const totalSize = this.files.reduce((sum, f) => sum + f.size, 0);
+
+    const projectStorageUsed = totalSize;
   
-    // Archivos de la carpeta raíz (sin carpeta asignada)
     const rootFiles = this.files.filter(f => !f.folder_id);
     const rootSize = rootFiles.reduce((sum, f) => sum + f.size, 0);
-
-    // Datos por carpeta
+  
     const folderSummaries = this.folders.map(folder => {
       const filesInFolder = this.files.filter(f => f.folder_id === folder.id);
       const sizeInFolder = filesInFolder.reduce((sum, f) => sum + f.size, 0);
@@ -399,7 +406,33 @@ loadFiles() {
         size: sizeInFolder
       };
     });
+
+    const totalPercentage = this.storageLimit > 0
+    ? (this.usedStorage / this.storageLimit) * 100
+    : 0;
+
+    const projectPercentage = this.storageLimit > 0
+      ? (projectStorageUsed / this.storageLimit) * 100
+      : 0;
+
+    const otherPercentage = totalPercentage - projectPercentage;
+
+    const storageUsedFormatted = this.usedStorage >= 1073741824
+      ? (this.usedStorage / 1073741824).toFixed(2) + ' GB'
+      : (this.usedStorage / 1048576).toFixed(2) + ' MB';
   
+    const storageLimitFormatted = this.storageLimit >= 1073741824
+      ? (this.storageLimit / 1073741824).toFixed(2) + ' GB'
+      : (this.storageLimit / 1048576).toFixed(2) + ' MB';
+  
+    const storagePercentage = this.storageLimit > 0
+      ? (this.usedStorage / this.storageLimit) * 100
+      : 0;
+
+    const projectStorageFormatted = projectStorageUsed >= 1073741824
+    ? (projectStorageUsed / 1073741824).toFixed(2) + ' GB'
+    : (projectStorageUsed / 1048576).toFixed(2) + ' MB';
+      
     let html = `
       <div style="text-align: left; padding: 10px;">
         <h3 style="margin-top: 0;">Información general</h3>
@@ -407,7 +440,7 @@ loadFiles() {
           <small>
             <label style="display: inline-block; width: 200px;"><i class="fa-solid fa-folder-tree" style="width: 20px;"></i> Total</label>
             <label style="display: inline-block; width: 100px;">${totalSize < 1048576 ? (totalSize / 1024).toFixed(2) + '&nbsp;KB' : (totalSize / 1048576).toFixed(2) + '&nbsp;MB'}</label>
-             ${totalFiles}&nbsp;archivos
+            ${totalFiles}&nbsp;archivos
           </small>
         </p>
         <h3>Por carpeta:</h3>
@@ -417,13 +450,13 @@ loadFiles() {
             <label style="display: inline-block; width: 100px;">${rootSize < 1048576 ? (rootSize / 1024).toFixed(2) + '&nbsp;KB' : (rootSize / 1048576).toFixed(2) + '&nbsp;MB'}</label>
             ${rootFiles.length}&nbsp;archivos
           </p>`;
-
+  
     if (folderSummaries.length === 0) {
       html += `<p>No hay carpetas creadas.</p>`;
     } else {
       folderSummaries.forEach(folder => {
         html += `
-          <hr style="border: 1px solid #272727; margin: 0 0;">
+          <hr style="border: 1px solid rgb(81, 81, 81); margin: 0 0;">
           <p style="margin: 2px 0;">
             <label style="display: inline-block; width: 200px;"><i class="fa-solid fa-folder" style="width: 20px;"></i> ${folder.name}</label> 
             <label style="display: inline-block; width: 100px;">${folder.size < 1048576 ? (folder.size / 1024).toFixed(2) + '&nbsp;KB' : (folder.size / 1048576).toFixed(2) + '&nbsp;MB'}</label> 
@@ -431,19 +464,57 @@ loadFiles() {
           </p>`;
       });
     }
+  
+    html += `
+      <h3 style="margin-top: 30px; margin-bottom: 10px;">Almacenamiento usado</h3>
+      <div style="position: relative; width: 100%; height: 12px; background: var(--primary-color-light); border-radius: 7px; overflow: hidden; margin-bottom: 5px;">
+        <div
+          title="Proyecto: ${projectStorageFormatted}"
+          style="
+            height: 100%;
+            width: ${projectPercentage.toFixed(2)}%;
+            background: var(--primary-color-dark);
+            float: left;
+            border-top-left-radius: 7px;
+            border-bottom-left-radius: 7px;
+            transition: background 0.3s;
+            ${otherPercentage === 0 ? 'border-top-right-radius: 7px; border-bottom-right-radius: 7px;' : ''}
+          "
+        ></div>
 
-    html += `</small></div>`;
-
+        <div
+          title="Otros archivos: ${(this.usedStorage - projectStorageUsed) >= 1073741824
+            ? ((this.usedStorage - projectStorageUsed) / 1073741824).toFixed(2) + ' GB'
+            : ((this.usedStorage - projectStorageUsed) / 1048576).toFixed(2) + ' MB'}"
+          style="
+            height: 100%;
+            width: ${otherPercentage.toFixed(2)}%;
+            background: var(--primary-color);
+            float: left;
+            border-radius: 0 7px 7px 0;
+            transition: background 0.3s;
+          "
+        ></div>
+      </div>
+      <small style="display: flex; justify-content: space-between; font-size: 0.85rem; color: #ccc;">
+        <span><strong>Este proyecto:</strong> ${projectStorageFormatted}</span>
+        <span><strong>Total:</strong> ${storageUsedFormatted} / ${storageLimitFormatted}</span>
+      </small>
+    `;
+  
     Swal.fire({
       html,
       position: 'top',
-      background: 'rgb(25, 25, 25)',
       color: 'white',
       width: '500px',
       showCloseButton: true,
-      showConfirmButton: false
+      showConfirmButton: false,
+      customClass: {
+        popup: 'swal-backdrop'
+      },
     });
   }
+  
   
   getThumbnailUrl(file: any): string {
     return URL.createObjectURL(new Blob([file.previewBlob], { type: file.mime_type }));

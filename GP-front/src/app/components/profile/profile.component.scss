@@ -127,7 +127,7 @@ input[type="file"].edited {
   transition: background 0.3s;
   
   &:hover {
-    background: #cc0000;
+    background: var(--error-color-dark);
   }
 }
 
@@ -152,11 +152,11 @@ input[type="file"].edited {
 }
 
 .error-border {
-  border-color: red !important;
+  border-color: var(--error-color) !important;
 }
 
 .error-text {
-  color: red;
+  color: var(--error-color);
   font-size: 0.9rem;
   text-align: left;
 }
