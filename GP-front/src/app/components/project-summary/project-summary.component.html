@@ -1,28 +1,53 @@
 <div class="summary-container" *ngIf="project">
+    <a [routerLink]="['/dashboard/projects', projectId]" class="back-btn">
+      <i class="fa-solid fa-arrow-left"></i> Volver al proyecto
+    </a>
     <h2>{{ project.name }}</h2>
     <p><strong>Estado:</strong> {{ project.status | titlecase }}</p>
     <p><strong>Inicio:</strong> {{ formatDateToSpanish(project.start_date) }} 
       <span *ngIf="project.end_date">| <strong>Fin:</strong> {{ formatDateToSpanish(project.end_date) }}</span>
     </p>
+
+    <p *ngIf="getProjectDuration()">
+      <strong>Duración total:</strong> {{ getProjectDuration() }} días
+    </p>
   
     <p *ngIf="project.end_date"><strong>Tiempo restante:</strong> {{ getDaysLeft() }}</p>
 
     <p *ngIf="project.description"><strong>Descripción:</strong><br>{{ project.description }}</p>
-  
+    <br>
     <div class="progress-bar-container">
       <div class="progress-bar" [style.width.%]="progress"></div>
     </div>
     <p class="progress-text">{{ progress }}% completado</p>
-  
-    <div class="summary-stats">
-      <div class="stat"><span>Pendientes:</span> {{ countByStatus('pendiente') }}</div>
-      <div class="stat"><span>En progreso:</span> {{ countByStatus('en progreso') }}</div>
-      <div class="stat"><span>Completadas:</span> {{ countByStatus('completado') }}</div>
-      <div class="stat"><span>Archivadas:</span> {{ countArchived() }}</div>
+
+    <h3>Tareas: {{ tasks.length }}</h3>
+    <div class="charts-row">
+      <div class="chart-container">
+        <h4>Distribución por estado</h4>
+        <canvas
+          baseChart
+          [data]="{
+            labels: statusChartLabels,
+            datasets: [{ data: statusChartData, backgroundColor: statusChartColors }]
+          }"
+          [type]="chartType"
+          [options]="chartOptions">
+        </canvas>
+      </div>
+    
+      <div class="chart-container">
+        <h4>Activas vs Archivadas</h4>
+        <canvas
+          baseChart
+          [data]="{
+            labels: archiveChartLabels,
+            datasets: [{ data: archiveChartData, backgroundColor: archiveChartColors }]
+          }"
+          [type]="chartType"
+          [options]="chartOptions">
+        </canvas>
+      </div>
     </div>
-  
-    <a [routerLink]="['/dashboard/projects', projectId]" class="back-btn">
-      <i class="fa-solid fa-arrow-left"></i> Volver al proyecto
-    </a>
   </div>
   

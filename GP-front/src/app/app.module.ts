@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { FullCalendarModule } from '@fullcalendar/angular';
+import { NgChartsModule } from 'ng2-charts';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
@@ -45,7 +46,8 @@ import { TasksComponent } from './components/tasks/tasks.component';
     FormsModule,
     ReactiveFormsModule,
     DragDropModule,
-    FullCalendarModule
+    FullCalendarModule,
+    NgChartsModule
   ],
   providers: [
     {

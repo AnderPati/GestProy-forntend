@@ -1,42 +1,59 @@
 .summary-container {
-    max-width: 600px;
-    margin: 40px auto;
-    padding: 20px;
-    background: var(--background-color-light);
-    border-radius: 12px;
-    backdrop-filter: blur(10px);
-    color: var(--text-color);
-    text-align: center;
-    animation: fadeInDown 300ms ease-in-out forwards;
-  }
-  
-  h2 {
-    color: var(--text-color-light);
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 30px;
+  background: var(--background-color-light);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  color: var(--text-color);
+  animation: fadeInDown 300ms ease-in-out forwards;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+
+  p {
     margin-bottom: 10px;
+    line-height: 1.5;
   }
+
+  h2 {
+    color: var(--text-color-dark);
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+  }
+
+  h3 {
+    margin: 20px 0 10px;
+    color: var(--text-color-dark);
+    font-size: 1.2rem;
+  }
+
+  strong {
+    font-weight: 600;
+    color: var(--text-color-dark);
+  }
+}
   
   .progress-bar-container {
-    width: 100%;
-    height: 14px;
-    background: rgba(127, 127, 127, 0.15);
-    border-radius: 8px;
-    margin: 10px 0;
-    overflow: hidden;
-  }
-  
-  .progress-bar {
-    height: 100%;
-    background: linear-gradient(to right, #66bb6a, #43a047);
-    box-shadow: 2.5px 0px 0px 0px var(--background-color-light);
-    transition: width 1s ease-in-out;
-    border-radius: 50px;
-  }
-  
-  .progress-text {
-    font-size: 0.9rem;
-    margin-bottom: 20px;
-    color: var(--text-color);
-  }
+  width: 100%;
+  height: 14px;
+  background: rgba(127, 127, 127, 0.1);
+  border-radius: 8px;
+  margin: 16px 0 6px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(to right, #66bb6a, #43a047);
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+  transition: width 1s ease-in-out;
+  border-radius: 50px;
+}
+
+.progress-text {
+  font-size: 0.85rem;
+  color: var(--text-color-light);
+  margin-bottom: 20px;
+}
   
   .summary-stats {
     display: grid;
@@ -66,6 +83,41 @@
   
     &:hover {
       background: var(--primary-color-dark);
+    }
+  }
+
+  .charts-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 10px;
+  
+    .chart-container {
+      flex: 1 1 260px;
+      max-width: 340px;
+      background: rgba(127, 127, 127, 0.05);
+      padding: 20px;
+      border-radius: 14px;
+      text-align: center;
+      backdrop-filter: blur(3px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      transition: transform 0.3s ease;
+  
+      h4 {
+        font-size: 1rem;
+        margin-bottom: 14px;
+        color: var(--text-color);
+      }
+  
+      &:hover {
+        transform: scale(1.01);
+      }
+  
+      canvas {
+        width: 100% !important;
+        height: auto !important;
+      }
     }
   }
 
