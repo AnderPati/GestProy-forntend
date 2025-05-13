@@ -1,6 +1,6 @@
 <div class="login-container">
   <div class="login-box">
-    <img src="assets/img/gestproy_logo_bgless.webp" alt="Project Logo" class="login-logo" />
+    <img src="assets/img/gestproy_logo_bgless.webp" alt="Project Logo" class="login-logo" loading="lazy"/>
 
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" autocomplete="off">
       <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
@@ -44,11 +44,23 @@
         <span *ngIf="isLoading" class="loading-spinner"></span>
       </button>
 
+      <!-- Separador -->
+      <div class="separador">
+        <hr />
+        <span>O</span>
+        <hr/>
+      </div>
+
+      <!-- boton de google -->
+      <div id="googleButton" class="g_signin"></div>
+
+
       <!-- Register link -->
       <p class="register-link">
         ¿No tienes cuenta?
-        <a routerLink="/register">Regístrate aquí</a>
+        <a routerLink="/register">Regístrate</a>
       </p>
     </form>
   </div>
+  <small>GestProy 2025 by Ander ♥</small>
 </div>

@@ -6,41 +6,53 @@
       <p *ngIf="successMessage" class="success">{{ successMessage }}</p>
   
       <form (ngSubmit)="onSubmit()">
+        <p *ngIf="nameError" class="error">El nombre debe tener al menos 3 caracteres.</p>
         <div class="input-group">
           <i class="fas fa-user"></i>
           <input type="text" [(ngModel)]="name" name="name" placeholder="Nombre Completo" required />
         </div>
-        <p *ngIf="nameError" class="error">El nombre debe tener al menos 3 caracteres.</p>
       
+        <p *ngIf="emailError" class="error">Ingresa un correo electrónico válido.</p>
         <div class="input-group">
           <i class="fas fa-envelope"></i>
           <input type="email" [(ngModel)]="email" name="email" placeholder="Correo Electrónico" required />
         </div>
-        <p *ngIf="emailError" class="error">Ingresa un correo electrónico válido.</p>
       
+        <p *ngIf="passwordError" class="error">La contraseña debe tener al menos 6 caracteres.</p>
         <div class="input-group">
           <i class="fas fa-lock"></i>
           <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password" placeholder="Contraseña" required />
-          <button type="button" class="toggle-password" (click)="togglePasswordVisibility()">
+          <button type="button" class="toggle-password" (click)="togglePasswordVisibility()" tabindex="-1">
             <i class="fas" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
           </button>
         </div>
-        <p *ngIf="passwordError" class="error">La contraseña debe tener al menos 6 caracteres.</p>
       
+        <p *ngIf="passwordMismatch" class="error">Las contraseñas no coinciden.</p>
         <div class="input-group">
           <i class="fas fa-lock"></i>
           <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="confirmPassword" name="confirmPassword" placeholder="Repetir Contraseña" required />
         </div>
-        <p *ngIf="passwordMismatch" class="error">Las contraseñas no coinciden.</p>
       
         <button type="submit" [disabled]="isLoading">
           <span *ngIf="!isLoading">Registrarse</span>
           <span *ngIf="isLoading" class="loading-spinner"></span>
         </button>
+
+        <!-- Separador -->
+        <div class="separador">
+          <hr />
+          <span>O</span>
+          <hr/>
+        </div>
+  
+        <!-- boton de google -->
+        <div id="googleButton" class="g_signin"></div>
+
+        <p class="login-link">¿Ya tienes cuenta? <a routerLink="/login">Inicia sesión</a></p>
       </form>
       
   
-      <p class="login-link">¿Ya tienes cuenta? <a routerLink="/login">Inicia sesión</a></p>
     </div>
+    <small>GestProy 2025 by Ander ♥</small>
   </div>
   

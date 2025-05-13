@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone, AfterViewInit  } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+
+declare const google: any;
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, AfterViewInit {
   name: string = '';
   email: string = '';
   password: string = '';
@@ -25,10 +27,45 @@ export class RegisterComponent implements OnInit {
   constructor(
     private titleService: Title,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private ngZone: NgZone
   ) {}
   ngOnInit(): void {
     this.titleService.setTitle('Registro');
+  }
+
+  ngAfterViewInit() {
+    google.accounts.id.initialize({
+      client_id: '748909544242-hicfnrm9shl4v4bhcj0gcrnuk4edrud3.apps.googleusercontent.com',
+      callback: this.handleCredentialResponse.bind(this)
+    });
+
+    google.accounts.id.renderButton(
+      document.getElementById('googleButton')!,
+      {
+        type: 'standard',
+        size: 'large',
+        theme: 'outline',
+        text: 'signup_with',
+        shape: 'rectangle',
+        logo_alignment: 'center',
+        locale: 'es',
+      }
+    );
+  }
+
+  handleCredentialResponse(response: any): void {
+    const token = response.credential;
+    this.authService.loginWithGoogle(token).subscribe({
+      next: () => {
+        this.ngZone.run(() => {
+          this.router.navigate(['/dashboard']);
+        });
+      },
+      error: (error) => {
+        console.error('Error al iniciar sesión con Google.', error);
+      }
+    });
   }
 
   togglePasswordVisibility() {

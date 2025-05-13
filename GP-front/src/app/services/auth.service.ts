@@ -5,6 +5,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -18,9 +19,21 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/login`, { email, password }); // Sends login credentials to backend | Envía las credenciales de login al backend
   }
 
-  register(name: string, email: string, password: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/register`, { name, email, password }); // Handles user registration | Maneja el registro de usuario
+  loginWithGoogle(token: string): Observable<any> {
+    return this.http.post<{ token: string; user: any }>(
+      `${this.apiUrl}/login/google`, // Asegúrate de que este endpoint coincida con Laravel
+      { token },
+      { withCredentials: false } // Necesario si usas cookies/Sanctum
+      ).pipe(
+      tap(response => {
+        localStorage.setItem('auth_token', response.token);
+      })
+    );
   }
+
+  register(name: string, email: string, password: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/register`, { name, email, password })
+  } // Handles user registration | Maneja el registro de usuario
 
   logout(): Observable<any> {
     return this.http.post(`${this.apiUrl}/logout`, {}); // Sends logout request to backend | Envía la petición de logout al backend

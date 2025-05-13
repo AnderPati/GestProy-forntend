@@ -4,32 +4,35 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background: linear-gradient(135deg, #f4a261, #9c89b8);
+  min-height: 92svh;
+  padding-bottom: 8vh;
+  background: linear-gradient(135deg,#fab176, #8d71b7);
+  background-size: 125% 100%;
 
   .register-box {
-    background: rgba(255, 255, 255, 0.15); // Fondo semitransparente
-    backdrop-filter: blur(10px); // Efecto de desenfoque
-    -webkit-backdrop-filter: blur(10px); // Compatibilidad con Safari
-    border-radius: 12px;
-    border: 1.5px solid rgba(255, 255, 255, 0.3); // Borde sutil
+    margin-top: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(50px);
+    -webkit-backdrop-filter: blur(50px);
+    border-radius: 50px;
     padding: 2rem;
     padding-top: 0;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0px 12px rgba(0, 0, 0, .2);
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 360px;
-    animation: fadeIn 0.6s ease-in-out; 
+    animation: fadeIn 0.6s ease-in-out;
 
     .register-logo {
-      width: 200px; // Ajusta el tamaño según tu diseño
+      width: 200px;
       animation: fadeIn 1s ease-in-out;
       margin: 20px;
+      margin-top: 25px;
     }
 
     h2 {
-      color: #9c89b8; 
+      color: #9c89b8;
       font-weight: 600;
       margin-bottom: 0.5rem;
     }
@@ -46,17 +49,17 @@
       .input-group {
         display: flex;
         align-items: center;
-        background: lighten($secondary-color-light, 10%);
-        border-radius: 8px;
+        background: white;
+        border-radius: 15px;
         padding: 10px;
         margin-bottom: 12px;
         transition: all 0.3s ease-in-out;
-        border: 2px solid #9c89b8; 
+        border: 1px solid #dadce0;
         opacity: 0;
         animation: fadeInCascade 0.8s ease-in-out forwards;
 
         i {
-          color: #9c89b8; 
+          color: #9c89b8;
           margin-right: 10px;
         }
 
@@ -66,35 +69,39 @@
           background: transparent;
           font-size: 1rem;
           outline: none;
-          padding: 5px;
+          padding: 0px;
 
           &::placeholder {
-            color: #9c89b8;
+            color: rgb(165, 165, 165);
+            transition: color .3s ease-out;
           }
         }
 
         &:focus-within {
-          background: lighten(#9c89b8, 30%);
           box-shadow: 0 0 5px rgba(#9c89b8, 0.5);
+
+          input::placeholder {
+            color: transparent;
+          }
         }
       }
 
-      .input-group:nth-child(1) { animation-delay: 0.2s; }
-      .input-group:nth-child(2) { animation-delay: 0.3s; }
-      .input-group:nth-child(3) { animation-delay: 0.4s; }
-      .input-group:nth-child(4) { animation-delay: 0.5s; }
+      .input-group:nth-child(1) { animation-delay: 0.1s; }
+      .input-group:nth-child(2) { animation-delay: 0.2s; }
+      .input-group:nth-child(3) { animation-delay: 0.3s; }
+      .input-group:nth-child(4) { animation-delay: 0.4s; }
 
       button {
         position: relative;
         width: 100%;
-        padding: 12px;
+        padding: 10px;
         margin-top: 15px;
         background-color: #9c89b8;
         color: white;
         font-size: 1rem;
         font-weight: 600;
         border: none;
-        border-radius: 8px;
+        border-radius: 15px;
         cursor: pointer;
         transition: background 0.3s ease-in-out;
         display: flex;
@@ -102,13 +109,13 @@
         align-items: center;
         opacity: 0;
         animation: fadeInCascade 0.8s ease-in-out forwards;
-        animation-delay: .7s;
-      
+        animation-delay: 0.5s;
+
         &:hover {
           background-color: darken(#9c89b8, 5%);
           box-shadow: 0 0 10px rgba(#9c89b8, 0.5);
         }
-      
+
         &:disabled {
           background-color: lighten(#9c89b8, 15%);
           cursor: not-allowed;
@@ -123,10 +130,47 @@
           animation: spin 0.8s linear infinite;
         }
       }
+
+      .separador{
+        display: flex;
+        align-items: center;
+        margin: 10px 0;
+
+        hr{
+          flex: 1;
+          border: .75px solid rgba(255, 255, 255, 0.194);
+          border-radius: 5px;
+        }
+
+        span{
+          margin: 0 10px;
+          color: white;
+        }
+      }
+
+      .g_signin{
+        opacity: 0;
+        animation: fadeInCascade 0.8s ease-in-out forwards;
+        animation-delay: .64s;
+        border-radius: 15px;
+        overflow: hidden;
+      }
+
       .error {
         color: $error-color-light;
+        background-color: #e6394727;
+        border-radius: 8px;
+        border: 1px dashed $error-color-light;
+        text-align: center;
         font-weight: bold;
-        margin-bottom: 10px;
+        margin-bottom: 2px;
+      }
+
+      .success {
+        color: #4caf50;
+        margin-bottom: 15px;
+        font-weight: bold;
+        text-align: center;
       }
     }
 
@@ -140,7 +184,7 @@
       font-size: 1rem;
       color: white !important;
       transition: color 0.3s ease-in-out;
-    
+
       &:hover {
         color: darken(#9c89b8, 10%);
         box-shadow: none !important;
@@ -148,37 +192,39 @@
     }
 
     .login-link {
-      margin-top: 10px;
-      color: white;
+      margin-top: 30px;
+      color: #393939;
+      font-size: 0.9rem;
+      text-align: center;
       opacity: 0;
       animation: fadeInCascade 0.8s ease-in-out forwards;
-      animation-delay: .8s;
-      
+      animation-delay: 0.74s;
+
       a {
-        color: #9c89b8;
+        color: #393939;
         font-weight: bold;
         transition: color 0.3s ease-in-out;
+        text-decoration: none;
 
         &:hover {
-          color: darken(#9c89b8, 10%);
           text-decoration: underline;
         }
       }
     }
+  }
 
-    .error {
-      color: $error-color-light;
-      margin: 0;
-      margin-bottom: 15px;
-      font-weight: bold;
-    }
-    
-    .success {
-      color: #4caf50; // Verde para éxito
-      margin: 0;
-      margin-bottom: 15px;
-      font-weight: bold;
-    }
+  small {
+    position: absolute;
+    bottom: 10px;
+    right: 50%;
+    transform: translateX(50%);
+    color: #39393980;
+  }
+}
+
+@media (max-width: 768px) {
+  .register-box {
+    width: 90%;
   }
 }
 
@@ -219,6 +265,7 @@
         font-size: 0.85rem;
       }
 
+
       h2 {
         font-size: 1.3rem;
         text-align: center;
@@ -229,10 +276,16 @@
       }
     }
   }
+  small{
+    position: absolute;
+    bottom: 10px;
+    right: 50%;
+    transform: translateX(50%);
+    color: #39393980;
+  }
 }
 
-
-// Animaciones CSS
+// Animaciones
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -245,15 +298,15 @@
 }
 
 @keyframes fadeInCascade {
-    from {
-      opacity: 0;
-      transform: translateY(-20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
 @keyframes spin {
   from {

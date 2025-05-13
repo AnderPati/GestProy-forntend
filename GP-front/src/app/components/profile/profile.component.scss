@@ -151,6 +151,30 @@ input[type="file"].edited {
   }
 }
 
+.externar-container {
+  background: linear-gradient(135deg, transparent, var(--primary-color));
+}
+
+.external-login-warning{
+  p{
+    margin: 0;
+    color: var(--text-color);
+  }
+  small{
+    a{
+      color: var(--text-color-light);
+      text-decoration: none;
+
+      i{
+        font-size: .7rem;
+      }
+      &:hover{
+        color: var(--text-color);
+      }
+    }
+  }
+}
+
 .error-border {
   border-color: var(--error-color) !important;
 }

@@ -2,31 +2,34 @@
 //----
 // Este componente gestiona la interfaz y lógica de inicio de sesión: crea el formulario, valida, alterna visibilidad de contraseña y redirige si ya hay token.
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone, AfterViewInit  } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { HttpClient} from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProfileService } from '../../services/profile.service';
+declare const google: any;
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, AfterViewInit {
   loginForm!: FormGroup;
   errorMessage: string = '';
   showPassword: boolean = false;
   isLoading: boolean = false;
+  
 
   constructor(
     private titleService: Title,
     private authService: AuthService,
     private router: Router,
     private fb: FormBuilder,
-    private profileService: ProfileService
+    private profileService: ProfileService,
+    private ngZone: NgZone
   ) {}
 
   ngOnInit() {
@@ -50,6 +53,40 @@ export class LoginComponent implements OnInit {
         () => this.authService.removeToken() // If token is invalid, remove it | Si el token no es válido, se borra
       );
     }
+  }
+
+  ngAfterViewInit() {
+    google.accounts.id.initialize({
+      client_id: '748909544242-hicfnrm9shl4v4bhcj0gcrnuk4edrud3.apps.googleusercontent.com',
+      callback: this.handleCredentialResponse.bind(this)
+    });
+
+    google.accounts.id.renderButton(
+      document.getElementById('googleButton')!,
+      {
+        type: 'standard',
+        size: 'large',
+        theme: 'outline',
+        text: 'sign_in_with',
+        shape: 'rectangle',
+        logo_alignment: 'center',
+        locale: 'es',
+      }
+    );
+  }
+
+  handleCredentialResponse(response: any): void {
+    const token = response.credential;
+    this.authService.loginWithGoogle(token).subscribe({
+      next: () => {
+        this.ngZone.run(() => {
+          this.router.navigate(['/dashboard']);
+        });
+      },
+      error: (error) => {
+        console.error('Error al iniciar sesión con Google.', error);
+      }
+    });
   }
 
   togglePasswordVisibility(): void {
