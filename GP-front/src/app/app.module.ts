@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { FullCalendarModule } from '@fullcalendar/angular';
-import { NgChartsModule } from 'ng2-charts';
+import { NgChartsModule } from 'ng2-charts';;
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
@@ -14,6 +14,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { ProjectsComponent } from './components/projects/projects.component';
+import { ImageCropperComponent } from 'ngx-image-cropper';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthTokenInterceptor } from './interceptors/auth-token.interceptor';
@@ -49,7 +50,8 @@ import { LandingComponent } from './components/landing/landing.component';
     ReactiveFormsModule,
     DragDropModule,
     FullCalendarModule,
-    NgChartsModule
+    NgChartsModule,
+    ImageCropperComponent
   ],
   providers: [
     {

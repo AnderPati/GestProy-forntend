@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ProfileService } from '../../services/profile.service';
 import Swal from 'sweetalert2';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
 
 @Component({
   selector: 'app-profile',
@@ -17,11 +18,12 @@ export class ProfileComponent implements OnInit {
   isLoading: boolean = false;
   selectedFile: File | null = null;
   hovering: boolean = false;
-  imagePreview: string | ArrayBuffer | null = null;
   usedStorage: number = 0;
   storageLimit: number = 0;
   freeStorage: number = 0;
   displayedStoragePercentage: number = 0;
+  imageChangedEvent: any = '';
+  croppedImage: string | null | undefined;
 
   @ViewChild('fileInput') fileInput!: ElementRef;
 
@@ -88,58 +90,45 @@ export class ProfileComponent implements OnInit {
     return this.user[field] !== this.originalUser[field];
   }
   
-  
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
-  
-    if (file) {
-      // Validar que sea una imagen
-      if (!file.type.startsWith('image/')) {
-        Swal.fire({
-          title: 'Por favor, selecciona un archivo de imagen válido.',
-          color: '#fff',
-          icon: 'error',
-          iconColor: '#fff',
-          toast: true,
-          position: 'top',
-          background: '#e63946',
-          showConfirmButton: false,
-          timer: 6000
-        });
-        
-        return;
-      }
-  
-      // Validar el tamaño de la imagen (máximo 2MB)
-      if (file.size > 2 * 1024 * 1024) {
-        Swal.fire({
-          title: 'El tamaño de la imagen debe ser menor a 2MB.',
-          color: '#fff',
-          icon: 'error',
-          iconColor: '#fff',
-          toast: true,
-          position: 'top',
-          background: '#e63946',
-          showConfirmButton: false,
-          timer: 6000
-        });
-        return;
-      }
-  
-      this.selectedFile = file;
-  
-      // Crear vista previa
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.imagePreview = e.target.result; // Almacenar la imagen en base64
-      };
-      reader.readAsDataURL(file);
+  fileChangeEvent(event: any): void {
+    const file = event.target.files?.[0];
+
+    if (!file || !file.type.startsWith('image/')) {
+      console.warn('Archivo no válido.');
+      return;
+    }
+
+    this.imageChangedEvent = event;
+  }
+
+  imageCropped(event: ImageCroppedEvent) {
+
+    if (event.blob) {
+      this.selectedFile = new File([event.blob], 'avatar.png', { type: event.blob.type });
+      this.croppedImage = event.objectUrl; // Para vista previa
     }
   }
-  
 
-  onSubmit() {
-    
+  dataURItoBlob(dataURI: string): Blob {
+    const byteString = atob(dataURI.split(',')[1]);
+    const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+    for (let i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+
+    return new Blob([ab], { type: mimeString });
+  }
+
+  cancelCrop() {
+    this.imageChangedEvent = null;
+    this.croppedImage = null;
+    this.selectedFile = null;
+  }
+
+  onSubmit() {    
     if (this.user.password && this.user.password.trim() !== '' && (!this.currentPassword || this.currentPassword.trim() === '')) {
       return;
     }
@@ -178,6 +167,10 @@ export class ProfileComponent implements OnInit {
         this.user = { ...response.user, password: '' }; // Actualizar la vista con los nuevos datos
         this.originalUser = { ...this.user, password: '' }
         this.currentPassword = "";
+        this.croppedImage = null;
+        this.imageChangedEvent = null;
+        this.selectedFile = null;
+        URL.revokeObjectURL(this.croppedImage!);
       },
       error => {
         Swal.fire({
@@ -217,7 +210,6 @@ export class ProfileComponent implements OnInit {
               }
             });
             this.user.profile_image = null;
-            this.imagePreview = null;
             this.selectedFile = null;
           }
         );

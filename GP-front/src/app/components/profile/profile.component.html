@@ -4,26 +4,42 @@
   <p *ngIf="successMessage" class="success">{{ successMessage }}</p>
 
   <form (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+    <!-- Input oculto para seleccionar imagen -->
+    <input type="file" #fileInput (change)="fileChangeEvent($event)" accept="image/*" hidden />
+
+    <!-- Imagen de perfil o avatar -->
     <div class="profile-image" (click)="triggerFileInput()" (mouseenter)="hovering = true" (mouseleave)="hovering = false">
-      <!-- Imagen de perfil o avatar por defecto -->
-      <img *ngIf="imagePreview; else currentImage" [src]="imagePreview" alt="Vista previa de imagen">
+      <img *ngIf="croppedImage; else currentImage" [src]="croppedImage" alt="Vista previa recortada">
       <ng-template #currentImage>
         <img *ngIf="user.profile_image; else defaultAvatar" [src]="'http://127.0.0.1:8000/storage/profiles/' + user.profile_image" alt="Imagen de perfil">
         <ng-template #defaultAvatar>
           <img src="assets/img/default-avatar.png" alt="Avatar predeterminado">
         </ng-template>
       </ng-template>
-    
-      <!-- Texto "Cambiar imagen" cuando se pasa el mouse -->
       <div class="overlay" *ngIf="hovering">
         <p><i class="fa-solid fa-pen"></i></p>
       </div>
-    
-      <!-- Input oculto para seleccionar una imagen -->
-      <input name="profile_image" type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" hidden>
     </div>
 
-    <button type="button" class="delete-img-btn" (click)="removeProfileImage()" *ngIf="user.profile_image"><small>Eliminar Imagen</small></button>
+    <!-- Cropper visible al seleccionar una imagen -->
+    <div *ngIf="imageChangedEvent" class="cropper-wrapper">
+      <div class="cropper-layout">
+        <image-cropper
+          [imageChangedEvent]="imageChangedEvent"
+          [maintainAspectRatio]="true"
+          [aspectRatio]="1 / 1"
+          format="png"
+          [autoCrop]="true"
+          (imageCropped)="imageCropped($event)"
+        ></image-cropper>
+      </div>
+      <div class="cropper-actions">
+        <button type="button" (click)="cancelCrop()">Cancelar</button>
+      </div>
+    </div>
+
+
+    <button type="button" class="delete-img-btn" (click)="removeProfileImage()" *ngIf="user.profile_image && !imageChangedEvent"><small>Eliminar Imagen</small></button>
 
     <div class="input-group">
       <label>Nombre:</label>
@@ -42,7 +58,7 @@
       <input type="password" [(ngModel)]="user.password" name="password" placeholder="Opcional" [ngClass]="{'edited': user.password !== ''}" />
       <span class="error-text" *ngIf="validateField('password')">{{ validateField('password') }}</span>
     </div> -->
-    <button type="submit" [disabled]="isLoading" *ngIf="user.auth_provider && (isFieldEdited('name') || isFieldEdited('profile_image'))" style="margin-top: 7px;">
+    <button type="submit" [disabled]="isLoading" *ngIf="user.auth_provider && (isFieldEdited('name') || imageChangedEvent )" style="margin-top: 7px;">
       <span *ngIf="!isLoading">Actualizar</span>
       <span *ngIf="isLoading" class="spinner-button"></span>
     </button>
@@ -79,7 +95,7 @@
     
     
 
-    <button type="submit" [disabled]="isLoading" *ngIf="!user.auth_provider && (isFieldEdited('name') || isFieldEdited('email') || isFieldEdited('password') || isFieldEdited('profile_image')) ">
+    <button type="submit" [disabled]="isLoading" *ngIf="!user.auth_provider && (isFieldEdited('name') || isFieldEdited('email') || isFieldEdited('password') || imageChangedEvent ) ">
       <span *ngIf="!isLoading">Actualizar</span>
       <span *ngIf="isLoading" class="spinner-button"></span>
     </button>
