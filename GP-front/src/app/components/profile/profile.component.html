@@ -20,7 +20,7 @@
       </div>
     
       <!-- Input oculto para seleccionar una imagen -->
-      <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" hidden>
+      <input name="profile_image" type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" hidden>
     </div>
 
     <button type="button" class="delete-img-btn" (click)="removeProfileImage()" *ngIf="user.profile_image"><small>Eliminar Imagen</small></button>
@@ -42,7 +42,7 @@
       <input type="password" [(ngModel)]="user.password" name="password" placeholder="Opcional" [ngClass]="{'edited': user.password !== ''}" />
       <span class="error-text" *ngIf="validateField('password')">{{ validateField('password') }}</span>
     </div> -->
-    <button type="submit" [disabled]="isLoading" *ngIf="user.auth_provider && isFieldEdited('name')" style="margin-top: 7px;">
+    <button type="submit" [disabled]="isLoading" *ngIf="user.auth_provider && (isFieldEdited('name') || isFieldEdited('profile_image'))" style="margin-top: 7px;">
       <span *ngIf="!isLoading">Actualizar</span>
       <span *ngIf="isLoading" class="spinner-button"></span>
     </button>
@@ -79,7 +79,7 @@
     
     
 
-    <button type="submit" [disabled]="isLoading" *ngIf="!user.auth_provider && (isFieldEdited('name') || isFieldEdited('email') || isFieldEdited('password')) ">
+    <button type="submit" [disabled]="isLoading" *ngIf="!user.auth_provider && (isFieldEdited('name') || isFieldEdited('email') || isFieldEdited('password') || isFieldEdited('profile_image')) ">
       <span *ngIf="!isLoading">Actualizar</span>
       <span *ngIf="isLoading" class="spinner-button"></span>
     </button>
