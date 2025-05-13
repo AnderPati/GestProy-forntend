@@ -1,0 +1,67 @@
+<div class="landing scroll-container" #scrollContainer>
+
+  <!-- Figuras flotantes decorativas -->
+  <div class="floating-shapes">
+    <div class="shape circle"></div>
+    <div class="shape circle2"></div>
+    <div class="shape triangle"></div>
+    <div class="shape triangle2"></div>
+    <div class="shape square"></div>
+    <div class="shape square2"></div>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="slide hero" data-img="assets/img/gestproy_logo_isotipo_bgless.png">
+    <div class="content">
+      <img class="mobile-slide-image" src="assets/img/gestproy_logo_isotipo_bgless.png" alt="Vista móvil" />
+      <h1>GestProy</h1>
+      <p>Gestiona tus Ideas, Organiza tus Proyectos.</p>
+      <div class="cta-buttons">
+        <a routerLink="/register" class="btn secondary">Registrate</a>
+        <span>O</span>
+        <a routerLink="/login" class="btn primary">Inicia Sesión</a>
+      </div>
+    </div>
+    <div class="scroll-down">
+      <span><i class="fa-solid fa-chevron-down"></i></span>
+    </div>
+  </section>
+
+  <!-- Slide 1 -->
+  <section class="slide" data-img="assets/img/login.png">
+    <div class="content">
+      <h2>Tareas</h2>
+      <p>¡Lleva tu productividad al siguiente nivel! Organiza tus tareas con prioridades, fechas clave y más, todo con un calendario integrado que hace que gestionar tu día sea más fácil que nunca.</p>
+      <img class="mobile-slide-image" src="assets/img/login.png" alt="Vista móvil" />
+    </div>
+    <div class="scroll-down">
+      <span><i class="fa-solid fa-chevron-down"></i></span>
+    </div>
+  </section>
+
+  <!-- Slide 2 -->
+  <section class="slide" data-img="assets/img/lgin.png">
+    <div class="content">
+      <h2>Gestiona tus Archivos</h2>
+      <p>Olvídate del desorden. Usa nuestro explorador de archivos por proyecto para mantener todo perfectamente organizado y al alcance de un clic.</p>
+      <img class="mobile-slide-image" src="assets/img/lgin.png." alt="Vista móvil" />
+    </div>
+    <div class="scroll-down">
+      <span><i class="fa-solid fa-chevron-down"></i></span>
+    </div>
+  </section>
+
+  <!-- Slide 3 -->
+  <section class="slide" data-img="assets/img/login.png">
+    <div class="content">
+      <h2>Estadísticas en tiempo real</h2>
+      <p>Toma el control total de tus proyectos con estadísticas en tiempo real: seguimiento de tareas, avance general, tiempo restante y mucho más en un solo vistazo.</p>
+      <img class="mobile-slide-image" src="assets/img/login.png" alt="Vista móvil" />
+    </div>
+  </section>
+
+  <!-- Imagen fija a la derecha -->
+  <div class="fixed-image">
+    <img [src]="currentImage" [ngClass]="imageOpacityClass" alt="Vista de GestProy" />
+  </div>
+</div>

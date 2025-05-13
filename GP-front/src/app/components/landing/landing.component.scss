@@ -1,0 +1,347 @@
+@import "../../../assets/styles/colors";
+
+.scroll-container {
+  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+  position: relative;
+  z-index: 0;
+
+  .floating-shapes {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1; // Antes era -1
+  pointer-events: none;
+
+    .shape {
+      position: absolute;
+      opacity: 0.4;
+      animation: float 6s ease-in-out infinite;
+
+      &.circle {
+        width: 100px;
+        height: 100px;
+        background-color: #ffffff5d;
+        border-radius: 50%;
+        top: 10%;
+        left: 5%;
+        animation-delay: 0s;
+      }
+
+      &.circle2 {
+        width: 100px;
+        height: 100px;
+        background-color: #ffffff5d;
+        border-radius: 50%;
+        bottom: 30%;
+        right: 20%;
+        animation-delay: 0s;
+      }
+
+      &.triangle {
+        width: 0;
+        height: 0;
+        border-left: 80px solid transparent;
+        border-right: 80px solid transparent;
+        border-bottom: 100px solid #ffffff5d;
+        top: 40%;
+        left: 30%;
+        transform: rotate(140deg);
+        animation-delay: 2s;
+        border-radius: 50%;
+      }
+
+      &.triangle2 {
+        width: 0;
+        height: 0;
+        border-top: 80px solid transparent;
+        border-bottom: 80px solid transparent;
+        border-left: 100px solid #ffffff5d;
+        bottom: 0;
+        right: 10%;
+        transform: rotate(140deg);
+        animation-delay: 2s;
+        border-radius: 50%;
+      }
+
+      &.square {
+        width: 80px;
+        height: 80px;
+        background-color: #ffffff5d;
+        bottom: 15%;
+        left: 10%;
+        border-radius: 30px;
+        animation-delay: 4s;
+      }
+
+      &.square2 {
+        width: 80px;
+        height: 80px;
+        background-color: #ffffff5d;
+        top: 5%;
+        right: 20%;
+        border-radius: 30px;
+        animation-delay: 4s;
+      }
+    }
+  }
+}
+
+.slide {
+  scroll-snap-align: start;
+  height: 100svh;
+  display: flex;
+  align-items: center;
+  padding: 0 4rem;
+  background: linear-gradient(0deg, #5a4a6e, #f4b480);
+  color: white;
+  position: relative;
+  overflow: hidden;
+  position: relative;
+  .content {
+    width: 50%;
+    z-index: 1;
+  }
+
+  &:nth-child(even) {
+    background: linear-gradient(0deg, #f4b480, #5a4a6e,);
+  }
+
+  .content{
+    h2{
+      font-size: 2rem;
+    }
+    p{
+      padding-right: 50px;
+      font-size: 1.3rem;
+    }
+  }
+}
+
+.hero {
+  background: linear-gradient(0deg, #f4b480, white) !important;
+  color: #9c89b8;
+
+  .content {
+    text-align: right;
+
+    h1 {
+      margin-top: 0;
+      font-size: 4rem;
+      margin-right: 100px;
+    }
+
+    p {
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+      margin-right: 100px;
+      padding-right: 0;
+    }
+    .mobile-slide-image {
+      max-width: 200px;
+      height: auto;
+      margin: auto;
+      margin-top: 1rem;
+      border-radius: 10px;
+      display: none;
+    }
+  }
+
+
+}
+
+
+.scroll-down {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 20px;
+  animation: bounce 2s linear infinite;
+  font-size: 3rem;
+}
+
+.fixed-image {
+  position: fixed;
+  top: 50%;
+  right: 0px;
+  transform: translateY(-50%);
+  width: 50%;
+  border-radius: 20px;
+   z-index: 10;
+  pointer-events: none;
+  
+  img {
+    height: auto;
+    max-height: 600px;
+    border-radius: 20px;
+    z-index: 10;
+    transform: translateX(0);
+    opacity: 1;
+    transition: opacity .2s ease-in-out, transform .3s ease-in-out !important;
+    
+    &.fade-out {
+      opacity: 0;
+      transform: translateX(100%);
+      transition: opacity .2s ease-in-out, transform .3s ease-in-out;
+    }
+  
+    &.fade-in {
+      opacity: 1;
+      transform: translateX(0);
+      transition: opacity .2s ease-in-out, transform .3s ease-in-out;
+    }
+  }
+}
+
+.mobile-slide-image {
+  max-width: 95svw;
+  width: 500px;
+  height: auto;
+  margin-left: auto;
+  margin-top: 1rem;
+  border-radius: 10px;
+  display: none;
+}
+
+.scroll-container {
+  overflow-y: scroll;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+  }
+}
+
+.cta-buttons{
+  margin-right: 100px;
+  .btn {
+    padding: 0.75rem 2rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    border-radius: 18px;
+    text-decoration: none;
+    white-space: nowrap;
+
+    &.primary {
+      background-color: #9c89b8;
+      border: 1.5px solid #9c89b8;
+      color: white;
+      margin-bottom: 0;
+    }
+  
+    &.secondary {
+      background-color: transparent;
+      border: 1.5px solid #9c89b8;
+      color: #9c89b8;
+      margin-bottom: 0;
+    }
+  }
+
+  span{
+    margin: 0 1rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .slide .content {
+    width: 90%;
+    padding: 0 2rem;
+  }
+
+  .hero .content h1,
+  .hero .content p,
+  .cta-buttons {
+    margin-right: 0;
+    text-align: center;
+  }
+
+  .fixed-image{
+    display: none;
+  }
+
+  .mobile-slide-image {
+    display: block !important;
+  }
+
+  .cta-buttons {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+
+    .btn {
+      width: 100%;
+      max-width: 250px;
+      margin-bottom: 1rem;
+    }
+
+    span {
+      margin: 0.5rem 0;
+    }
+  }
+
+  .scroll-down {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .slide {
+    padding: 0 1rem;
+
+    .content {
+      text-align: center;
+
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      p {
+        font-size: 1rem;
+        padding: 0;
+      }
+    }
+  }
+
+  .mobile-slide-image {
+    width: 100% !important;
+    margin: auto;
+    margin-top: 1rem;
+    border-radius: 10px;
+  }
+
+  .hero .content h1 {
+    font-size: 2.5rem;
+  }
+
+  .hero .content p {
+    font-size: 1.2rem;
+  }
+}
+
+// Animación flecha
+@keyframes bounce {
+  0%, 100% { bottom: 20px; }
+  50% { bottom: 40px; }
+}
+
+
+// Reutilizamos o redefinimos esta animación
+@keyframes float {
+  0% {
+    transform: translateY(0) translateX(0) rotate(140deg);
+  }
+  50% {
+    transform: translateY(-15px) translateX(9px) rotate(100deg);
+  }
+  100% {
+    transform: translateY(0) translateX(0) rotate(140deg);
+  }
+}

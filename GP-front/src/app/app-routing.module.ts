@@ -10,8 +10,10 @@ import { TaskCalendarComponent } from './components/task-calendar/task-calendar.
 import { ProjectSummaryComponent } from './components/project-summary/project-summary.component';
 import { ProjectFilesComponent } from './components/project-files/project-files.component';
 import { TasksComponent } from './components/tasks/tasks.component';
+import { LandingComponent } from './components/landing/landing.component';
 
 const routes: Routes = [
+  { path: '', component: LandingComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'dashboard',
@@ -26,7 +28,7 @@ const routes: Routes = [
       { path: 'profile', component: ProfileComponent },
       { path: '', redirectTo: 'projects', pathMatch: 'full' } // Default redirect inside dashboard | Redirige a projects por defecto dentro de dashboard
     ]},
-  { path: '', redirectTo: 'login', pathMatch: 'full' }, // Redirect root to login | Redirige raíz a login
+  { path: '', redirectTo: '', pathMatch: 'full' }, // Redirect root to login | Redirige raíz a login
   { path: '**', redirectTo: 'login' } // Route for unknown paths | Ruta para manejar rutas no encontradas
 ];
 

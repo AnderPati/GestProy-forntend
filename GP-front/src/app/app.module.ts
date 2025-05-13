@@ -23,6 +23,7 @@ import { ProjectSummaryComponent } from './components/project-summary/project-su
 import { ProjectFilesComponent } from './components/project-files/project-files.component';
 import { MoveFileModalComponent } from './components/modals/move-file-modal/move-file-modal.component';
 import { TasksComponent } from './components/tasks/tasks.component';
+import { LandingComponent } from './components/landing/landing.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { TasksComponent } from './components/tasks/tasks.component';
     ProjectSummaryComponent,
     ProjectFilesComponent,
     MoveFileModalComponent,
-    TasksComponent
+    TasksComponent,
+    LandingComponent
   ],
   imports: [
     BrowserModule,
