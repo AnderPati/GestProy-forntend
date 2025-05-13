@@ -3,6 +3,9 @@
 // Global styles setup and theme variable definitions
 //----
 // Estilos globales y definición de variables de tema
+*{
+  transition: background 0.2s ease-in-out, background-color 0.2s ease-in-out !important;
+}
 body {
     font-family: 'Poppins', sans-serif;
     background-color: var(--background-color);

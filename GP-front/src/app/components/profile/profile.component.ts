@@ -139,6 +139,11 @@ export class ProfileComponent implements OnInit {
   
 
   onSubmit() {
+    
+    if (this.user.password && this.user.password.trim() !== '' && (!this.currentPassword || this.currentPassword.trim() === '')) {
+      return;
+    }
+
     this.isLoading = true;
     const formData = new FormData();
     formData.append('name', this.user.name);
@@ -227,7 +232,10 @@ export class ProfileComponent implements OnInit {
     if (field === 'email' && !/^\S+@\S+\.\S+$/.test(this.user.email)) {
       return 'Introduce un correo válido.';
     }
-    if (field === 'password' && this.user.password && this.user.password.length < 6) {
+    if (field === 'password' && this.user.password && !this.currentPassword) {
+      return 'Debes ingresar tu contraseña actual.';
+    }
+    if (field === 'newPassword' && this.user.password && this.user.password.length < 6) {
       return 'La contraseña debe tener al menos 6 caracteres.';
     }
     return '';
