@@ -4,8 +4,8 @@
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { tap, map, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -49,6 +49,15 @@ export class AuthService {
 
   getToken(): string | null {
     return localStorage.getItem('auth_token') || sessionStorage.getItem('auth_token'); // Retrieves token from either storage | Recupera el token desde cualquiera de los dos almacenamientos
+  }
+
+  // Validar token con el backend
+  validateToken(token: string): Observable<boolean> {
+    const headers = { Authorization: `Bearer ${token}` };
+    return this.http.get(`${this.apiUrl}/user`, { headers }).pipe(
+      map(() => true),
+      catchError(() => of(false))
+    );
   }
   
   removeToken() {

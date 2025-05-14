@@ -134,7 +134,7 @@ input[type="file"].edited {
 
 .password-container {
   //backdrop-filter: blur(5px);
-  border-radius: 15px;
+  border-radius: 12px;
   padding: 15px;
   margin-top: 30px;
   margin-bottom: 20px;
@@ -153,7 +153,22 @@ input[type="file"].edited {
 }
 
 .externar-container {
-  background: linear-gradient(135deg, transparent, var(--primary-color));
+  border: 0px solid transparent; /* Necesario para que se vea el borde */
+  padding: 0px;
+  .google{
+      border-radius: 12px;
+      padding: 15px;
+      border: 2px solid transparent;
+      background: 
+      linear-gradient(var(--background-color-light), var(--background-color-light)) padding-box,
+      conic-gradient(
+        #eb4335 0deg 45deg,
+        #4285f4 45deg 120deg,
+        #34a853 120deg 250deg,
+        #fbbc05 250deg 290deg,
+        #eb4335 290deg 360deg
+      ) border-box;
+  }
 }
 
 .external-login-warning{

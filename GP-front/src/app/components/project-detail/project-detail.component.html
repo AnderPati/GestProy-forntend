@@ -9,17 +9,9 @@
     <div class="header-info" *ngIf="showHeader">
       <p *ngIf="project.description">{{ project.description }}</p>
       <p><strong>Estado:</strong> {{ project.status }}</p>
-      <p><strong>Inicio:</strong> {{ formatDateToSpanish(project.start_date) }}</p>
-      <p *ngIf="project.end_date"><strong>Fin:</strong> {{ formatDateToSpanish(project.end_date) }}</p>
-      <div *ngIf="tasks.length !== 0">
-        <small class="progress-label">{{ progressPercentage }}% completado</small>
-        <div class="progress-container">
-          <div class="progress-bar" [style.width.%]="progressPercentage"></div>
-        </div>
-        <button [routerLink]="['/dashboard/projects', projectId, 'summary']" class="summary-link">
-          <i class="fa-solid fa-chart-line"></i> Resumen
-        </button>      
-      </div>
+      <button [routerLink]="['/dashboard/projects', projectId, 'summary']" class="summary-link">
+        <i class="fa-solid fa-chart-line"></i> Estadísticas
+      </button>
     </div>
     
     <div class="task-section">

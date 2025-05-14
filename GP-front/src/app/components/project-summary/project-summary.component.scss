@@ -35,7 +35,7 @@
   .progress-bar-container {
   width: 100%;
   height: 14px;
-  background: rgba(127, 127, 127, 0.1);
+  background: rgba(127, 127, 127, 0.15);
   border-radius: 8px;
   margin: 16px 0 6px;
   overflow: hidden;
@@ -45,8 +45,8 @@
   height: 100%;
   background: linear-gradient(to right, #66bb6a, #43a047);
   box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
-  transition: width 1s ease-in-out;
-  border-radius: 50px;
+  transition: width .75s ease !important;
+  border-radius: 50px 0 0 50px;
 }
 
 .progress-text {

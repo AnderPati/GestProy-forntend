@@ -13,6 +13,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
+  isAuthenticated = false;
   isCollapsed: boolean = false; // Estado actual del sidebar (colapsado o no)
   isMobileOpen: boolean = false; // Controla si el menú móvil está abierto
   wasCollapsed: boolean = this.isCollapsed; // Recuerda el estado antes de entrar a móvil
@@ -35,6 +36,26 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+
+    // Validar existencia de token
+    const token = this.authService.getToken();
+    if (!token) {
+      this.router.navigate(['/login']); // Redirige si no hay token
+      return;
+    }
+
+    this.authService.validateToken(token).subscribe(isValid => {
+      if (!isValid) {
+        this.authService.removeToken();
+        this.router.navigate(['/login']);
+      }else{
+        this.isAuthenticated = true;
+        this.loadDashboard();
+      }
+    });
+  }
+
+  loadDashboard() {
     this.isDarkMode = this.themeService.getDarkModeStatus(); // Carga el tema inicial (oscuro o claro)
     
     this.activeRoute = this.router.url; // Obtiene la ruta activa al iniciar
@@ -53,25 +74,6 @@ export class DashboardComponent implements OnInit {
       this.wasCollapsed = this.isCollapsed; // Lo usamos para restaurar después del modo móvil
     }
 
-    // Validar existencia de token
-    const token = this.authService.getToken();
-    if (!token) {
-      this.router.navigate(['/login']); // Redirige si no hay token
-      return;
-    }
-
-    // Validar token con el backend
-    this.http.get('http://127.0.0.1:8000/api/user', {
-      headers: { Authorization: `Bearer ${token}` }
-    }).subscribe(
-      () => {}, // Token válido: no se hace nada
-      () => {
-        // Token inválido: cerrar sesión y redirigir
-        this.authService.removeToken();
-        this.router.navigate(['/login']);
-      }
-    );
-
     this.handleResize(); // Ajusta el estado inicial según el tamaño de la ventana
     window.addEventListener('resize', this.handleResize.bind(this)); // Escucha cambios de tamaño
 
@@ -80,7 +82,6 @@ export class DashboardComponent implements OnInit {
     setInterval(() => {
       this.getUpcomingTasks();
     }, 60000);
-    
   }
 
   get isMobile(): boolean {
@@ -160,25 +161,31 @@ export class DashboardComponent implements OnInit {
         return `${day}/${month}/${year}`;
       };
   
-      this.pendingTasksHtml = Object.entries(grouped).map(([projectName, tasks]) => {
-        const taskItems = (tasks as Task[]).map((task: Task) => `
-          <div style="padding: 6px 0; border-top: 1px solid rgba(127, 127, 127, 0.3);">
-            <strong>${task.title}</strong><br>
-            <small style="color:rgb(183, 183, 183);">
-              Vence el <em>${formatDateToSpanish(task.due_date)}</em>
-            </small>
-          </div>
-        `).join('');
-  
-        return `
-          <div style="margin-bottom: 18px; padding: 10px; background: rgba(0, 0, 0, 0.7); border: 1px solid rgba(0, 0, 0, 0.7); border-radius: 5px;">
-            <div style="font-weight: bold; font-size: 24px; margin-bottom: 8px;">
-              <i class="fa-solid fa-bookmark" style="color: #2a52be;"></i> ${projectName}
-            </div>
-            ${taskItems}
-          </div>
-        `;
-      }).join('');
+      this.pendingTasksHtml = `
+        <div style="max-height: 60svh; overflow-y: auto; padding-right: 10px;">
+          ${Object.entries(grouped).map(([projectName, tasks]) => {
+            const taskItems = (tasks as Task[]).map((task: Task) => `
+              <div style="padding: 6px 0; border-top: 1px solid rgba(127, 127, 127, 0.3);">
+                <strong>${task.title}</strong><br>
+                <small style="color:rgb(183, 183, 183);">
+                  Vence el <em>${formatDateToSpanish(task.due_date)}</em>
+                </small>
+              </div>
+            `).join('');
+
+            return `
+              <div style="margin: 18px 0; padding: 10px; background: rgba(0, 0, 0, 0.7); border: 1px solid rgba(0, 0, 0, 0.7); border-radius: 5px;">
+                <div style="font-weight: bold; font-size: 24px; margin-bottom: 8px; position: relative; padding: 0 20px;">
+                  <i class="fa-solid fa-bookmark" style="color: var(--primary-color); position: absolute; left: 0;"></i>
+                  <i class="fa-solid fa-bookmark" style="color: var(--primary-color); position: absolute; right: 0;"></i>
+                  ${projectName}
+                </div>
+                ${taskItems}
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
   
       if (initial && !this.notificationClosed) {
         Swal.fire({
@@ -195,9 +202,10 @@ export class DashboardComponent implements OnInit {
         }).then(result => {
           if (result.isConfirmed) {
             Swal.fire({
-              title: 'Tareas próximas a vencer',
+              title: "Tareas próximas a vencer",
               html: this.pendingTasksHtml,
               icon: 'info',
+              iconColor: 'var(--primary-color-dark)',
               width: '600px',
               color: 'white',
               showCloseButton: true,
@@ -215,11 +223,11 @@ export class DashboardComponent implements OnInit {
 
   showNotificationDetails() {
     Swal.fire({
-      title: 'Tareas próximas a vencer',
       html: this.pendingTasksHtml,
       position: 'bottom-end',
       icon: 'info',
-      width: '600px',
+      iconColor: 'var(--primary-color-dark)',
+      width: '400px',
       color: 'white',
       showCloseButton: true,
       showConfirmButton: false,
