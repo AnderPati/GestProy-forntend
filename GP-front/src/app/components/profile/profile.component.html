@@ -105,10 +105,10 @@
     <h3>Almacenamiento usado:</h3>
     
     <div class="progress-bar-container">
-      <small [style.left.%]="storageUsagePercentage">
+      <small [style.left.%]="displayedStoragePercentage">
         {{ displayedStoragePercentage | number:'1.0-2' }}%
       </small>
-      <div class="progress-bar" [style.width.%]="storageUsagePercentage"></div>
+      <div class="progress-bar" [style.width.%]="displayedStoragePercentage"></div>
     </div>
     <p>
       {{

@@ -250,7 +250,6 @@ input[type="file"].edited {
   .progress-bar {
     height: 100%;
     background: var(--primary-color);
-    width: 0%;
     transition: width 1s ease-in-out;
     border-radius: 7px;
     box-shadow: 2px 0px 0px 0px var(--background-color);

@@ -58,23 +58,28 @@ export class ProfileComponent implements OnInit {
   }
 
   animateStoragePercentage() {
-    const duration = 1000; // duración total en ms (1 segundo)
-    const frameRate = 30; // 60 frames por segundo
+  this.displayedStoragePercentage = 0;
+
+  setTimeout(() => {
+    const duration = 1000;
+    const frameRate = 30;
     const totalFrames = duration / (1000 / frameRate);
-    const increment = this.storageUsagePercentage / totalFrames;
-    
+    const target = this.storageUsagePercentage;
+    const increment = target / totalFrames;
+
     let currentFrame = 0;
-  
+
     const interval = setInterval(() => {
       this.displayedStoragePercentage += increment;
       currentFrame++;
-  
+
       if (currentFrame >= totalFrames) {
-        this.displayedStoragePercentage = this.storageUsagePercentage; // aseguramos que termine exacto
+        this.displayedStoragePercentage = target;
         clearInterval(interval);
       }
     }, 1000 / frameRate);
-  }
+  }, 0);
+}
 
   triggerFileInput() {
     this.fileInput.nativeElement.click();
