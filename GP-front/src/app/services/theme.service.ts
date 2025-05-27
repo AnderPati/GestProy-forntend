@@ -11,16 +11,17 @@ import { Injectable, Renderer2, RendererFactory2 } from '@angular/core';
 })
 export class ThemeService {
   private renderer: Renderer2;
-  private isDarkMode: boolean = true;
+  private isDarkMode: boolean = false;
   
 
   constructor(rendererFactory: RendererFactory2) {
     this.renderer = rendererFactory.createRenderer(null, null);
+
     const savedMode = localStorage.getItem('darkMode');
     if (savedMode === null) {
       // No hay nada en localStorage: activar dark mode por defecto
-      this.isDarkMode = true;
-      localStorage.setItem('darkMode', 'true'); // Guardamos la preferencia
+      this.isDarkMode = false;
+      localStorage.setItem('darkMode', 'false'); // Guardamos la preferencia
     } else {
       this.isDarkMode = savedMode === 'true';
     }

@@ -171,14 +171,12 @@
   right: 0px;
   transform: translateY(-50%);
   width: 50%;
-  border-radius: 20px;
    z-index: 10;
   pointer-events: none;
   
   img {
     height: auto;
-    max-height: 600px;
-    border-radius: 20px;
+    max-height: 700px;
     z-index: 10;
     transform: translateX(0);
     opacity: 1;
@@ -204,7 +202,6 @@
   height: auto;
   margin-left: auto;
   margin-top: 1rem;
-  border-radius: 10px;
   display: none;
 }
 
@@ -314,7 +311,6 @@
     width: 100% !important;
     margin: auto;
     margin-top: 1rem;
-    border-radius: 10px;
   }
 
   .hero .content h1 {
